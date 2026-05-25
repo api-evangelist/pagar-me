@@ -1,0 +1,561 @@
+aid: pagar-me
+name: Pagar.me
+description: Pagar.me is the API-first online payments platform from Stone Co., one of Brazil's largest
+  financial technology companies. Often called "the Stripe of Brazil," Pagar.me provides Brazilian e-commerce
+  merchants, marketplaces, SaaS companies, and subscription businesses with a single REST API and a set of
+  official SDKs to accept credit and debit cards, Pix instant payments, boletos, vouchers, and digital wallets,
+  with built-in 3DS 2.0 anti-fraud, payment splitting and recipient management for marketplaces, recurring
+  billing through plans and subscriptions, anticipation of receivables, payment links, an embedded Checkout,
+  and signed webhooks. The Pagar.me Core API v5 (2021-09-01) is the current stable surface, exposed at
+  https://api.pagar.me/core/v5 with HTTP Basic authentication, and is backed by SDKs in Node.js, Python, PHP,
+  Ruby, Java, .NET, and Go. Pagar.me is PCI DSS Level 1 certified and powers payments for Brazilian brands
+  including Leroy Merlin, Casa & Vídeo, Polishop, Usaflex, and Catarse.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+- Payments
+- Financial Services
+- Fintech
+- Brazil
+- Latin America
+- Stone Co
+- Pix
+- Boleto
+- Credit Card
+- Marketplace
+- Split Payments
+- Subscriptions
+- Recurring Billing
+- Anti-Fraud
+- 3DS
+- Checkout
+- Payment Links
+- Webhooks
+- E-commerce
+- Anticipation
+created: '2026-05-25'
+modified: '2026-05-25'
+url: https://raw.githubusercontent.com/api-evangelist/pagar-me/refs/heads/main/apis.yml
+specificationVersion: '0.19'
+kind: company
+apis:
+- aid: pagar-me:pagarme-orders-api
+  name: Pagar.me Orders API
+  tags:
+  - Orders
+  - Charges
+  - Payments
+  - Credit Card
+  - Debit Card
+  - Pix
+  - Boleto
+  - Voucher
+  - Google Pay
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/criar-pedido-2
+    type: Documentation
+  - url: https://docs.pagar.me/reference/criar-pedido-2
+    type: APIReference
+  description: Create, list, retrieve, and manage orders — the top-level payment object in the Pagar.me Core API
+    v5. Each order can contain one or more charges paid via credit card, debit card, Pix, boleto, voucher,
+    Google Pay, or private label card. Supports add-charge, cancellation, capture, and refund flows, item-level
+    pricing, customer association, and full split rules for marketplaces.
+- aid: pagar-me:pagarme-charges-api
+  name: Pagar.me Charges API
+  tags:
+  - Charges
+  - Captures
+  - Refunds
+  - Credit Card
+  - Pix
+  - Boleto
+  humanURL: https://docs.pagar.me/reference/obter-cobrança
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/obter-cobrança
+    type: Documentation
+  - url: https://docs.pagar.me/reference/obter-cobrança
+    type: APIReference
+  description: Manage individual charges (cobranças) — the unit of capture inside an order. Get a charge, edit
+    its payment method or saved card, capture a pre-authorized amount, refund all or part of it, and inspect
+    the chargeback lifecycle. Charges expose the full last-four / brand / acquirer / NSU detail that finance
+    and reconciliation tooling needs.
+- aid: pagar-me:pagarme-customers-api
+  name: Pagar.me Customers API
+  tags:
+  - Customers
+  - Addresses
+  - KYC
+  - Vault
+  humanURL: https://docs.pagar.me/reference/criar-cliente-1
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/criar-cliente-1
+    type: Documentation
+  - url: https://docs.pagar.me/reference/criar-cliente-1
+    type: APIReference
+  description: Create and manage end-customer (buyer) records — personal data, CPF/CNPJ, contact info, and
+    addresses — so that orders, subscriptions, and saved cards can be tied to a stable customer identity.
+    Underpins the customer wallet / one-click-buy experience.
+- aid: pagar-me:pagarme-cards-api
+  name: Pagar.me Cards API
+  tags:
+  - Cards
+  - Tokenization
+  - PCI
+  - Customer Wallet
+  - Card Updater
+  humanURL: https://docs.pagar.me/reference/cartões-1
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/cartões-1
+    type: Documentation
+  - url: https://docs.pagar.me/reference/cartões-1
+    type: APIReference
+  description: Tokenize, save, and edit credit/debit cards inside a Pagar.me customer wallet, off-load PCI
+    scope, and reuse cards for one-click buy and recurring charges. Supports network token (token de bandeira)
+    issuance, the Card Updater service for automatic re-tokenization, and private label cards.
+- aid: pagar-me:pagarme-plans-api
+  name: Pagar.me Plans API
+  tags:
+  - Plans
+  - Recurring Billing
+  - Subscriptions
+  humanURL: https://docs.pagar.me/reference/planos-1
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/planos-1
+    type: Documentation
+  - url: https://docs.pagar.me/reference/planos-1
+    type: APIReference
+  description: Define reusable recurring billing plans — pricing, billing cycle (days/weeks/months), trial
+    period, installment count, accepted payment methods, and items — to back subscription products. Plans are
+    the template that customer subscriptions instantiate.
+- aid: pagar-me:pagarme-subscriptions-api
+  name: Pagar.me Subscriptions API
+  tags:
+  - Subscriptions
+  - Recurring Billing
+  - Cycles
+  - Invoices
+  humanURL: https://docs.pagar.me/reference/assinaturas-1
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/assinaturas-1
+    type: Documentation
+  - url: https://docs.pagar.me/reference/assinaturas-1
+    type: APIReference
+  description: Create customer subscriptions either from a saved plan or as standalone (avulsa) subscriptions,
+    renew billing cycles, edit payment method / card / discount / minimum price, change items, and inspect each
+    cycle's invoice and charge. Powers SaaS, streaming, education, club-of-the-month, and other recurring
+    revenue businesses on Pagar.me.
+- aid: pagar-me:pagarme-recipients-api
+  name: Pagar.me Recipients API
+  tags:
+  - Recipients
+  - Marketplace
+  - Split Payments
+  - KYC
+  - Sub-merchants
+  humanURL: https://docs.pagar.me/reference/recebedores-1
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/recebedores-1
+    type: Documentation
+  - url: https://docs.pagar.me/reference/recebedores-1
+    type: APIReference
+  description: Onboard and manage recipients (recebedores) — the sub-merchants that receive split payments in a
+    marketplace. Create the recipient, run the KYC / prova de vida flow, attach bank accounts, configure
+    automatic transfer settings (anticipation, withdrawal schedule, fees), and update their identifying code.
+    Backbone of every Pagar.me marketplace integration.
+- aid: pagar-me:pagarme-transfers-api
+  name: Pagar.me Transfers API
+  tags:
+  - Transfers
+  - Withdrawals
+  - Marketplace
+  - Bank Accounts
+  humanURL: https://docs.pagar.me/reference/objeto-transferência
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/objeto-transferência
+    type: Documentation
+  - url: https://docs.pagar.me/reference/objeto-transferência
+    type: APIReference
+  description: Create, cancel, list, and retrieve transfers from a recipient's Pagar.me balance to their
+    registered bank account, plus pull the official transfer receipt (comprovante). Pair with the Withdrawals
+    object for on-demand payouts in marketplace and split scenarios.
+- aid: pagar-me:pagarme-balance-operations-api
+  name: Pagar.me Balance Operations API
+  tags:
+  - Balance
+  - Ledger
+  - Settlements
+  - Reconciliation
+  humanURL: https://docs.pagar.me/reference/operação-de-saldo
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/operação-de-saldo
+    type: Documentation
+  - url: https://docs.pagar.me/reference/operação-de-saldo
+    type: APIReference
+  description: Inspect the per-recipient balance ledger — every credit, debit, fee, refund, chargeback,
+    anticipation, transfer, and adjustment that moves money in or out of a Pagar.me account. The canonical
+    source of truth for finance reconciliation against Pagar.me.
+- aid: pagar-me:pagarme-receivables-api
+  name: Pagar.me Receivables API
+  tags:
+  - Receivables
+  - Future Cash Flow
+  - Installments
+  humanURL: https://docs.pagar.me/reference/retornando-recebíveis
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/retornando-recebíveis
+    type: Documentation
+  - url: https://docs.pagar.me/reference/retornando-recebíveis
+    type: APIReference
+  description: List the merchant's future receivables — the installments of credit-card sales that will settle
+    over the coming weeks and months. The basis for cash-flow forecasting and for any anticipation simulation.
+- aid: pagar-me:pagarme-anticipation-api
+  name: Pagar.me Anticipation API
+  tags:
+  - Anticipation
+  - Saque Antecipado
+  - Receivables Advance
+  - Working Capital
+  humanURL: https://docs.pagar.me/reference/objeto-antecipação
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/objeto-antecipação
+    type: Documentation
+  - url: https://docs.pagar.me/reference/objeto-antecipação
+    type: APIReference
+  description: Anticipate receivables (antecipação) — Pagar.me's working-capital product that lets a merchant
+    or marketplace recipient pull future credit-card installments to today's balance for a fee. Supports spot
+    simulation, limits inspection, anticipation creation, list, and cancellation of pending requests.
+- aid: pagar-me:pagarme-settlements-api
+  name: Pagar.me Settlements API
+  tags:
+  - Settlements
+  - Payouts
+  - Reconciliation
+  - Marketplace
+  humanURL: https://docs.pagar.me/reference/objeto-settlements
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/objeto-settlements
+    type: Documentation
+  - url: https://docs.pagar.me/reference/objeto-settlements
+    type: APIReference
+  description: Retrieve settlements (pagamentos) — the actual money movements out of Pagar.me to recipients —
+    individually, in bulk, or scoped to a specific recipient. Closes the loop between the Balance Operations
+    ledger and the Transfers/Withdrawals that deliver funds to bank accounts.
+- aid: pagar-me:pagarme-disputes-api
+  name: Pagar.me Disputes & Chargebacks API
+  tags:
+  - Disputes
+  - Chargebacks
+  - Risk
+  - Fraud
+  humanURL: https://docs.pagar.me/reference/disputas
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/disputas
+    type: Documentation
+  - url: https://docs.pagar.me/reference/disputas
+    type: APIReference
+  description: List and retrieve disputes (disputas) and chargebacks raised against the merchant's
+    transactions, including the new chargeback-specific charge status. Lets risk and finance teams reconcile
+    losses and feed dispute evidence workflows.
+- aid: pagar-me:pagarme-payment-links-api
+  name: Pagar.me Payment Links API
+  tags:
+  - Payment Links
+  - Checkout
+  - Social Commerce
+  - No-Code
+  humanURL: https://docs.pagar.me/reference/checkout-link
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/checkout-link
+    type: Documentation
+  - url: https://docs.pagar.me/reference/checkout-link
+    type: APIReference
+  description: Generate, list, retrieve, activate, and cancel payment links — short URLs that wrap a Pagar.me
+    Checkout for sale-by-link, WhatsApp commerce, Instagram bio links, and lightweight invoicing. Includes the
+    hosted checkout response object that returns success and failure callbacks.
+- aid: pagar-me:pagarme-contracts-api
+  name: Pagar.me Contracts & URs API
+  tags:
+  - Contracts
+  - Receivables Registry
+  - Res 264/349
+  - Regulatory
+  humanURL: https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5
+    type: Documentation
+  - url: https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5
+    type: APIReference
+  description: Manage contract effects and Unidades de Recebíveis (URs) under the Brazilian Central Bank's
+    Resoluções BCB 264 and 349 receivables-registry regime. List contract effects, contest a contract, list
+    contests, and pull URs by recipient — the regulatory surface every Brazilian sub-acquirer integration must
+    cover.
+- aid: pagar-me:pagarme-webhooks-api
+  name: Pagar.me Webhooks API
+  tags:
+  - Webhooks
+  - Events
+  - Realtime
+  - Notifications
+  humanURL: https://docs.pagar.me/reference/visão-geral-sobre-webhooks
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/reference/visão-geral-sobre-webhooks
+    type: Documentation
+  - url: https://docs.pagar.me/reference/eventos-de-webhook-1
+    type: APIReference
+  - url: https://docs.pagar.me/docs/webhooks
+    type: GettingStarted
+  description: Subscribe to and receive signed webhook events for every meaningful state change on Pagar.me —
+    order.paid, charge.captured, charge.refunded, subscription.created, recipient.kyc_updated, dispute.opened,
+    and the rest of the catalog. The asynchronous backbone of any production Pagar.me integration.
+- aid: pagar-me:pagarme-checkout-pagarme
+  name: Pagar.me Hosted Checkout
+  tags:
+  - Checkout
+  - Hosted Payment Page
+  - One-Click
+  - AI Integration
+  humanURL: https://docs.pagar.me/docs/checkout-use
+  baseURL: https://api.pagar.me/core/v5
+  properties:
+  - url: https://docs.pagar.me/docs/checkout-use
+    type: Documentation
+  - url: https://docs.pagar.me/docs/conecte-o-checkout-pagarme-usando-ia
+    type: Quickstart
+  - url: https://docs.pagar.me/docs/checkout_pagarme_skill_order
+    type: Documentation
+  - url: https://docs.pagar.me/docs/checkout_pagarme_skill_subscription
+    type: Documentation
+  description: Pagar.me's drop-in hosted Checkout. Embed Pagar.me's PCI-compliant payment form to take credit
+    card, Pix, and boleto for one-off orders and subscriptions, with first-class AI/agent integration patterns
+    (Claude Code, Codex, Cursor, Copilot) documented as Checkout Skills.
+name: Pagar.me
+common:
+- url: https://pagar.me
+  name: Pagar.me
+  type: Portal
+- url: https://docs.pagar.me
+  name: Pagar.me Documentation
+  type: Documentation
+- url: https://docs.pagar.me/reference
+  name: Pagar.me API Reference
+  type: APIReference
+- url: https://docs.pagar.me/reference/getting-started-with-your-api
+  name: Pagar.me Getting Started
+  type: GettingStarted
+- url: https://docs.pagar.me/reference/getting-started-with-your-api
+  name: Pagar.me Quickstart
+  type: Quickstart
+- url: https://docs.pagar.me/docs/chaves-de-acesso
+  name: Pagar.me Access Keys
+  type: Authentication
+- url: https://docs.pagar.me/reference/rate-limit
+  name: Pagar.me Rate Limits
+  type: RateLimits
+- url: https://docs.pagar.me/reference/segurança-1
+  name: Pagar.me Security and PCI
+  type: Documentation
+- url: https://docs.pagar.me/docs/ip-allowlist
+  name: Pagar.me IP Allowlist
+  type: Documentation
+- url: https://docs.pagar.me/llms.txt
+  name: Pagar.me llms.txt (AI Agent Index)
+  type: Documentation
+- url: https://id.pagar.me/signin
+  name: Pagar.me Sign In
+  type: Console
+- url: https://www.pagar.me/ofertas
+  name: Pagar.me Sign Up
+  type: SignUp
+- url: https://www.pagar.me/ofertas
+  name: Pagar.me Pricing and Offers
+  type: Pricing
+- url: https://pagarme.helpjuice.com/
+  name: Pagar.me Help Center
+  type: Support
+- url: https://pagar.me/blog
+  name: Pagar.me Blog
+  type: Blog
+- url: https://github.com/pagarme
+  name: pagarme on GitHub
+  type: GitHubOrganization
+- url: https://github.com/pagarme/pagarme-nodejs-sdk
+  name: pagarme-nodejs-sdk (Node.js / TypeScript)
+  type: SDK
+- url: https://github.com/pagarme/pagarme-python-sdk
+  name: pagarme-python-sdk (Python)
+  type: SDK
+- url: https://github.com/pagarme/pagarme-php-sdk
+  name: pagarme-php-sdk (PHP)
+  type: SDK
+- url: https://github.com/pagarme/pagarme-ruby-sdk
+  name: pagarme-ruby-sdk (Ruby)
+  type: SDK
+- url: https://github.com/pagarme/pagarme-java-sdk
+  name: pagarme-java-sdk (Java)
+  type: SDK
+- url: https://github.com/pagarme/pagarme-net-standard-sdk
+  name: pagarme-net-standard-sdk (.NET Standard)
+  type: SDK
+- url: https://github.com/pagarme/pagarme-core-api-go
+  name: pagarme-core-api-go (Go)
+  type: SDK
+- url: https://github.com/pagarme/woocommerce
+  name: WooCommerce Module for Pagar.me
+  type: Integrations
+- url: https://github.com/pagarme/magento2
+  name: Magento 2 / Adobe Commerce Module for Pagar.me
+  type: Integrations
+- url: https://github.com/pagarme/ecommerce-module-core
+  name: Pagar.me E-commerce Module Core (PHP)
+  type: Integrations
+- url: https://github.com/pagarme/node-boleto
+  name: node-boleto (Boleto generator in Node.js)
+  type: SDK
+- url: https://docs.pagar.me/page/guias-pagarme
+  name: Pagar.me Integration Guides
+  type: GettingStarted
+- url: https://docs.pagar.me/docs/autenticação-via-3ds
+  name: 3DS 2.0 Authentication Manual
+  type: Documentation
+- type: Features
+  data:
+  - name: Brazilian payment methods, first-class
+    description: Credit and debit cards across all major Brazilian brands, Pix (instant), boleto bancário
+      (including DDA), private label cards, vouchers, and digital wallets — all behind a single Orders/Charges
+      API.
+  - name: Marketplace split payments and recipients
+    description: First-class recipients (recebedores), KYC / prova de vida, sub-merchant management, and
+      configurable split rules per charge or order — the backbone of every Brazilian marketplace built on
+      Pagar.me.
+  - name: Recurring billing
+    description: Plans + Subscriptions API for SaaS, streaming, education, and club-of-the-month businesses,
+      including standalone (avulsa) subscriptions, cycle renewal, plan editing, and one-click-buy via the
+      customer wallet.
+  - name: Anti-fraud with 3DS 2.0
+    description: Built-in fraud screening and 3DS 2.0 challenge flows (including a HUB integration manual and
+      v1-to-v2 migration guide) to reduce chargebacks and meet card-network mandates.
+  - name: Anticipation of receivables
+    description: Working-capital product that lets the merchant pull tomorrow's credit-card installments to
+      today's balance via the Anticipation API, with limits inspection and spot simulation.
+  - name: Tokenization and Card Updater
+    description: PCI-scoped tokenization, network tokens (token de bandeira), and the Card Updater service
+      that automatically refreshes cards on file when issuers re-issue them — keeping subscription cohorts
+      alive.
+  - name: Hosted Checkout and Payment Links
+    description: Drop-in PCI-compliant payment form plus shareable payment links for sale-by-link, WhatsApp
+      commerce, and Instagram-bio commerce. Documented "Checkout Skills" for AI-assisted integration.
+  - name: E-commerce platform modules
+    description: First-party modules for Magento 2 / Adobe Commerce, WooCommerce, VTEX, Nuvemshop, and Shopify
+      that wrap the Core API behind a click-to-install plugin.
+  - name: Webhooks with signature verification
+    description: Signed webhook events for every order, charge, subscription, recipient, and dispute state
+      change — the asynchronous spine of any production integration.
+  - name: Receivables registry compliance (Res 264/349)
+    description: Native support for the Brazilian Central Bank's receivables-registry regime — contract effects,
+      contests, and Unidades de Recebíveis (URs) per recipient.
+  - name: PCI DSS Level 1
+    description: Pagar.me holds the highest PCI DSS Level 1 certification, so merchants can tokenize and store
+      cards through Pagar.me and stay out of full PCI scope themselves.
+  - name: Official SDKs in seven languages
+    description: Maintained Node.js/TypeScript, Python, PHP, Ruby, Java, .NET Standard, and Go SDKs generated
+      from the Core API v5 spec, all published from the pagarme GitHub org.
+  - name: AI-assistant-friendly docs
+    description: A documented llms.txt index, OpenAPI-formatted reference, and "Checkout Skills" patterns
+      explicitly aimed at Claude Code, Codex, Cursor, and Copilot users wiring Pagar.me into agents and
+      coding assistants.
+- type: UseCases
+  data:
+  - name: Brazilian e-commerce checkout
+    description: Accept credit card, Pix, and boleto on a Brazilian online store via the Orders API, the
+      hosted Checkout, or one of the platform modules (Magento, WooCommerce, VTEX, Nuvemshop, Shopify).
+  - name: Marketplace with payment splitting
+    description: Onboard sellers as recipients, run KYC, configure split rules, and have Pagar.me settle each
+      sub-merchant's share into their own bank account.
+  - name: Subscription and SaaS billing
+    description: Charge recurring credit-card or Pix subscriptions through Plans and Subscriptions, with
+      automatic retry, card updating, and chargeback handling.
+  - name: Sale-by-link / social commerce
+    description: Generate Pagar.me Payment Links and share them on WhatsApp, Instagram, or email for
+      no-website-needed sales.
+  - name: Crowdfunding and donations
+    description: Used by Brazilian crowdfunding platforms (e.g. Catarse) to collect pledges across multiple
+      payment methods and split funds among project recipients.
+  - name: Working-capital advance
+    description: Anticipate receivables to convert credit-card installments into immediate cash to fund
+      inventory, payroll, or marketing.
+  - name: AI agents that take payments
+    description: Wire Pagar.me into AI coding assistants and agents (Claude Code, Codex, Cursor, Copilot) using
+      the documented llms.txt index and the Checkout Skills for orders and subscriptions.
+- type: Integrations
+  data:
+  - name: Stone Co.
+    description: Pagar.me is Stone Co.'s API-driven online payments brand; the two share regulatory
+      infrastructure, anti-fraud rails, and the Stone API migration path documented in Pagar.me's release notes.
+  - name: Magento 2 / Adobe Commerce
+    description: Official Magento 2 module (github.com/pagarme/magento2) with full installation, configuration,
+      and feature-activation documentation.
+  - name: WooCommerce
+    description: Official WooCommerce plugin (github.com/pagarme/woocommerce) with dashboard, payment methods,
+      and feature-activation documentation.
+  - name: VTEX
+    description: Pagar.me connector for VTEX, including marketplace seller flows, private-label card
+      registration, and feature activation.
+  - name: Nuvemshop
+    description: Pagar.me Nuvemshop app for Brazilian SMB merchants — install via the Nuvemshop app store and
+      configure from the Pagar.me dashboard.
+  - name: Shopify
+    description: Integration guide and feature-activation flow for using Pagar.me as a payment provider inside
+      Shopify stores serving Brazilian buyers.
+  - name: Google Pay
+    description: Accept Google Pay payments on Brazilian Android devices through the same Orders / Charges
+      surface, documented as a first-class payment method.
+  - name: Pix (Brazilian Central Bank)
+    description: Native integration with Pix, Brazil's central-bank-run instant payment system, including a
+      Pix simulator for testing.
+  - name: Card networks (Visa, Mastercard, Elo, Amex, Hipercard)
+    description: Documented brand-specific behavior — Amex business model identifiers, Visa/Elo recurring IDs
+      for external subscriptions, Visa capture deadlines, MCC validation rules, and brand retry programs.
+  - name: 3DS 2.0
+    description: Pagar.me HUB and direct 3DS 2.0 integration manuals for card-not-present authentication.
+  - name: AI coding assistants
+    description: First-class docs for integrating Pagar.me with Claude Code, Codex, Cursor, and Copilot via the
+      llms.txt index and Checkout Skills.
+- type: Solutions
+  data:
+  - name: Pronto para usar (Ready-made)
+    description: Hosted Checkout, Payment Links, and pre-built platform modules for merchants who want to
+      accept Brazilian payments without writing API code.
+  - name: Customizado (Custom)
+    description: Direct Core API v5 + official SDK integration for marketplaces, SaaS billing, and
+      high-volume merchants that need full control over the order, charge, split, and recurring lifecycles.
+  - name: E-commerce
+    description: Complete checkout-to-settlement stack — Orders, Charges, Customers, Cards, anti-fraud, and
+      hosted Checkout — for Brazilian online stores.
+  - name: Subscriptions
+    description: Recurring billing for SaaS, streaming, education, and club-of-the-month businesses on top of
+      Plans, Subscriptions, the customer wallet, and the Card Updater.
+  - name: Marketplace
+    description: Recipients, KYC, split rules, transfers, and Res 264/349 receivables-registry support for
+      multi-vendor Brazilian marketplaces.
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
