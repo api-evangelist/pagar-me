@@ -2,13 +2,20 @@
   "repo": "pagar-me",
   "feeds": [
     {
+      "source": "https://conteudo.stone.com.br/feed/",
+      "feed_url": "https://conteudo.stone.com.br/feed/",
+      "title": "",
+      "saved": 9,
+      "method": "feed"
+    },
+    {
       "source": "https://pagar.me/blog",
       "feed_url": "https://conteudo.stone.com.br/feed/",
       "title": "",
-      "saved": 6,
+      "saved": 0,
       "method": "discovered"
     }
   ],
-  "post_count": 6,
-  "fetched": "2026-06-01T23:35:02Z"
+  "post_count": 18,
+  "fetched": "2026-06-14T20:42:17Z"
 }
