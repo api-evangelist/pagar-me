@@ -339,7 +339,7 @@ apis:
   - url: https://docs.pagar.me/docs/checkout-use
     type: Documentation
   - url: https://docs.pagar.me/docs/conecte-o-checkout-pagarme-usando-ia
-    type: Quickstart
+    type: GettingStarted
   - url: https://docs.pagar.me/docs/checkout_pagarme_skill_order
     type: Documentation
   - url: https://docs.pagar.me/docs/checkout_pagarme_skill_subscription
@@ -363,7 +363,7 @@ common:
   type: GettingStarted
 - url: https://docs.pagar.me/reference/getting-started-with-your-api
   name: Pagar.me Quickstart
-  type: Quickstart
+  type: GettingStarted
 - url: https://docs.pagar.me/docs/chaves-de-acesso
   name: Pagar.me Access Keys
   type: Authentication
@@ -384,7 +384,7 @@ common:
   type: Console
 - url: https://www.pagar.me/ofertas
   name: Pagar.me Sign Up
-  type: SignUp
+  type: Signup
 - url: https://www.pagar.me/ofertas
   name: Pagar.me Pricing and Offers
   type: Pricing
@@ -399,25 +399,25 @@ common:
   type: GitHubOrganization
 - url: https://github.com/pagarme/pagarme-nodejs-sdk
   name: pagarme-nodejs-sdk (Node.js / TypeScript)
-  type: SDK
+  type: SDKs
 - url: https://github.com/pagarme/pagarme-python-sdk
   name: pagarme-python-sdk (Python)
-  type: SDK
+  type: SDKs
 - url: https://github.com/pagarme/pagarme-php-sdk
   name: pagarme-php-sdk (PHP)
-  type: SDK
+  type: SDKs
 - url: https://github.com/pagarme/pagarme-ruby-sdk
   name: pagarme-ruby-sdk (Ruby)
-  type: SDK
+  type: SDKs
 - url: https://github.com/pagarme/pagarme-java-sdk
   name: pagarme-java-sdk (Java)
-  type: SDK
+  type: SDKs
 - url: https://github.com/pagarme/pagarme-net-standard-sdk
   name: pagarme-net-standard-sdk (.NET Standard)
-  type: SDK
+  type: SDKs
 - url: https://github.com/pagarme/pagarme-core-api-go
   name: pagarme-core-api-go (Go)
-  type: SDK
+  type: SDKs
 - url: https://github.com/pagarme/woocommerce
   name: WooCommerce Module for Pagar.me
   type: Integrations
@@ -429,7 +429,7 @@ common:
   type: Integrations
 - url: https://github.com/pagarme/node-boleto
   name: node-boleto (Boleto generator in Node.js)
-  type: SDK
+  type: SDKs
 - url: https://docs.pagar.me/page/guias-pagarme
   name: Pagar.me Integration Guides
   type: GettingStarted
