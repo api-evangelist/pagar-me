@@ -11,9 +11,20 @@ description: Pagar.me is the API-first online payments platform from Stone Co., 
   Ruby, Java, .NET, and Go. Pagar.me is PCI DSS Level 1 certified and powers payments for Brazilian brands
   including Leroy Merlin, Casa & Vídeo, Polishop, Usaflex, and Catarse.
 type: Index
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/pagar-me.png
 tags:
 - Payments
 - Financial Services
