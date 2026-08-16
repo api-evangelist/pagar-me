@@ -5,7 +5,7 @@
       "source": "https://conteudo.stone.com.br/feed/",
       "feed_url": "https://conteudo.stone.com.br/feed/",
       "title": "",
-      "saved": 0,
+      "saved": 6,
       "method": "feed"
     },
     {
@@ -16,6 +16,6 @@
       "method": "discovered"
     }
   ],
-  "post_count": 68,
-  "fetched": "2026-08-06T14:08:46Z"
+  "post_count": 74,
+  "fetched": "2026-08-15T12:11:08Z"
 }
