@@ -27,6 +27,27 @@ access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/pagar-me.png
 tags:
 - Payments
+- Financial-Services
+- Fintech
+- Brazil
+- Latin America
+- Stone Co
+- Pix
+- Boleto
+- Credit Card
+- Marketplace
+- Split Payments
+- Subscription
+- Recurring Billing
+- Anti-Fraud
+- 3DS
+- Checkout
+- Payment Links
+- Webhook
+- E-Commerce
+- Anticipation
+tags_raw:
+- Payments
 - Financial Services
 - Fintech
 - Brazil
@@ -55,6 +76,16 @@ apis:
 - aid: pagar-me:pagarme-orders-api
   name: Pagar.me Orders API
   tags:
+  - Order
+  - Charges
+  - Payments
+  - Credit Card
+  - Debit Card
+  - Pix
+  - Boleto
+  - Voucher
+  - Google Pay
+  tags_raw:
   - Orders
   - Charges
   - Payments
@@ -78,6 +109,13 @@ apis:
 - aid: pagar-me:pagarme-charges-api
   name: Pagar.me Charges API
   tags:
+  - Charges
+  - Capture
+  - Refunds
+  - Credit Card
+  - Pix
+  - Boleto
+  tags_raw:
   - Charges
   - Captures
   - Refunds
@@ -135,6 +173,10 @@ apis:
   tags:
   - Plans
   - Recurring Billing
+  - Subscription
+  tags_raw:
+  - Plans
+  - Recurring Billing
   - Subscriptions
   humanURL: https://docs.pagar.me/reference/planos-1
   baseURL: https://api.pagar.me/core/v5
@@ -149,6 +191,11 @@ apis:
 - aid: pagar-me:pagarme-subscriptions-api
   name: Pagar.me Subscriptions API
   tags:
+  - Subscription
+  - Recurring Billing
+  - Cycles
+  - Invoices
+  tags_raw:
   - Subscriptions
   - Recurring Billing
   - Cycles
@@ -167,6 +214,12 @@ apis:
 - aid: pagar-me:pagarme-recipients-api
   name: Pagar.me Recipients API
   tags:
+  - Recipients
+  - Marketplace
+  - Split Payments
+  - KYC
+  - Sub-Merchants
+  tags_raw:
   - Recipients
   - Marketplace
   - Split Payments
@@ -203,6 +256,11 @@ apis:
 - aid: pagar-me:pagarme-balance-operations-api
   name: Pagar.me Balance Operations API
   tags:
+  - Balances
+  - Ledger
+  - Settlement
+  - Reconciliation
+  tags_raw:
   - Balance
   - Ledger
   - Settlements
@@ -252,6 +310,11 @@ apis:
 - aid: pagar-me:pagarme-settlements-api
   name: Pagar.me Settlements API
   tags:
+  - Settlement
+  - Payouts
+  - Reconciliation
+  - Marketplace
+  tags_raw:
   - Settlements
   - Payouts
   - Reconciliation
@@ -321,6 +384,11 @@ apis:
 - aid: pagar-me:pagarme-webhooks-api
   name: Pagar.me Webhooks API
   tags:
+  - Webhook
+  - Event
+  - Real-Time
+  - Notification
+  tags_raw:
   - Webhooks
   - Events
   - Realtime
