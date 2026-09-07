@@ -1,0 +1,106 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Pagar.me
+providerId: pagarme
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- Payments
+- Payment Gateway
+- PIX
+- Boleto
+- Brazil
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Pagar.me processing costs. Pagar.me bills per successfully
+  processed transaction via a merchant discount rate (MDR) on card volume plus
+  fixed per-PIX and per-boleto fees, with separate fees for receivable
+  anticipation and, in marketplaces, split and transfer operations. Cost is
+  driven by settled payment volume rather than API call count. Specific
+  per-merchant rates are negotiated and not reconciled here.
+notes: >-
+  Per-transaction rates are merchant-specific; verify against the Pagar.me
+  pricing page and merchant dashboard during reconciliation. Anticipation and
+  transfer fees are settled separately from gateway MDR.
+sources:
+- https://pagar.me/precos
+- https://docs.pagar.me
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Pagar.me
+serviceCategory: Payments and Financial Services
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: BRL
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Pagar.me Core API
+  ServiceCategory: Payments and Financial Services
+  ProviderName: Pagar.me
+  PublisherName: Pagar.me
+  InvoiceIssuerName: Pagar.me
+  BillingCurrency: BRL
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: card_transaction_volume
+  description: Settled credit/debit card volume billed at the negotiated merchant discount rate (MDR).
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - account
+  - payment_method
+  - installments
+- name: pix_transactions
+  description: PIX transactions billed via percentage and/or fixed fee per transaction.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - account
+  - payment_method
+- name: boleto_transactions
+  description: Paid boletos billed at a fixed fee per settled boleto.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - account
+  - payment_method
+- name: anticipation_fees
+  description: Fees charged when advancing future card receivables (anticipation).
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - account
+  - recipient
+- name: split_and_transfers
+  description: Split and transfer (withdrawal) operations for marketplace recipients.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - account
+  - recipient
+principles:
+- name: Visibility
+  description: Pull Pagar.me dashboard exports and webhook events; reconcile per-charge MDR and fixed fees against settlement.
+- name: Allocation
+  description: Tag orders/charges with metadata and codes; map to internal cost centers, sellers, or marketplace recipients.
+- name: Optimization
+  description: Steer customers toward lower-fee methods (PIX) where viable; minimize anticipation use and tune installment offers to control MDR.
+- name: Accountability
+  description: Assign owners per store/recipient; review settlement vs. fees and chargeback exposure monthly.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

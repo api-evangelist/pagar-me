@@ -1,0 +1,133 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Pagar.me
+providerId: pagarme
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- Payments
+- Payment Gateway
+- PIX
+- Boleto
+- Brazil
+- Plans
+description: >-
+  Pagar.me prices its payment-gateway services per successfully processed
+  transaction, with rates varying by payment method (credit card, PIX, boleto),
+  credit card installments, and negotiated volume. There is no per-call API fee
+  and no monthly subscription for API access itself; cost is incurred on
+  settled payment volume (MDR - merchant discount rate) plus fixed per-boleto
+  and per-PIX fees. Published rates are negotiated per merchant, so the specific
+  per-transaction values below are NOT reconciled and must be confirmed with
+  Pagar.me commercial / dashboard.
+notes: >-
+  Pagar.me pricing is per-transaction and merchant-specific (custom plans).
+  Anticipation (advance settlement) of card receivables carries a separate
+  per-period fee. Confirm exact rates on the Pagar.me pricing page and in the
+  merchant dashboard during reconciliation.
+sources:
+- https://pagar.me/precos
+- https://docs.pagar.me
+plans:
+- id: pagarme-transactional
+  name: Pay-per-transaction
+  type: usage
+  description: >-
+    Per-transaction merchant discount rate (MDR) and fixed fees charged on
+    settled payment volume across credit card, PIX, and boleto. Rates are
+    negotiated per merchant.
+  entries:
+  - label: Credit Card (per transaction)
+    name: credit_card
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: BR
+    unit: 1
+    price: percentage MDR per transaction - varies by installments and volume (confirm with Pagar.me)
+    userMultiplied: false
+  - label: PIX (per transaction)
+    name: pix
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: BR
+    unit: 1
+    price: percentage and/or fixed fee per PIX transaction (confirm with Pagar.me)
+    userMultiplied: false
+  - label: Boleto (per transaction)
+    name: boleto
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: BR
+    unit: 1
+    price: fixed fee per paid boleto (confirm with Pagar.me)
+    userMultiplied: false
+  - label: Anticipation (receivable advance)
+    name: anticipation
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: BR
+    unit: 1
+    price: per-period fee on advanced card receivables (confirm with Pagar.me)
+    userMultiplied: false
+  elements:
+  - name: Orders
+  - name: Charges
+  - name: PIX
+  - name: Boleto
+  - name: Credit Card
+  - name: Split Payments
+- id: pagarme-recurring
+  name: Recurring / Subscriptions
+  type: usage
+  description: >-
+    Recurring billing via plans, subscriptions, and invoices. Each generated
+    charge is priced at the same per-transaction rates by payment method.
+  entries:
+  - label: Subscription Charge (per transaction)
+    name: subscription_charge
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: BR
+    unit: 1
+    price: same per-transaction MDR / fixed fees by payment method (confirm with Pagar.me)
+    userMultiplied: false
+  elements:
+  - name: Plans
+  - name: Subscriptions
+  - name: Invoices
+- id: pagarme-enterprise
+  name: Enterprise / Custom
+  type: enterprise
+  description: >-
+    Negotiated rates for high-volume merchants and marketplaces, including
+    custom split, anticipation, and transfer terms. Contact Pagar.me sales.
+  entries:
+  - label: Custom Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: BR
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Marketplace Split
+  - name: Recipients and Transfers
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -439,6 +439,16 @@ apis:
     (Claude Code, Codex, Cursor, Copilot) documented as Checkout Skills.
 name: Pagar.me
 common:
+- type: AgenticAccess
+  url: agentic-access/pagar-me-agentic-access.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/pagarme
+- type: Website
+  url: https://pagar.me
+- type: Plans
+  url: plans/pagar-me-plans-pricing.yml
+- type: FinOps
+  url: finops/pagar-me-finops.yml
 - type: DomainSecurity
   url: security/pagar-me-domain-security.yml
 - url: https://pagar.me
