@@ -45,13 +45,13 @@ tags:
 - Stone Co
 - Pix
 - Boleto
-- Credit Card
+- Credit Cards
 - Marketplace
 - Split Payments
 - Subscription
 - Recurring Billing
 - Anti-Fraud
-- 3DS
+- 3D
 - Checkout
 - Payment Links
 - Webhook
@@ -90,8 +90,8 @@ apis:
   - Order
   - Charges
   - Payments
-  - Credit Card
-  - Debit Card
+  - Credit Cards
+  - Debit Cards
   - Pix
   - Boleto
   - Voucher
@@ -123,7 +123,7 @@ apis:
   - Charges
   - Capture
   - Refunds
-  - Credit Card
+  - Credit Cards
   - Pix
   - Boleto
   tags_raw:
