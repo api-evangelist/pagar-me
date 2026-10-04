@@ -38,7 +38,7 @@ access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/pagar-me.png
 tags:
 - Payments
-- Financial-Services
+- Financial Services
 - Fintech
 - Brazil
 - Latin America
@@ -50,7 +50,7 @@ tags:
 - Split Payments
 - Subscription
 - Recurring Billing
-- Anti-Fraud
+- Fraud Prevention
 - 3D
 - Checkout
 - Payment Links
@@ -78,6 +78,7 @@ tags_raw:
 - Webhooks
 - E-commerce
 - Anticipation
+- Financial-Services
 created: '2026-05-25'
 modified: '2026-05-25'
 url: https://raw.githubusercontent.com/api-evangelist/pagar-me/refs/heads/main/apis.yml
@@ -343,6 +344,11 @@ apis:
 - aid: pagar-me:pagarme-disputes-api
   name: Pagar.me Disputes & Chargebacks API
   tags:
+  - Disputes
+  - Chargebacks
+  - Risk Management
+  - Fraud Prevention
+  tags_raw:
   - Disputes
   - Chargebacks
   - Risk
