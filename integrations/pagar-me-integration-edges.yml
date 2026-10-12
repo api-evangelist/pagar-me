@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/pagar-me/integrations
+- https://n8n.io/integrations/pagar-me/
+- https://composio.dev/toolkits/pagar-me
+- https://monid.ai/tools/pagar-me
+checked:
+- https://composio.dev/toolkits/pagar-me
+- https://monid.ai/tools/pagar-me
+- https://n8n.io/integrations/pagar-me/
+- https://zapier.com/apps/pagar-me/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
