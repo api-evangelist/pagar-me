@@ -1,0 +1,215 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/pagar-me-disputas-openapi.yml
+- openapi/pagar-me-pagarme-api-openapi.yml
+- openapi/pagar-me-pagarme-api-register-v5-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+note: No MCP server was found. No probe result in the dossier. Candidate tools below are derived from the 79 operation(s) in the provider's own
+  OpenAPI (40 listed); they describe what a server WOULD expose, not one that exists.
+tools:
+- name: get_v1_disputes
+  operationId: GET /v1/disputes
+  method: GET
+  path: /v1/disputes
+  description: Lista disputas de chargeback
+- name: criar_cliente_1
+  operationId: criar-cliente-1
+  method: POST
+  path: /customers
+  description: Criar cliente
+- name: retornando_contestacoes
+  operationId: retornando-contestacoes
+  method: GET
+  path: /contestations
+  description: Retornando Contestações
+- name: create_disputes_evidences
+  operationId: POST /v1/disputes/{dispute_id}/evidences
+  method: POST
+  path: /v1/disputes/{dispute_id}/evidences
+  description: Envia evidências de defesa para uma disputa
+- name: listar_clientes_1
+  operationId: listar-clientes-1
+  method: GET
+  path: /customers
+  description: Listar clientes
+- name: contestando_um_contrato_v5
+  operationId: contestando-um-contrato-v5
+  method: POST
+  path: /contestations
+  description: Contestando um Contrato
+- name: obter_cliente_1
+  operationId: obter-cliente-1
+  method: GET
+  path: /customers/{customer_id}
+  description: Obter cliente
+- name: retornando_efeitos_de_contratos_v5
+  operationId: retornando-efeitos-de-contratos-v5
+  method: GET
+  path: /settlement-obligations
+  description: Retornando Efeitos de Contratos
+- name: editar_cliente_1
+  operationId: editar-cliente-1
+  method: PUT
+  path: /customers/{customer_id}
+  description: Editar cliente
+- name: retornando_efeitos_de_contratos_copy
+  operationId: retornando-efeitos-de-contratos-copy
+  method: GET
+  path: /settlement_obligations/contracts
+  description: Retornando Contratos
+- name: listar_webhooks
+  operationId: listar-webhooks
+  method: GET
+  path: /hooks
+  description: Listar webhooks
+- name: obter_webhook
+  operationId: obter-webhook
+  method: GET
+  path: /hooks/{hook_id}
+  description: Obter webhook
+- name: enviar_webhook
+  operationId: enviar-webhook
+  method: POST
+  path: /hooks/{hook_id}/retry
+  description: Enviar webhook
+- name: listar_faturas_1
+  operationId: listar-faturas-1
+  method: GET
+  path: /invoices
+  description: Listar faturas
+- name: obter_fatura_1
+  operationId: obter-fatura-1
+  method: GET
+  path: /invoices/{invoice_id}
+  description: Obter fatura
+- name: cancelar_fatura_1
+  operationId: cancelar-fatura-1
+  method: DELETE
+  path: /invoices/{invoice_id}
+  description: Cancelar fatura
+- name: editar_metadados_da_fatura_1
+  operationId: editar-metadados-da-fatura-1
+  method: PATCH
+  path: /invoices/{invoice_id}/metadata
+  description: Editar metadados da fatura
+- name: criar_pedido_com_split_1
+  operationId: criar-pedido-com-split-1
+  method: POST
+  path: /orders
+  description: Criar pedido (com Antifraude)
+- name: listar_pedidos
+  operationId: listar-pedidos
+  method: GET
+  path: /orders
+  description: Listar pedidos
+- name: obter_pedido
+  operationId: obter-pedido
+  method: GET
+  path: /orders/{order_id}
+  description: Obter pedido
+- name: fechar_um_pedido
+  operationId: fechar-um-pedido
+  method: PATCH
+  path: /orders/{order_id}/closed
+  description: Fechar um pedido
+- name: incluir_item
+  operationId: incluir-item
+  method: POST
+  path: /orders/{order_id}/items
+  description: Incluir item
+- name: remover_todos_os_itens
+  operationId: remover-todos-os-itens
+  method: DELETE
+  path: /orders/{order_id}/items
+  description: Remover todos os itens
+- name: editar_item_do_pedido
+  operationId: editar-item-do-pedido
+  method: PUT
+  path: /orders/{order_id}/items/{item_id}
+  description: Editar item do pedido
+- name: deletar_item
+  operationId: deletar-item
+  method: DELETE
+  path: /orders/{order_id}/items/{item_id}
+  description: Deletar item
+- name: obter_item_do_pedido
+  operationId: obter-item-do-pedido
+  method: GET
+  path: /orders/{order_id}/items/{item_id}
+  description: Obter item do pedido
+- name: criar_link
+  operationId: criar-link
+  method: POST
+  path: /paymentlinks
+  description: Criar link de pagamento
+- name: obter_links
+  operationId: obter-links
+  method: GET
+  path: /paymentlinks
+  description: Obter links de pagamento
+- name: create_link
+  operationId: create-link
+  method: POST
+  path: /paymentlinks.
+  description: Criar link de pagamento
+- name: obter_link
+  operationId: obter-link
+  method: GET
+  path: /paymentlinks/{payment_link_id}
+  description: Obter link de pagamento
+- name: cancelar_um_link_de_pagamento
+  operationId: cancelar-um-link-de-pagamento
+  method: PATCH
+  path: /paymentlinks/{payment_link_id}/cancel
+  description: Cancelar link de pagamento
+- name: criar_plano_1
+  operationId: criar-plano-1
+  method: POST
+  path: /plans
+  description: Criar plano
+- name: listar_planos_1
+  operationId: listar-planos-1
+  method: GET
+  path: /plans
+  description: Listar planos
+- name: editar_plano_1
+  operationId: editar-plano-1
+  method: PUT
+  path: /plans/{plan_id}
+  description: Editar plano
+- name: obter_plano_1
+  operationId: obter-plano-1
+  method: GET
+  path: /plans/{plan_id}
+  description: Obter plano
+- name: excluir_plano_1
+  operationId: excluir-plano-1
+  method: DELETE
+  path: /plans/{plan_id}
+  description: Excluir plano
+- name: incluir_item_2
+  operationId: incluir-item-2
+  method: POST
+  path: /plans/{plan_id}/items
+  description: Incluir item
+- name: editar_item_1
+  operationId: editar-item-1
+  method: PUT
+  path: /plans/{plan_id}/items/{item_id}
+  description: Editar item
+- name: remover_item_1
+  operationId: remover-item-1
+  method: DELETE
+  path: /plans/{plan_id}/items/{item_id}
+  description: Remover item
+- name: editar_metadados_do_plano_1
+  operationId: editar-metadados-do-plano-1
+  method: PATCH
+  path: /plans/{plan_id}/metadata
+  description: Editar metadados do plano

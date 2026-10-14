@@ -3,6 +3,7 @@
 # dated, verbatim transcription; every figure below is unverified until it does.
 method: generated
 generated: '2026-06-21'
+name: Pagar.me API FinOps
 specification: FinOps Framework
 specificationVersion: '1.0'
 schema: https://www.finops.org/framework/

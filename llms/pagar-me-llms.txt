@@ -1,0 +1,233 @@
+# Pagar.me Documentation
+
+> Documentation for Pagar.me
+
+## Guides: Conhecendo o Pagar.me
+- [Chaves de acesso](https://docs.pagar.me/docs/chaves-de-acesso.md)
+
+## Guides: Segurança na Integração
+- [IP Allowlist](https://docs.pagar.me/docs/ip-allowlist.md)
+
+## Guides: REGULATÓRIO
+- [Bandeiras](https://docs.pagar.me/docs/bandeiras.md)
+  - [Regra de Validação de MCC das Bandeiras](https://docs.pagar.me/docs/regra-de-validação-de-mcc-das-bandeiras.md)
+  - [Programa de Retentativa das Bandeiras](https://docs.pagar.me/docs/programa-de-retentativa-das-bandeiras.md)
+  - [[Visa] Novo prazo para captura de transações](https://docs.pagar.me/docs/visa-novo-prazo-para-captura-de-transações.md)
+  - [[Visa e Elo] Identificador de recorrência para assinaturas externas](https://docs.pagar.me/docs/api-v5-identificador-de-recorrência-para-assinaturas-externas.md)
+  - [[Amex] Identificador de Modelo de Negócio](https://docs.pagar.me/docs/amex-identificador-de-modelo-de-negócio.md)
+  - [Modelo de Negócio de Tiqueteiras](https://docs.pagar.me/docs/enquadramento-do-modelo-de-negócio-de-tiqueteiras.md)
+- [Banco Central](https://docs.pagar.me/docs/banco-central.md)
+- Facilitadores de pagamento (Dados de Subadquirente)
+  - [Novo Campo "Legal_name" para Sublojistas](https://docs.pagar.me/docs/razão-social-do-sublojista.md)
+  - [Envio de MCC em Cadastro de Sublojistas CPF](https://docs.pagar.me/docs/envio-de-mcc-em-cadastro-de-sublojistas-cpf.md)
+  - [Endereço do SubMerchant](https://docs.pagar.me/docs/endereço-do-submerchant.md)
+  - [Identificação de Casa de Câmbio nas Transações](https://docs.pagar.me/docs/identificação-de-casa-de-câmbio-nas-transações.md)
+
+## Guides: Gestão de Clientes
+- [Carteira de Clientes](https://docs.pagar.me/docs/carteira-de-clientes.md)
+- [Carteira de Cartões](https://docs.pagar.me/docs/wallets.md)
+- [Card Updater](https://docs.pagar.me/docs/card-updater.md)
+
+## Guides: Pagamentos
+- [Cobrança](https://docs.pagar.me/docs/cobrança.md)
+- [Meios de pagamento](https://docs.pagar.me/docs/meios-de-pagamento.md): Nossa API oferece os seguintes meios de pagamento.
+  - [Voucher](https://docs.pagar.me/docs/voucher.md)
+  - [Cartão private label](https://docs.pagar.me/docs/cartão-private-label-1.md)
+  - [Apple Pay](https://docs.pagar.me/docs/apple-pay-1.md)
+    - [Apple Pay: Gestão de Certificados](https://docs.pagar.me/docs/apple-pay-gestão-de-certificados.md)
+  - [Google Pay™](https://docs.pagar.me/docs/google-pay-tm-guide.md)
+  - [Pix](https://docs.pagar.me/docs/pix-1.md)
+
+## Guides: Mais funcionalidades
+- [Retentativa](https://docs.pagar.me/docs/retentativa-automática.md)
+- [Token de Bandeira](https://docs.pagar.me/docs/token-de-bandeira.md)
+
+## Guides: AUTENTICAÇÕES
+- [Autenticação via 3DS ](https://docs.pagar.me/docs/autenticação-via-3ds.md): Um guia completo sobre o protocolo de segurança que protege suas vendas online, aumenta a aprovação e elimina chargebacks por fraude.
+  - [Manual de Integração 3DS](https://docs.pagar.me/docs/manual-integracao-3ds.md): Um guia completo para integrar o protocolo de segurança que protege suas vendas online, aumenta a aprovação e elimina chargebacks por fraude.
+  - [Integração do 3DS no HUB](https://docs.pagar.me/docs/manual-de-integração-3ds-no-hub.md)
+  - [Diferenças entre Versões de 3DS](https://docs.pagar.me/docs/guia-de-migracao-3ds-diferencas-entre-versoes.md): Saiba como migrar sua integração 3DS para a versão mais atual.
+
+## Guides: Checkout
+- [Checkout](https://docs.pagar.me/docs/checkout-about.md)
+  - [Utilizando o Checkout](https://docs.pagar.me/docs/checkout-use.md)
+  - [Conecte o Checkout Pagar.me usando I.A.](https://docs.pagar.me/docs/conecte-o-checkout-pagarme-usando-ia.md): Claude Code, Codex, Cursor ou Copilot — escolha o seu e comece a integrar em minutos.
+    - [checkout_pagarme_skill_subscription](https://docs.pagar.me/docs/checkout_pagarme_skill_subscription.md)
+    - [checkout_pagarme_skill_order](https://docs.pagar.me/docs/checkout_pagarme_skill_order.md)
+    - [llms.txt](https://docs.pagar.me/docs/llms.md)
+
+## Guides: Shop
+- [Pedido no Shop](https://docs.pagar.me/docs/criando-um-pedido-no-shop.md)
+
+## Guides: Marketplace
+- [Recebedores](https://docs.pagar.me/docs/recebedores-2.md)
+
+## Guides: Simuladores
+- [Simulador de PIX](https://docs.pagar.me/docs/simulador-pix.md)
+
+## Guides: Webhooks
+- [O que são?](https://docs.pagar.me/docs/webhooks.md)
+
+## Guides: Integrações Plataformas Stone
+- [Plataformas Overview](https://docs.pagar.me/docs/plataformas-overview.md)
+- [Magento 2 (Adobe Commerce)](https://docs.pagar.me/docs/magento-2-overview.md): Magento 2 agora é Adobe Commerce, utilize a Stone como solução de pagamento nessa plataforma!
+  - [Instalando o módulo](https://docs.pagar.me/docs/instalando-o-modulo-magento-2.md)
+  - [Configurando o módulo](https://docs.pagar.me/docs/configurando-o-modulo-magento-2.md): Agora que o módulo está instalado, vamos entender como configurá-lo.
+  - [Configurando os meios de pagamento](https://docs.pagar.me/docs/configurando-meios-de-pagamento-magento-2.md)
+  - [Ativação de funcionalidades](https://docs.pagar.me/docs/funcionalidades-magento2.md): Entenda como ativar a utilização das principais funcionalidades do nosso módulo!
+- [Shopify](https://docs.pagar.me/docs/shopify.md): Integre Stone e Shopify
+  - [Integrando Stone - Shopify](https://docs.pagar.me/docs/copy-of-integrando-stone-shopify.md): Integre a Stone na sua loja Shopify de forma simples e segura!
+  - [Ativação de funcionalidades - Shopify](https://docs.pagar.me/docs/ativação-de-funcionalidades-shopify.md): Entenda como utilizar todas as features da nossa integração com a Shopify!
+  - [Desinstalando o app Shopify](https://docs.pagar.me/docs/desinstalando-app-shopify.md)
+- [Instalando o conector na Stone](https://docs.pagar.me/docs/instalando-o-conector-na-pagarme.md)
+- [Cadastrando um cartão private label](https://docs.pagar.me/docs/cadastrando-um-cartão-private-label.md)
+- [VTEX Sellers - Marketplace](https://docs.pagar.me/docs/vtex-sellers-marketplace.md): APP adicional para administração dos vendedores do Marketplace VTEX
+- [Ativação de funcionalidades VTEX](https://docs.pagar.me/docs/ativação-de-funcionalidades-vtex.md): Entenda como ativar a utilização das principais funcionalidades do nosso APP!
+- [Instalando o aplicativo Nuvemshop](https://docs.pagar.me/docs/copy-of-instalando-o-aplicativo-nuvemshop.md)
+- [Configurando a dashboard](https://docs.pagar.me/docs/configurando-a-dashboard-nuvemshop.md)
+- [Woocommerce](https://docs.pagar.me/docs/copy-of-woocommerce.md): Utilize a Stone como solução de pagamento na sua loja Woo!
+  - [Configurando integração](https://docs.pagar.me/docs/copy-of-configurando-integração.md)
+  - [Configurações gerais](https://docs.pagar.me/docs/copy-of-configurações-gerais.md)
+  - [Configurando os meios de pagamento](https://docs.pagar.me/docs/copy-of-configurando-os-meios-de-pagamento.md)
+  - [Configurando a dashboard](https://docs.pagar.me/docs/copy-of-configurando-a-dashboard-1.md)
+  - [Ativação e utilização de funcionalidades](https://docs.pagar.me/docs/copy-of-ativação-e-utilização-de-funcionalidades.md)
+
+## Guides: Mudanças da API (2026-07-14)
+- [Visão Geral das mudanças da API](https://docs.pagar.me/docs/mudanças-de-apis.md): Saiba mais sobre as mudanças que serão aplicadas aos endpoints da API pública da Pagar.me e como isso afeta sua integração.
+- [Pagamentos](https://docs.pagar.me/docs/pagamentos.md): Este documento consolida as mudanças que serão aplicadas aos endpoints de Pagamentos da API pública da Pagar.me. Ele descreve o que muda em cada endpoint, o impacto na integração e as ações…
+- [Financeiro](https://docs.pagar.me/docs/financeiro.md): Este documento consolida as mudanças que serão aplicadas aos endpoints Financeiros da API pública da Pagar.me. Ele descreve o que muda em cada endpoint, o impacto na integração e as ações necessárias…
+- [Antecipações](https://docs.pagar.me/docs/antecipações.md): Este documento consolida as mudanças que serão aplicadas aos endpoints de Antecipações da API pública da Pagar.me. Ele descreve o que muda em cada endpoint, o impacto na integração e as ações…
+- [Liquidação e Recebedores](https://docs.pagar.me/docs/liquidação-transferências-e-recebedores.md): Este documento consolida as mudanças que serão aplicadas aos endpoints de Liquidação e Recebedores da API pública da Pagar.me. Ele descreve o que muda em cada endpoint, o impacto na integração e as…
+- [Códigos de retorno padrão ABECS](https://docs.pagar.me/docs/códigos-de-retorno-padrão-abecs.md): Tabela de equivalência por bandeira entre os códigos atuais da Pagar.me e o padrão ABECS oficial.
+
+## API Reference: Pagar.me API
+- [Segurança](https://docs.pagar.me/reference/segurança-1.md): Normas PCI Compliance
+  - [Rate Limit](https://docs.pagar.me/reference/rate-limit.md): O Rate limit controla o número de solicitações que um cliente pode fazer em um período de tempo específico em nossa API. Essa prática ajuda a manter a estabilidade da aplicação.
+- [Facilitadores de pagamento (Dados de Subadquirente)](https://docs.pagar.me/reference/facilitadores-de-pagamento-dados-de-subadquirente.md): Por determinação do **Banco Central e das bandeiras** os cliente de E-commerce que se enquadram na categoria de **Facilitadores de Pagamento**  deverão enviar dados referentes aos seus **sub…
+
+## API Reference: Carteira de clientes
+- [Criar cliente](https://docs.pagar.me/reference/criar-cliente-1.md)
+- [Cartões](https://docs.pagar.me/reference/cartões-1.md): O objeto `card` descreve um cartão (crédito, voucher ou private label) associado a um `customer`. Este recurso viabiliza a criação de uma **Wallet**, que representa todos os `card` associados a um…
+  - [Criar cartão](https://docs.pagar.me/reference/criar-cartão.md): Este recurso cria um `card` associado ao `customer` através do `customer_id` informado.
+  - [Editar cartão](https://docs.pagar.me/reference/editar-cartão.md): Com o verbo _HTTP PUT_, através do identificador do cartão (`card_id`) e do identificador do cliente ao qual o mesmo está associado (`customer_id`) é possível alterar dados do cartão informado.
+  - [Criar Token cartão](https://docs.pagar.me/reference/criar-token-cartão-1.md)
+- [Criar endereço](https://docs.pagar.me/reference/criar-endereço-1.md): Para a criação de um `address` é necessário informar o `customer_id` do cliente ao qual será associado o endereço.
+
+## API Reference: Pagamentos
+- [Cartão de crédito](https://docs.pagar.me/reference/cartão-de-crédito-1.md): Para criar um [pedido](https://docs.pagar.me/v5/reference#criar-pedido-2) com **cartão de crédito**, devemos incluir o objeto `credit_card` dentro do nó `payment`, assim como a propriedade…
+- [Pix](https://docs.pagar.me/reference/pix-2.md): Para criar um [pedido](https://docs.pagar.me/v5/reference#criar-pedido-2) com **Pix**, devemos incluir o objeto `pix` dentro do nó `payment`, assim como a propriedade `"payment_method": "pix"`. O…
+- [Boleto](https://docs.pagar.me/reference/boleto-1.md): Para criar um [pedido](https://docs.pagar.me/v5/reference#criar-pedido-2) com **boleto**, devemos incluir o objeto `boleto` dentro do nó `payment`, assim como a propriedade `"payment_method":…
+- [Voucher](https://docs.pagar.me/reference/voucher-1.md): Para criar um [pedido](https://docs.pagar.me/v5/reference#criar-pedido-2) com **voucher**, devemos incluir o objeto `voucher` dentro do nó `payment`, assim como a propriedade `"payment_method":…
+- [Google Pay™](https://docs.pagar.me/reference/google-paytm-api.md): Para criar um [pedido](https://docs.pagar.me/v5/reference#criar-pedido-2) com **Google Pay**!
+- [Cartão private label](https://docs.pagar.me/reference/cartão-private-label-2.md): Para criar um [pedido](https://docs.pagar.me/v5/reference#criar-pedido-2) com **cartão private label**, devemos incluir o objeto `private_label` dentro do nó `payment`, assim como a propriedade…
+- [Cartão de débito](https://docs.pagar.me/reference/cartão-de-débito-2.md): Para criar um [pedido](https://docs.pagar.me/v5/reference#criar-pedido-2) com **cartão de débito**, devemos incluir o objeto `debit_card` dentro do nó `payment`, assim como a propriedade…
+- [Criar pedido](https://docs.pagar.me/reference/criar-pedido-2.md): Essa funcionalidade está disponível para clientes Gateway e PSP Pagar.me
+- [Incluir cobrança no pedido](https://docs.pagar.me/reference/incluir-cobrança-no-pedido.md): Enquanto um pedido estiver **aberto**, é possível adicionar novas cobranças utilizando o `order_id` na criação de uma cobrança.
+- [Obter cobrança](https://docs.pagar.me/reference/obter-cobrança.md)
+- [Editar cartão de cobrança](https://docs.pagar.me/reference/editar-cartão-de-cobrança.md): Esse recurso só pode ser chamado quando o cartão a ser editado teve a transação não autorizada.
+- [Editar método de pagamento](https://docs.pagar.me/reference/editar-método-de-pagamento.md)
+
+## API Reference: Link de Pagamento
+- [Link de Pagamento](https://docs.pagar.me/reference/checkout-link.md): Para criar um **Link de pagamento/Checkout**, é necessário fazer uma `requisição` para a nossa [API de Checkout](https://docs.pagar.me/reference/create-link). Ela irá gerar um Link de pagamento que…
+  - [Checkout Pagar.me](https://docs.pagar.me/reference/checkout-response.md): Com o **Link de pagamento Pagar.me**, oferecemos uma página de Checkout desenvolvida por nós e hospedada em nossos servidores. Desta forma, você não precisa se preocupar em desenvolver essa interface.
+- [Criar link de pagamento](https://docs.pagar.me/reference/criar-link.md)
+- [Obter link de pagamento](https://docs.pagar.me/reference/obter-link.md)
+- [Obter links de pagamento](https://docs.pagar.me/reference/obter-links.md)
+- [Ativar link de pagamento em construção](https://docs.pagar.me/reference/ativar-link-de-pagamento-em-construção.md)
+- [Cancelar link de pagamento](https://docs.pagar.me/reference/cancelar-um-link-de-pagamento.md)
+
+## API Reference: Recorrência
+- [Planos](https://docs.pagar.me/reference/planos-1.md): O objeto `plan` representa um _template_ pré-definido de assinatura, isto é, um **plano**, que facilita a criação de uma nova assinatura para um cliente. Saiba mais sobre planos acessando nossa…
+  - [Criar plano](https://docs.pagar.me/reference/criar-plano-1.md): Este recurso possibilita a criação de um `plan` que poderá ser utilizado futuramente para a criação de uma assinatura. Para mais detalhes consulte a [pagina principal do…
+  - [Editar plano](https://docs.pagar.me/reference/editar-plano-1.md): Com o verbo HTTP PUT, através do identificador do plano (`plan_id`)  é possível atualizar os dados do plano.
+- [Assinaturas](https://docs.pagar.me/reference/assinaturas-1.md): O objeto `subscription` é uma recorrência em si, que possibilita a cobrança do clientes com intervalos pré determinados, sem que seja necessário criar essa regra de negócio do seu lado. O objeto…
+  - [Criar assinatura avulsa](https://docs.pagar.me/reference/criar-assinatura-avulsa.md): Fornecemos a possibilidade de criação de uma assinatura (`subscription`) sem a necessidade de criação de um plano (`plan`).
+  - [Criar assinatura de plano](https://docs.pagar.me/reference/criar-assinatura-de-plano-1.md): Fornecemos a possibilidade de criação de uma assinatura (`subscription`) a partir de plano (`plan`).
+- [Renovar ciclo](https://docs.pagar.me/reference/renovar-ciclo-1.md): Através do identificador da assinatura (`subscription_id`) é possível renovar o ciclo de uma assinatura. A utilização do método irá sempre renovar o ciclo à frente. Para Listar os ciclos de uma…
+
+## API Reference: Recebedores
+- [Recebedores](https://docs.pagar.me/reference/recebedores-1.md): O objeto `recipient` representa um **recebedor**, que irá receber parte da venda realizada.  Para criar um pedido com [Split de pagamentos](https://docs.pagar.me/reference/split-1), você deve…
+  - [Criar recebedor](https://docs.pagar.me/reference/criar-recebedor-1.md): Rota para criar um recebedor, definindo os dados do recebedor, transferência e qual a conta bancária que será utilizada para envio dos pagamentos.
+  - [Criar link de de Prova de Vida (KYC)](https://docs.pagar.me/reference/criar-link-recebedor.md): Rota para gerar o QR Code de acesso ao webapp.
+  - [Editar recebedor](https://docs.pagar.me/reference/editar-recebedor-1.md): Rota para editar um recebedor, definindo os dados do recebedor, transferência e qual a conta bancária que será utilizada para envio dos pagamentos.
+  - [Obter recebedor](https://docs.pagar.me/reference/obter-recebedor-1.md): Retorna um objeto com os dados de um recebedor específico.
+  - [Editar code de recebedor](https://docs.pagar.me/reference/atualizar-code-de-recebedor.md)
+- [Saque](https://docs.pagar.me/reference/saque-1.md): o objeto `withdrawals` representa uma **Saque** realizada para a **conta bancária** de um **recebedor**. Este objeto possui os seguintes atributos:
+- [Atualizar configurações de transferência](https://docs.pagar.me/reference/atualizar-informações-de-transferência-1.md)
+
+## API Reference: financeiro
+- [Obter recebíveis](https://docs.pagar.me/reference/retornando-recebíveis.md): Retorna os recebíveis da sua loja.
+- [Operações de Saldo](https://docs.pagar.me/reference/operação-de-saldo.md): As operações de saldo referem-se a todas as atividades que envolvem a movimentação do saldo disponível na conta Pagar.me, como pagamentos ou saques.
+
+## API Reference: Marketplace
+- [Res.264/349: Interface Eletrônica para Sellers](https://docs.pagar.me/reference/res264346-manual-de-integração.md)
+  - [Retornando URs de um Recebedor](https://docs.pagar.me/reference/retornando-urs-de-um-recebedor-v5.md)
+  - [Retornando Efeitos de Contratos](https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5.md)
+  - [Retornando Contratos](https://docs.pagar.me/reference/retornando-efeitos-de-contratos-copy.md)
+  - [Retornando Contestações](https://docs.pagar.me/reference/retornando-contestacoes.md)
+  - [Contestando um Contrato](https://docs.pagar.me/reference/contestando-um-contrato-v5.md)
+
+## API Reference: Webhook
+- [Visão geral sobre Webhooks](https://docs.pagar.me/reference/visão-geral-sobre-webhooks.md): Sempre que ocorre um evento importante, nós disparamos uma notificação para seu servidor. Essas notificações são chamadas de **webhooks**. É possível configurar varios endpoints e escolher quais…
+  - [Eventos de webhook](https://docs.pagar.me/reference/eventos-de-webhook-1.md)
+
+## API Reference: Pagar.me API - Register V5
+- [Getting Started With Your API](https://docs.pagar.me/reference/getting-started-with-your-api.md): This page will help you get started with Pagar.me API - Register V5.
+
+## API Reference: Antecipações
+- [Objeto antecipação](https://docs.pagar.me/reference/objeto-antecipação.md)
+- [Criando uma antecipação](https://docs.pagar.me/reference/criando-uma-antecipação.md)
+- [Simulando uma Antecipação Spot](https://docs.pagar.me/reference/simulando-uma-antecipação-spot.md): Obtem previsões precisas sobre o valor a ser recebido, os custos envolvidos na operação, e a data de pagamento. Para iniciar a simulação da antecipação, é necessário utilizar a rota:
+- [Obtendo os limites de antecipação](https://docs.pagar.me/reference/obtendo-os-limites-de-antecipação.md): Retorna os limites máximos e mínimos de antecipação que um recebedor pode fazer.
+- [Cancelando uma antecipação pending](https://docs.pagar.me/reference/cancelando-uma-antecipação-pending.md): Cancela uma antecipação com status pending. Enquanto a antecipação foi criada e o Pagar.me ainda não a confirmou, você pode cancelar a antecipação a qualquer momento.
+- [Retornando antecipações](https://docs.pagar.me/reference/retornando-antecipações.md): Retorna uma lista contendo objetos de antecipações.
+
+## API Reference: Liquidações
+- [Objeto Settlements](https://docs.pagar.me/reference/objeto-settlements.md)
+- [Retornando pagamentos](https://docs.pagar.me/reference/retornando-pagamentos.md): Retorna um Array contendo objetos de pagamentos (settlements) de um recebedor ordenados a partir da data de criação colocando os mais recentes no topo.
+- [Retornando pagamentos por recebedor](https://docs.pagar.me/reference/retornando-pagamentos-por-recebedor.md): Retorna um Array contendo objetos de pagamentos (settlements) de um recebedor ordenados a partir da data de criação colocando os mais recentes no topo.
+- [Retornando um pagamento](https://docs.pagar.me/reference/retornando-um-pagamento.md)
+
+## API Reference: Transferências
+- [Objeto Transferência](https://docs.pagar.me/reference/objeto-transferência.md): Objeto retornado ao se criar uma transferência bancária.
+- [Criando uma transferência](https://docs.pagar.me/reference/criando-uma-transferência.md): Realiza uma transferência para uma conta bancária previamente criada.
+- [Retornando transferências](https://docs.pagar.me/reference/retornando-transferências.md): Retorna os dados de todas as transferências previamente realizadas.
+- [Retornando uma transferência](https://docs.pagar.me/reference/retornando-uma-transferência.md): Retorna os dados de uma transferência em específico de sua conta.
+- [Cancelando uma transferência](https://docs.pagar.me/reference/cancelando-uma-transferência.md): Cancela uma transferência previamente realizada. Só é possível cancelar transferências com status **pending_transfer**.
+- [Retornando o comprovante de uma transferência](https://docs.pagar.me/reference/retornando-o-comprovante-de-uma-transferência.md): Retorna o comprovante de uma transferência realizada com sucesso. Só é possível retornar comprovantes de transferências com status **transferred**.
+
+## API Reference: Disputas
+- [Disputas](https://docs.pagar.me/reference/disputas.md): API para gestão de disputas
+  - [Lista disputas de chargeback](https://docs.pagar.me/reference/get_v1-disputes.md): Retorna uma lista paginada de disputas com base nos filtros fornecidos.
+  - [Consulta uma disputa específica](https://docs.pagar.me/reference/get_v1-disputes-dispute-id.md)
+  - [Envia evidências de defesa para uma disputa](https://docs.pagar.me/reference/post_v1-disputes-dispute-id-evidences.md): Precisa de ajuda com a integração? Manda um email para `chargeback.tech@stone.com.br`.  Submete um ou mais arquivos PDF como evidências de defesa para uma disputa de chargeback existente, em um único…
+
+## Pages
+- [Adequação de Marketplace para Mudanças Regulatórias](https://docs.pagar.me/page/adequação-de-marketplace-para-mudanças-regulatórias.md)
+- [Ambiente de teste para prova de vida](https://docs.pagar.me/page/ambiente-de-teste-para-prova-de-vida.md)
+- [API v4 - Adição de arranjos no Balance Operation](https://docs.pagar.me/page/api-v4-adição-de-arranjos-no-balance-operation.md)
+- [API v4 - Mudanças de contrato na criação de Recebedores](https://docs.pagar.me/page/api-v4-mudanças-de-contrato-na-criação-de-recebedores.md)
+- [[API v4] Visa e Elo | Identificador de recorrência para assinaturas externas](https://docs.pagar.me/page/api-v4-visa-e-elo-identificador-de-recorrência-para-assinaturas-externas.md)
+- [API v5 - Adição do fluxo de Prova de Vida](https://docs.pagar.me/page/api-v5-adição-do-fluxo-de-prova-de-vida.md)
+- [Chargeback - Novo status na Cobrança](https://docs.pagar.me/page/chargeback-novo-status-na-cobrança.md)
+- [Descontinuação do Access Token](https://docs.pagar.me/page/descontinuação-do-access-token.md)
+- [FAQ - Migração Automática de Assinaturas Legadas (V5)](https://docs.pagar.me/page/faq-migração-de-assinaturas-legadas.md)
+- [Fluxo de migração de cartões](https://docs.pagar.me/page/fluxo-de-migração-de-cartões.md)
+- [Guia rápido sobre antecipações](https://docs.pagar.me/page/guia-rápido-sobre-antecipações.md)
+- [Guias de Migração de Plataformas](https://docs.pagar.me/page/guias-de-migração-de-plataformas.md)
+- [Guias Pagar.me](https://docs.pagar.me/page/guias-pagarme.md)
+- [Inclusão de novo campo MAC - Merchant Advice Code](https://docs.pagar.me/page/inclusão-de-novo-campo-mac-merchant-advice-code.md)
+- [Migração automática de assinaturas legadas](https://docs.pagar.me/page/migração-automática-de-assinaturas-legadas-para-formato-v5.md)
+- [Migração obrigatória da API Stone](https://docs.pagar.me/page/migração-obrigatória-da-api-stone.md)
+- [API v5 - Mudanças de contrato na criação de Recebedores](https://docs.pagar.me/page/novas-regras-para-criação-de-sellers-de-marketplace-c-v5.md)
+- [Integração com plataformas](https://docs.pagar.me/page/plataformas-de-e-commerce-parceiras.md)
+- [Renovação de cartão via Tokenização de Bandeira Pagar.me](https://docs.pagar.me/page/renovação-de-cartão-via-tokenização-de-bandeira-pagarme.md)
+- [Reprocessamento sem Antifraude](https://docs.pagar.me/page/reprocessamento-sem-antifraude.md)
+- [Res.264/349: Manual de Integração](https://docs.pagar.me/page/res264346-manual-de-integração.md)
+- [Score Pagar.me](https://docs.pagar.me/page/score-pagarme.md)
+- [Solução de Migração Automática de Cartões para API v5 (Retrocompatibilidade de Cartões)](https://docs.pagar.me/page/solução-de-migração-automática-de-cartões.md)
+- [Tokenização de bandeiras Pagar.me](https://docs.pagar.me/page/token-de-bandeira-network-token-tokenização-pagarme.md)
+- [Transacionar utilizando Token de bandeira externo (Pass Through)](https://docs.pagar.me/page/tokenização-pass-through-token-de-bandeira-network-token.md)
+- [Usando o link de pagamento para alavancar suas vendas](https://docs.pagar.me/page/usando-o-link-de-pagamento-para-alavancar-suas-vendas.md)
+- [API v5 - Adição de arranjos no Balance Operation](https://docs.pagar.me/page/wip-adição-de-campo-arranjos-balance-operation.md)
+- [API v4 - Adição do fluxo de Prova de Vida](https://docs.pagar.me/page/wip-api-v4-adição-do-fluxo-de-prova-de-vida.md)

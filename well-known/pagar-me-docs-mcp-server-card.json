@@ -1,0 +1,1 @@
+{"$schema":"https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json","name":"com.readme/pagarme","version":"5","title":"Pagar.me","description":"MCP server for Pagar.me. Lets AI agents explore this project's API reference and documentation.","remotes":[{"type":"streamable-http","url":"https://docs.pagar.me/mcp"}]}

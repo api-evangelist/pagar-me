@@ -1,0 +1,670 @@
+[
+ {
+  "page": "https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "pagarme-api-register-v5",
+    "version": "5"
+   },
+   "servers": [
+    {
+     "url": "https://api.pagar.me/register/v5"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "sec0": {
+      "type": "http",
+      "scheme": "basic"
+     }
+    }
+   },
+   "security": [
+    {
+     "sec0": []
+    }
+   ],
+   "paths": {
+    "/settlement-obligations": {
+     "get": {
+      "summary": "Retornando Efeitos de Contratos",
+      "description": "",
+      "operationId": "retornando-efeitos-de-contratos-v5",
+      "parameters": [
+       {
+        "name": "size",
+        "in": "query",
+        "description": "Quantidade de efeitos retornados",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "expected_settlement_date_since",
+        "in": "query",
+        "description": "Data inicial da consulta",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "date"
+        }
+       },
+       {
+        "name": "expected_settlement_date_until",
+        "in": "query",
+        "description": "Data final da consulta",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "date"
+        }
+       },
+       {
+        "name": "page",
+        "in": "query",
+        "description": "Página desejada da consulta",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "recipient_id",
+        "in": "query",
+        "description": "ID de recebedor desejado",
+        "schema": {
+         "type": "string"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "200",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "{\n  data: [\n\t\t{\n\t\t\t\"expected_settlement_date\": \"string\",\n\t\t\t\"original_asset_holder\": \"string\",\n\t\t\t\"settlement_obligations\": [\n\t\t\t\t{\n\t\t\t\t\t\"payment_scheme\": \"string\",\n\t\t\t\t\t\"total_amount\": integer,\n\t\t\t\t\t\"uncommitted_amount\": integer,\n\t\t\t\t\t\"expected_settlement_date\": \"string\",\n\t\t\t\t\t\"contract_Key\": \"string\",\n\t\t\t\t\t\"contract_holder\": \"string\",\n\t\t\t\t\t\"effect_priority\": integer,\n\t\t\t\t\t\"contract_type\": \"string\",\n\t\t\t\t\t\"division_method\": \"string\",\n\t\t\t\t\t\"effect_amount\": integer,\n\t\t\t\t\t\"committed_effect_amount\": integer\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t],\n\t\"paging\": {\n\t\t\"total\": 11,\n\t\t\"previous\": \"https://api.pagar.me/register/v5/settlement-obligations?page=1&size=10\",\n\t\t\"next\": \"https://api.pagar.me/register/v5/settlement-obligations?page=3&size=10\"\n\t}\n}"
+           }
+          }
+         }
+        }
+       },
+       "204": {
+        "description": "204",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "{\n  message: \"No content\"\n}"
+           }
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "404",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "{\n  message: \"recipient not found\"\n}"
+           }
+          }
+         }
+        }
+       }
+      },
+      "deprecated": false
+     }
+    }
+   },
+   "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   },
+   "x-readme-fauxas": true
+  }
+ },
+ {
+  "page": "https://docs.pagar.me/reference/retornando-efeitos-de-contratos-copy.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "pagarme-api-register-v5",
+    "version": "5"
+   },
+   "servers": [
+    {
+     "url": "https://api.pagar.me/register/v5"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "sec0": {
+      "type": "http",
+      "scheme": "basic"
+     }
+    }
+   },
+   "security": [
+    {
+     "sec0": []
+    }
+   ],
+   "paths": {
+    "/settlement_obligations/contracts": {
+     "get": {
+      "summary": "Retornando Contratos",
+      "description": "",
+      "operationId": "retornando-efeitos-de-contratos-copy",
+      "parameters": [
+       {
+        "name": "recipient_id",
+        "in": "query",
+        "description": "ID de recebedor desejado",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "expected_settlement_date_since",
+        "in": "query",
+        "description": "Data inicial da consulta",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "date"
+        }
+       },
+       {
+        "name": "expected_settlement_date_until",
+        "in": "query",
+        "description": "Data final da consulta",
+        "required": true,
+        "schema": {
+         "type": "string",
+         "format": "date"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "200",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "[\n    {\n        \"key\": \"016546874e-9571-9rt7-b789-1161r16r1618\",\n        \"contract_type\": \"OwnershipAssignment\",\n        \"created_at\": \"2023-09-01T18:23:00.867373Z\",\n        \"is_canceled\": false,\n        \"contract_holder\": \"20898464000024\",\n        \"bank_accounts\": [\n            {\n                \"branch\": \"0011\",\n                \"account\": \"018757\",\n                \"account_digit\": \"9\",\n                \"account_type\": \"CC\",\n                \"ispb\": \"012678971\",\n                \"document_type\": \"CNPJ\",\n                \"document_number\": \"20898464000024\"\n            }\n        ],\n        \"trade_repository\": \"310258107000093\"\n    }\n]"
+           }
+          },
+          "schema": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "key": {
+              "type": "string",
+              "example": "016546874e-9571-9rt7-b789-1161r16r1618"
+             },
+             "contract_type": {
+              "type": "string",
+              "example": "OwnershipAssignment"
+             },
+             "created_at": {
+              "type": "string",
+              "example": "2023-09-01T18:23:00.867373Z"
+             },
+             "is_canceled": {
+              "type": "boolean",
+              "example": false,
+              "default": true
+             },
+             "contract_holder": {
+              "type": "string",
+              "example": "20898464000024"
+             },
+             "bank_accounts": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "branch": {
+                 "type": "string",
+                 "example": "0011"
+                },
+                "account": {
+                 "type": "string",
+                 "example": "018757"
+                },
+                "account_digit": {
+                 "type": "string",
+                 "example": "9"
+                },
+                "account_type": {
+                 "type": "string",
+                 "example": "CC"
+                },
+                "ispb": {
+                 "type": "string",
+                 "example": "012678971"
+                },
+                "document_type": {
+                 "type": "string",
+                 "example": "CNPJ"
+                },
+                "document_number": {
+                 "type": "string",
+                 "example": "20898464000024"
+                }
+               }
+              }
+             },
+             "trade_repository": {
+              "type": "string",
+              "example": "310258107000093"
+             }
+            }
+           }
+          }
+         }
+        }
+       },
+       "204": {
+        "description": "204",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "{\n  message: \"No content\"\n}"
+           }
+          }
+         }
+        }
+       },
+       "404": {
+        "description": "404",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "{\n  message: \"recipient not found\"\n}"
+           }
+          }
+         }
+        }
+       }
+      },
+      "deprecated": false
+     }
+    }
+   },
+   "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   },
+   "x-readme-fauxas": true
+  }
+ },
+ {
+  "page": "https://docs.pagar.me/reference/retornando-contestacoes.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "pagarme-api-register-v5",
+    "version": "5"
+   },
+   "servers": [
+    {
+     "url": "https://api.pagar.me/register/v5"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "sec0": {
+      "type": "http",
+      "scheme": "basic"
+     }
+    }
+   },
+   "security": [
+    {
+     "sec0": []
+    }
+   ],
+   "paths": {
+    "/contestations": {
+     "get": {
+      "summary": "Retornando Contestações",
+      "description": "",
+      "operationId": "retornando-contestacoes",
+      "parameters": [
+       {
+        "name": "contract_key",
+        "in": "query",
+        "description": "Chave Identificadora do contrato",
+        "required": true,
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "page",
+        "in": "query",
+        "description": "Paginação",
+        "schema": {
+         "type": "integer",
+         "format": "int32"
+        }
+       },
+       {
+        "name": "size",
+        "in": "query",
+        "description": "Quantidade de Itens (Contestações) a serem retornardos",
+        "schema": {
+         "type": "integer",
+         "format": "int32"
+        }
+       },
+       {
+        "name": "id",
+        "in": "query",
+        "description": "Chave Identificadora da Contestação que foi aberta",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "original_assetHolder_document",
+        "in": "query",
+        "description": "Documento do originador da UR",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "status",
+        "in": "query",
+        "description": "Status da Contestação (Código do motivo da contestação. A lista dos códigos está na Response code 200 Enum de System)",
+        "schema": {
+         "type": "string"
+        }
+       },
+       {
+        "name": "created_at",
+        "in": "query",
+        "description": "Data de Abertura da Contestação",
+        "schema": {
+         "type": "string",
+         "format": "date"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "200",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "Response 200\n{\n\t\"data\": [\n\t\t{\n\t\t\t\"id\": \"string\",\n\t\t\t\"status\": \"string\",\n\t\t\t\"contested_document\": \"string\",\n\t\t\t\"original_asset_holder_document\": \"string\",\n\t\t\t\"reason_code\": \"string\",\n\t\t\t\"contract_key\": \"string\",\n\t\t\t\"created_at\": \"Date time\",\n\t\t\t\"reason_description\": \"string\",\n\t\t\t\"description\": \"string\",\n\t\t\t\"skip_contract\": boolean\n\t\t}\n\t],\n\t\"paging\": {\n\t\t\"total\": int,\n\t\t\"previous\": \"string\",\n\t\t\"next\": \"string\"\n\t}\n}"
+           }
+          }
+         },
+         "text/plain": {
+          "examples": {
+           "Status Code": {
+            "value": "Enum de ReasonCode:\n{\n  // Códigos Legado\n  [Description(\"Contestação com base em rejeição bancária onde a conta teve um erro ao ser invalidada\")]\n  SO07 = 7,\n  \n  [Description(\"Contestação com base em rejeição bancária indevida por parte da ID\")]\n  SO08 = 8,\n  \n  [Description(\"Contestação com base em revogação de optin por parte de um credor\")]\n  SO09 = 9,\n  \n  [Description(\"Contestação com base em evidência do EC de que o contrato é indevido\")]\n  SO10 = 10,\n  \n  [Description(\"Contestação com base em rejeição por falta de acordo entre o banco e a bandeira no SLC\")]\n  SO11 = 11,\n  \n  // Códigos atuais\n  [Description(\"Problemas para liquidação do instrumento contratual ocasionado pelos dados bancários inválidos\")]\n  SO01 = 1,\n  \n  [Description(\"Titular ou usuário final recebedor não reconhece a operação\")]\n  SO02 = 2,\n  \n  [Description(\"Duplicidade de lançamento de operação\")]\n  SO03 = 3,\n  \n  [Description(\"Operação em divergência com o instrumento contratual\")]\n  SO04 = 4,\n  \n  [Description(\"Outros\")] SO05 = 5,\n  \n  [Description(\"Divergência entre valor esperado pelo financiador ou pela não financeira e o valor efetivamente liquidado pela instituição credenciadora ou subcredenciadora devedora da obrigação\")]\n  SO06 = 6,\n  \n  [Description(\"Ausência de liquidação\")]\n  SO12 = 12,\n  \n  [Description(\"Gravame baixado ainda recebendo liquidações na conta indicada\")]\n  SO13 = 13,\n  \n  [Description(\"Titular ou usuário final recebedor não reconhece a anuência\")]\n  SO15 = 15,\n  \n  [Description(\"Comunicação de resilição ou liberação de excedente não atendida\")]\n  SO14 = 14,\n  \n  [Description(\"Não recebimento da agenda solicitada\")]\n  SO16 = 16,\n  \n  [Description(\"Divergência de valores na agenda\")]\n  SO17 = 17,\n  \n  [Description(\"Outros\")] \n  SO18 = 18,\n  \n  [Description(\"Comunicação de resilição ou liberação de excedente indevida\")]\n  SO19 = 19\n}"
+           }
+          }
+         }
+        }
+       }
+      },
+      "deprecated": false,
+      "x-readme": {
+       "code-samples": [
+        {
+         "language": "text",
+         "code": "{\n  contract_key: string\n  page: int\n\tsize: int\n}"
+        }
+       ],
+       "samples-languages": [
+        "text"
+       ]
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   },
+   "x-readme-fauxas": true
+  }
+ },
+ {
+  "page": "https://docs.pagar.me/reference/contestando-um-contrato-v5.md",
+  "definition": {
+   "openapi": "3.1.0",
+   "info": {
+    "title": "pagarme-api-register-v5",
+    "version": "5"
+   },
+   "servers": [
+    {
+     "url": "https://api.pagar.me/register/v5"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "sec0": {
+      "type": "http",
+      "scheme": "basic"
+     }
+    }
+   },
+   "security": [
+    {
+     "sec0": []
+    }
+   ],
+   "paths": {
+    "/contestations": {
+     "post": {
+      "summary": "Contestando um Contrato",
+      "description": "",
+      "operationId": "contestando-um-contrato-v5",
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "required": [
+           "reason_code"
+          ],
+          "properties": {
+           "author": {
+            "properties": {
+             "email": {
+              "type": "string",
+              "description": "seu e-mail cadastrado no pagar.me"
+             },
+             "system": {
+              "type": "string",
+              "description": "Sistema originador da contestação. Em integração com a API, sempre utilizamos o valor API",
+              "enum": [
+               ""
+              ]
+             },
+             "user_Agent": {
+              "type": "string",
+              "description": "Nome da Sua empresa no Pagar.me"
+             }
+            },
+            "required": [
+             "email",
+             "system",
+             "user_Agent"
+            ],
+            "type": "object"
+           },
+           "original_asset_holder": {
+            "properties": {
+             "name": {
+              "type": "string",
+              "description": "Nome do seller originador do recebível."
+             },
+             "document": {
+              "type": "string",
+              "description": "Documento do seller originador do recebível."
+             }
+            },
+            "required": [
+             "name"
+            ],
+            "type": "object"
+           },
+           "contested": {
+            "properties": {
+             "name": {
+              "type": "string",
+              "description": "Nome do Credor(Asset Holder)."
+             },
+             "document": {
+              "type": "string",
+              "description": "Documento do Credor(Asset Holder)."
+             }
+            },
+            "required": [
+             "document"
+            ],
+            "type": "object"
+           },
+           "target": {
+            "properties": {
+             "key": {
+              "type": "string",
+              "description": "Chave do contrato obtida no endpoint settlement_obligations"
+             },
+             "type": {
+              "type": "string",
+              "description": "Tipo do contrato, sempre passamos o valor Contract.",
+              "enum": [
+               "Contract"
+              ]
+             }
+            },
+            "required": [
+             "key",
+             "type"
+            ],
+            "type": "object"
+           },
+           "reason_code": {
+            "type": "string",
+            "description": "Código do motivo da contestação. A lista dos códigos está na Response code 200 Enum de System",
+            "enum": [
+             "Contestação com base em rejeição bancária onde a conta teve um erro ao ser invalidada   SO07 = 7",
+             "Contestação com base em rejeição bancária indevida por parte da ID   SO08 = 8",
+             "Contestação com base em revogação de optin por parte de um credor   SO09 = 9",
+             "Contestação com base em evidência do EC de que o contrato é indevido   SO10 = 10",
+             "Contestação com base em rejeição por falta de acordo entre o banco e a bandeira no SLC   SO11 = 11",
+             "Problemas para liquidação do instrumento contratual ocasionado pelos dados bancários inválidos   SO01 = 1",
+             "Titular ou usuário final recebedor não reconhece a operação   SO02 = 2",
+             "Duplicidade de lançamento de operação   SO03 = 3",
+             "Operação em divergência com o instrumento contratual   SO04 = 4",
+             "Outros SO05 = 5",
+             "Divergência entre valor esperado pelo financiador ou pela não financeira e o valor efetivamente liquidado pela instituição credenciadora ou subcredenciadora devedora da obrigação   SO06 = 6",
+             "Ausência de liquidação   SO12 = 12",
+             "Gravame baixado ainda recebendo liquidações na conta indicada   SO13 = 13",
+             "Titular ou usuário final recebedor não reconhece a anuência   SO15 = 15",
+             "Comunicação de resilição ou liberação de excedente não atendida   SO14 = 14",
+             "Não recebimento da agenda solicitada   SO16 = 16",
+             "Divergência de valores na agenda   SO17 = 17",
+             "Outros    SO18 = 18",
+             "Comunicação de resilição ou liberação de excedente indevida   SO19 = 19"
+            ]
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "200": {
+        "description": "200",
+        "content": {
+         "text/plain": {
+          "examples": {
+           "reasoncode": {
+            "value": "Enum de ReasonCode:\n{\n  // Códigos Legado\n  [Description(\"Contestação com base em rejeição bancária onde a conta teve um erro ao ser invalidada\")]\n  SO07 = 7,\n  \n  [Description(\"Contestação com base em rejeição bancária indevida por parte da ID\")]\n  SO08 = 8,\n  \n  [Description(\"Contestação com base em revogação de optin por parte de um credor\")]\n  SO09 = 9,\n  \n  [Description(\"Contestação com base em evidência do EC de que o contrato é indevido\")]\n  SO10 = 10,\n  \n  [Description(\"Contestação com base em rejeição por falta de acordo entre o banco e a bandeira no SLC\")]\n  SO11 = 11,\n  \n  // Códigos atuais\n  [Description(\"Problemas para liquidação do instrumento contratual ocasionado pelos dados bancários inválidos\")]\n  SO01 = 1,\n  \n  [Description(\"Titular ou usuário final recebedor não reconhece a operação\")]\n  SO02 = 2,\n  \n  [Description(\"Duplicidade de lançamento de operação\")]\n  SO03 = 3,\n  \n  [Description(\"Operação em divergência com o instrumento contratual\")]\n  SO04 = 4,\n  \n  [Description(\"Outros\")] SO05 = 5,\n  \n  [Description(\"Divergência entre valor esperado pelo financiador ou pela não financeira e o valor efetivamente liquidado pela instituição credenciadora ou subcredenciadora devedora da obrigação\")]\n  SO06 = 6,\n  \n  [Description(\"Ausência de liquidação\")]\n  SO12 = 12,\n  \n  [Description(\"Gravame baixado ainda recebendo liquidações na conta indicada\")]\n  SO13 = 13,\n  \n  [Description(\"Titular ou usuário final recebedor não reconhece a anuência\")]\n  SO15 = 15,\n  \n  [Description(\"Comunicação de resilição ou liberação de excedente não atendida\")]\n  SO14 = 14,\n  \n  [Description(\"Não recebimento da agenda solicitada\")]\n  SO16 = 16,\n  \n  [Description(\"Divergência de valores na agenda\")]\n  SO17 = 17,\n  \n  [Description(\"Outros\")] \n  SO18 = 18,\n  \n  [Description(\"Comunicação de resilição ou liberação de excedente indevida\")]\n  SO19 = 19\n}"
+           }
+          }
+         }
+        }
+       },
+       "201": {
+        "description": "201",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "{\n  message: \"No Content\"\n}"
+           }
+          }
+         }
+        }
+       },
+       "401": {
+        "description": "401",
+        "content": {
+         "text/plain": {
+          "examples": {
+           "Result": {
+            "value": "{\n  message: \"Não Autorizado\"\n}"
+           }
+          }
+         }
+        }
+       },
+       "409": {
+        "description": "409",
+        "content": {
+         "application/json": {
+          "examples": {
+           "Result": {
+            "value": "{Duplicação de contestação ja aberta}"
+           }
+          }
+         }
+        }
+       }
+      },
+      "deprecated": false,
+      "x-readme": {
+       "code-samples": [
+        {
+         "language": "curl",
+         "code": "{\n    \"author\": {\n        \"email\": \"joao@pagar.me\",\n        \"system\": \"API\",\n        \"user_agent\": \"joao.jorge\"\n    },\n    \"original_asset_holder\": {\n        \"name\": \"033 - Otica \",\n        \"document\": \"00000000000000\"\n    },\n    \"contested\": {\n        \"name\": \"111 - BANCO \",\n        \"document\": \"00000000000000\"\n    },\n    \"target\": {\n        \"key\": \"8935d7g4-0bfg-3f45-8g12-2635gfb3g233\",\n        \"type\": \"Contract\"\n    },\n    \"reason_code\": \"C06ß\"\n}"
+        }
+       ],
+       "samples-languages": [
+        "curl"
+       ]
+      }
+     }
+    }
+   },
+   "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true
+   },
+   "x-readme-fauxas": true
+  }
+ }
+]

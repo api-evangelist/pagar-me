@@ -1,0 +1,60 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/pagar-me-disputas-openapi.yml
+- openapi/pagar-me-pagarme-api-openapi.yml
+- openapi/pagar-me-pagarme-api-register-v5-openapi.yml
+vocabulary:
+  name: Pagar.me Domain Vocabulary
+  description: 'Terms declared by Pagar.me''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-14'
+  terms:
+  - term: Disputas
+    definition: Operações relacionadas à busca de disputas de chargeback. Aqui é possível ver o estado atual da disputa, histórico de eventos
+      daquela disputa, dentre outras informações relevantes.
+    tags:
+    - Resource Group
+    source: openapi/pagar-me-disputas-openapi.yml
+  - term: ProblemDetail
+    definition: 'Estrutura de erro padronizada conforme RFC 9457 (Problem Details for HTTP APIs). Content-Type da resposta: `application/problem+json`.'
+    tags:
+    - Object
+    source: openapi/pagar-me-disputas-openapi.yml#/components/schemas/ProblemDetail
+  - term: Dispute
+    definition: 'Object declared by the contract with fields: disputeId, transactionId, chargeId, createdAt, updatedAt, responseDeadline, chargebackAmount,
+      debitedAmount, status, reason, stage, cycle. (5 more)'
+    tags:
+    - Object
+    source: openapi/pagar-me-disputas-openapi.yml#/components/schemas/Dispute
+  - term: Amount
+    definition: 'Object declared by the contract with fields: amount, currencyCode.'
+    tags:
+    - Object
+    source: openapi/pagar-me-disputas-openapi.yml#/components/schemas/Amount
+  - term: Event
+    definition: 'Object declared by the contract with fields: type, createdAt.'
+    tags:
+    - Object
+    source: openapi/pagar-me-disputas-openapi.yml#/components/schemas/Event
+  - term: ValidatedFile
+    definition: Resultado da validação de um único arquivo enviado como evidência. Quando uma submissão é rejeitada, cada arquivo é reportado
+      neste formato, listando todos os códigos de erro que ele violou (vazio quando o arquivo em si está OK, mesmo que a transação tenha falhado
+      por outro motivo).
+    tags:
+    - Object
+    source: openapi/pagar-me-disputas-openapi.yml#/components/schemas/ValidatedFile
+  - term: TransactionBatchError
+    definition: 'Falha de validação aplicada ao conjunto de arquivos de uma mesma transação (independente de cada arquivo ser individualmente
+      válido), ex.: a soma de páginas dos arquivos enviados excede o limite de 10 páginas por transação.'
+    tags:
+    - Object
+    source: openapi/pagar-me-disputas-openapi.yml#/components/schemas/TransactionBatchError
+  - term: FileValidationProblemDetail
+    definition: Extensão do ProblemDetail (RFC 9457) específica para o erro `/errors/invalid-file` quando a submissão de evidência é rejeitada
+      por validação. Inclui o detalhamento por arquivo (`validated_files`) e a lista de falhas agregadas por transação (`transaction_batch_errors`).
+      O `detail` é um sumário legível dos códigos de erro retornados.
+    tags:
+    - Object
+    source: openapi/pagar-me-disputas-openapi.yml#/components/schemas/FileValidationProblemDetail

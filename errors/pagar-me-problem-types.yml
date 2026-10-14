@@ -1,0 +1,75 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/pagar-me-disputas-openapi.yml
+- openapi/pagar-me-pagarme-api-openapi.yml
+- openapi/pagar-me-pagarme-api-register-v5-openapi.yml
+format: rfc9457
+envelope:
+  media_type: application/json
+  schema: ProblemDetail
+coverage:
+  operations: 80
+  statuses_declared: 8
+problems:
+- status: 400
+  title: Bad Request
+  description: '400'
+  operations: 37
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ProblemDetail
+- status: 401
+  title: Unauthorized
+  description: '401'
+  operations: 4
+  media_types:
+  - application/json
+  - text/plain
+  schema: null
+- status: 404
+  title: Not Found
+  description: '404'
+  operations: 32
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ProblemDetail
+- status: 409
+  title: Conflict
+  description: '409'
+  operations: 1
+  media_types:
+  - application/json
+  schema: null
+- status: 412
+  title: Precondition Failed
+  description: '412'
+  operations: 3
+  media_types:
+  - application/json
+  schema: null
+- status: 413
+  title: Content Too Large
+  description: Body da requisição excede o limite máximo (11 MB).
+  operations: 1
+  media_types:
+  - application/problem+json
+  schema: ProblemDetail
+- status: 422
+  title: Unprocessable Content
+  description: '422'
+  operations: 9
+  media_types:
+  - application/json
+  - application/problem+json
+  schema: ProblemDetail
+- status: 500
+  title: Internal Server Error
+  description: Erro inesperado ao processar a requisição.
+  operations: 3
+  media_types:
+  - application/problem+json
+  schema: ProblemDetail

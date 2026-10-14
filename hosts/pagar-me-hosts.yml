@@ -1,0 +1,101 @@
+generated: '2026-10-14'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 8
+  own: 5
+  other_domain: 1
+  platform: 2
+  roles:
+  - api
+  - docs
+  - marketing
+  - other
+  - source
+  - support
+  - website
+hosts:
+- host: api.pagar.me
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: pagar.me
+  role: api
+  relation: own
+- host: docs.pagar.me
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - Documentation
+  - APIReference
+  - GettingStarted
+  - Authentication
+  - RateLimits
+  serves:
+  - docs
+  registrable_domain: pagar.me
+  role: docs
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  - SDKs
+  - Integrations
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: id.pagar.me
+  found_by:
+  - pointer
+  types:
+  - Console
+  serves: []
+  registrable_domain: pagar.me
+  role: other
+  relation: own
+- host: pagar.me
+  found_by:
+  - pointer
+  types:
+  - Website
+  - Portal
+  - Blog
+  serves: []
+  registrable_domain: pagar.me
+  role: website
+  relation: own
+- host: pagarme.helpjuice.com
+  found_by:
+  - pointer
+  types:
+  - Support
+  serves: []
+  registrable_domain: helpjuice.com
+  role: support
+  relation: other-domain
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: www.pagar.me
+  found_by:
+  - pointer
+  types:
+  - Signup
+  - Pricing
+  serves: []
+  registrable_domain: pagar.me
+  role: marketing
+  relation: own

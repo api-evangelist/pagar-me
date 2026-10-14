@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/pagar-me/main/json-schema/pagar-me-dispute-schema.json",
+  "title": "Dispute",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/pagar-me-disputas-openapi.yml#/components/schemas/Dispute",
+  "type": "object",
+  "properties": {
+    "disputeId": {
+      "type": "string",
+      "description": "ID único da disputa."
+    },
+    "transactionId": {
+      "type": "string",
+      "description": "ID da transação associada à disputa."
+    },
+    "chargeId": {
+      "type": "string",
+      "description": "ID da cobrança associada à disputa."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data da criação da disputa."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data da última atualização da disputa."
+    },
+    "responseDeadline": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Data limite para o envio de evidências por parte do lojista."
+    },
+    "chargebackAmount": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Amount"
+        },
+        {
+          "description": "Valor do chargeback."
+        }
+      ]
+    },
+    "debitedAmount": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Amount"
+        },
+        {
+          "description": "Valor debitado do lojista."
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "WAITING_MERCHANT_EVIDENCES",
+        "WAITING_ACQUIRER_ANALYSIS",
+        "MERCHANT_EVIDENCE_DEADLINE_EXPIRED",
+        "WAITING_ISSUER",
+        "LOST",
+        "WON",
+        "DEADLINE_EXPIRED",
+        "REVERSED"
+      ],
+      "description": "Status atual da disputa.\n\n**Valores possíveis:**\n\n| Status | Code | Significado |\n|---|---|---|\n| `REVERSED` | 93 | Chargeback revertido — o valor contestado foi estornado ao lojista. |\n"
+    },
+    "reason": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Código do motivo do chargeback."
+        },
+        "description": {
+          "type": "string",
+          "enum": [
+            "FRAUD",
+            "PROCESSING_ERROR",
+            "COMMERCIAL_DISPUTE",
+            "AUTHORIZATION"
+          ],
+          "description": "Descrição do motivo do chargeback."
+        }
+      },
+      "description": "Motivo do pedido de chargeback."
+    },
+    "stage": {
+      "type": "string",
+      "description": "Estágio do ciclo de chargeback."
+    },
+    "cycle": {
+      "type": "string",
+      "enum": [
+        "FIRST",
+        "SECOND"
+      ],
+      "description": "Ciclo de chargeback em que a disputa está. O campo é **omitido** da resposta para\ndisputas coletadas antes de o ciclo passar a ser registrado — não é retornado como\n`null`.\n"
+    },
+    "cycleStatus": {
+      "type": "string",
+      "enum": [
+        "RECEIVED",
+        "GUARANTEE_ANALYZED",
+        "EVIDENCE_RECEIVED",
+        "REPRESENTED",
+        "REVERSED",
+        "WON",
+        "LOST",
+        "EXPIRED"
+      ],
+      "description": "Status da disputa dentro do ciclo atual. É independente de `status`, que acompanha o\nciclo de vida da disputa como um todo. O campo é **omitido** da resposta para disputas\ncoletadas antes de o ciclo passar a ser registrado — não é retornado como `null`.\n"
+    },
+    "network": {
+      "type": "string",
+      "description": "Bandeira do cartão."
+    },
+    "institution": {
+      "type": "string",
+      "enum": [
+        "STONE",
+        "PAGAR.ME"
+      ],
+      "description": "Instituição onde a transação foi processado."
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Event"
+      },
+      "description": "Lista de eventos relacionados à disputa."
+    },
+    "guarantee": {
+      "type": "object",
+      "description": "Resultado da análise de garantia da disputa. O campo é **omitido** da resposta\nquando a disputa não possui garantia — não é retornado como `null`.\n",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "Situação da garantia (ex.: `GUARANTEED`, `NOT_GUARANTEED`)."
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Motivo pelo qual a garantia foi negada. É `null` quando a disputa está garantida."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data da última atualização da análise de garantia. Omitido quando não informado."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Amount": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string"
+        },
+        "currencyCode": {
+          "type": "string"
+        }
+      }
+    },
+    "Event": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FIRST_CHARGEBACK",
+            "FIRST_CHARGEBACK_REVERSED",
+            "DISPUTE_NOTIFIED",
+            "MERCHANT_EVIDENCE_RECEIVED",
+            "EVIDENCE_ANALYSIS_ACCEPTED",
+            "EVIDENCE_ANALYSIS_DENIED",
+            "LOST_DISPUTE"
+          ],
+          "description": "Tipo do evento relacionado à disputa."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data da criação do evento."
+        }
+      }
+    }
+  }
+}

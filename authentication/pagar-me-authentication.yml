@@ -1,0 +1,13 @@
+generated: '2026-10-14'
+method: derived
+source: openapi/pagar-me-pagarme-api-openapi.yml, openapi/pagar-me-pagarme-api-register-v5-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: sec0
+  type: http
+  scheme: basic
+  sources:
+  - openapi/pagar-me-pagarme-api-openapi.yml
+  - openapi/pagar-me-pagarme-api-register-v5-openapi.yml

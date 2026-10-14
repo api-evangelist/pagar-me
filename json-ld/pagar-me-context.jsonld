@@ -1,0 +1,136 @@
+{
+  "@context": {
+    "@vocab": "https://pagar.me/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "pagar": "https://pagar.me/schema#",
+    "ProblemDetail": "pagar:ProblemDetail",
+    "type": {
+      "@id": "pagar:type",
+      "@type": "xsd:string"
+    },
+    "title": {
+      "@id": "pagar:title",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "pagar:status",
+      "@type": "xsd:integer"
+    },
+    "detail": {
+      "@id": "pagar:detail",
+      "@type": "xsd:string"
+    },
+    "instance": {
+      "@id": "pagar:instance",
+      "@type": "xsd:string"
+    },
+    "traceId": {
+      "@id": "pagar:traceId",
+      "@type": "xsd:string"
+    },
+    "Dispute": "pagar:Dispute",
+    "disputeId": {
+      "@id": "pagar:disputeId",
+      "@type": "xsd:string"
+    },
+    "transactionId": {
+      "@id": "pagar:transactionId",
+      "@type": "xsd:string"
+    },
+    "chargeId": {
+      "@id": "pagar:chargeId",
+      "@type": "xsd:string"
+    },
+    "createdAt": {
+      "@id": "pagar:createdAt",
+      "@type": "xsd:dateTime"
+    },
+    "updatedAt": {
+      "@id": "pagar:updatedAt",
+      "@type": "xsd:dateTime"
+    },
+    "responseDeadline": {
+      "@id": "pagar:responseDeadline",
+      "@type": "xsd:dateTime"
+    },
+    "chargebackAmount": {
+      "@id": "pagar:chargebackAmount"
+    },
+    "debitedAmount": {
+      "@id": "pagar:debitedAmount"
+    },
+    "reason": {
+      "@id": "pagar:reason"
+    },
+    "stage": {
+      "@id": "pagar:stage",
+      "@type": "xsd:string"
+    },
+    "cycle": {
+      "@id": "pagar:cycle",
+      "@type": "xsd:string"
+    },
+    "cycleStatus": {
+      "@id": "pagar:cycleStatus",
+      "@type": "xsd:string"
+    },
+    "network": {
+      "@id": "pagar:network",
+      "@type": "xsd:string"
+    },
+    "institution": {
+      "@id": "pagar:institution",
+      "@type": "xsd:string"
+    },
+    "events": {
+      "@id": "pagar:events",
+      "@container": "@list"
+    },
+    "guarantee": {
+      "@id": "pagar:guarantee"
+    },
+    "Amount": "pagar:Amount",
+    "amount": {
+      "@id": "pagar:amount",
+      "@type": "xsd:string"
+    },
+    "currencyCode": {
+      "@id": "pagar:currencyCode",
+      "@type": "xsd:string"
+    },
+    "Event": "pagar:Event",
+    "ValidatedFile": "pagar:ValidatedFile",
+    "name": {
+      "@id": "pagar:name",
+      "@type": "xsd:string"
+    },
+    "transaction_id": {
+      "@id": "pagar:transaction_id",
+      "@type": "xsd:string"
+    },
+    "errors": {
+      "@id": "pagar:errors",
+      "@container": "@list"
+    },
+    "is_valid_file": {
+      "@id": "pagar:is_valid_file",
+      "@type": "xsd:boolean"
+    },
+    "TransactionBatchError": "pagar:TransactionBatchError",
+    "filenames": {
+      "@id": "pagar:filenames",
+      "@container": "@list"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Pagar.me API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Pagar.me's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-14) from openapi/pagar-me-disputas-openapi.yml, openapi/pagar-me-pagarme-api-openapi.yml, openapi/pagar-me-pagarme-api-register-v5-openapi.yml.",
+  "dcterms:created": "2026-10-14",
+  "dcterms:source": [
+    "openapi/pagar-me-disputas-openapi.yml",
+    "openapi/pagar-me-pagarme-api-openapi.yml",
+    "openapi/pagar-me-pagarme-api-register-v5-openapi.yml"
+  ]
+}
