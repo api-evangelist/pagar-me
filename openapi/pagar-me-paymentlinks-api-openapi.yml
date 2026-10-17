@@ -1,0 +1,1094 @@
+openapi: 3.2.0
+info:
+  title: pagarme-api Paymentlinks API
+  version: '5'
+servers:
+- url: https://api.pagar.me/core/v5
+security:
+- sec0: []
+tags:
+- name: Paymentlinks
+paths:
+  /paymentlinks:
+    post:
+      summary: Criar link de pagamento
+      description: ''
+      operationId: criar-link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              - payment_settings
+              - cart_settings
+              properties:
+                is_building:
+                  type: boolean
+                  description: Define se o link de pagamento será criado com o status building ou ativo, em caso de envio do campo true tal permite que você ative um link em determinado momento posteriormente, para realizar uma ação promocional, por exemplo;
+                  default: false
+                name:
+                  type: string
+                  description: Nome que será exibido na dashboard e ao buscar o link de pagamento através da API. Máximo de 64 caracteres.
+                order_code:
+                  type: string
+                  description: Permite ao lojista informar um identificador de sua plataforma para correlação
+                type:
+                  type: string
+                  description: Define o tipo do link de pagamento a ser criado, podendo ser "order", para criação de pedidos, ou "subscription", para recorrências.
+                expires_at:
+                  type: string
+                  description: Define a data de expiração do link de pagamento. Formato ISO 8601. Caso não seja enviado o link não terá expiração por tempo. Não deve ser enviado caso o campo expires_in seja enviado.
+                  format: date
+                expires_in:
+                  type: integer
+                  description: Define o tempo de expiração do link de pagamento em minutos após o mesmo estar ativo. Tempo em minutos. Caso não seja enviado, o link não terá expiração por tempo. Não deve ser enviado caso o campo expires_at seja enviado.
+                  format: int32
+                max_sessions:
+                  type: integer
+                  description: Define o máximo de pedidos que o link de pagamento pode gerar, sejam eles pagos ou não. Caso não seja enviado, não haverá limite de pedidos criados.
+                  format: int32
+                max_paid_sessions:
+                  type: integer
+                  description: Define o máximo de pedidos pagos que o link de pagamento pode gerar. Caso não seja enviado, não haverá limite de pagamentos.
+                  format: int32
+                payment_settings:
+                  type: object
+                  description: Configurações de pagamento do link.
+                  properties:
+                    accepted_payment_methods:
+                      type: array
+                      description: 'Define os métodos de pagamento aceitos. Valores permitidos para "type" "order": "credit_card", "boleto" e "pix". Valores permitidos para "type" "subscription": "credit_card".'
+                      items:
+                        type: string
+                    statement_descriptor:
+                      type: string
+                      description: Define o identificador que irá aparecer na fatura do comprador. Limite de 13 caracteres.
+                    credit_card_settings:
+                      type: object
+                      description: Define as configurações de pagamento quando cartão de crédito for selecionado. Obrigatório quando enviado "credit_card" em "accepted_payment_methods".
+                      properties:
+                        operation_type:
+                          type: string
+                          description: Indica se a transação deve ser capturada ("auth_and_capture") ou apenas autorizada ("auth_only").
+                        delay_to_capture:
+                          type: integer
+                          description: Tempo pré-definido para a captura do pagamento após autorização. Valor em xxx.
+                          format: int32
+                        installments:
+                          type: array
+                          description: Configurações de parcelamento do link. Não deverá ser enviado caso o campo "installments_setup" seja definido.
+                          items:
+                            properties:
+                              number:
+                                type: integer
+                                description: Número de parcelas
+                                format: int32
+                              total:
+                                type: integer
+                                description: Valor total que será cobrado caso essa opção de parcelamento seja selecionada, em centavos.
+                                format: int32
+                            required:
+                            - number
+                            - total
+                            type: object
+                        installments_setup:
+                          type: object
+                          description: Configurações de parcelamento do link. Não deverá ser enviado caso o campo "installments" seja definido.
+                          properties:
+                            max_installments:
+                              type: integer
+                              description: Número máximo de parcelas permitido.
+                              format: int32
+                            amount:
+                              type: integer
+                              description: Valor total que será cobrado pelo link, em centavos.
+                              format: int32
+                            interest_type:
+                              type: string
+                              description: Tipo de cálculo utilizado para a inclusão de acréscimo de juros no parcelamento, se aplicável.
+                              default: simple
+                            interest_rate:
+                              type: integer
+                              description: Valor percentual que será utilizado para o acréscimo de juros no parcelamento.
+                              format: int32
+                            customer_fee:
+                              type: boolean
+                              description: Define se as taxas deverão ser automaticamente repassadas no parcelamento do link. Para clientes PSP, caso esse campo seja "true", os campos "interest_type" e "interest_rate" não devem ser enviados.
+                            free_installments:
+                              type: integer
+                              description: Número de parcelas que não terão acréscimo de juros.
+                              format: int32
+                            brand:
+                              type: string
+                              description: Define a bandeira para recuperar as taxas do lojista. Caso o campo "customer_fee" seja "true", e os campos "interest_type" e "interest_rate" não forem informados. Apenas para clientes PSP.
+                    boleto_settings:
+                      type: object
+                      description: Define as configurações de pagamento quando boleto for selecionado. Obrigatório quando enviado "boleto" em "accepted_payment_methods".
+                      properties:
+                        due_at:
+                          type: string
+                          description: Define a data de expiração do boleto gerado. Formato ISO 8601. Não deverá ser enviado caso o campo "due_in" seja definido.
+                          format: date
+                        due_in:
+                          type: integer
+                          description: Define quantidade de tempo para expiração do boleto a partir do momento que o mesmo é gerado. Valor em dias. Não deverá ser enviado caso o campo "due_in" seja definido.
+                          format: int32
+                        discount:
+                          type: integer
+                          description: Valor de desconto a ser aplicado ao boleto, em centavos. Não deve ser enviado caso o campo "discount_percentage" seja definido.
+                          format: int32
+                        discount_percentage:
+                          type: number
+                          description: Valor de desconto a ser aplicado ao boleto, em porcentagem. Não deve ser enviado caso o campo "discount" seja definido.
+                          format: double
+                        instructions:
+                          type: string
+                          description: Instruções do boleto. Máximo 255 caracteres.
+                    pix_settings:
+                      type: object
+                      description: Define as configurações de pagamento quando pix for selecionado. Obrigatório quando enviado "pix" em "accepted_payment_methods".
+                      properties:
+                        expires_in:
+                          type: integer
+                          description: Define quantidade de tempo para expiração do pix a partir do momento que o mesmo é gerado. Valor em segundos. Não deverá ser enviado caso o campo "expires_at" seja definido.
+                          format: int32
+                        expires_at:
+                          type: string
+                          description: Define a data de expiração do pix gerado. Formato ISO 8601. Não deverá ser enviado caso o campo "expires_in" seja definido.
+                          format: date
+                        discount:
+                          type: integer
+                          description: Valor de desconto a ser aplicado ao pix, em centavos. Não deve ser enviado caso o campo "discount_percentage" seja definido.
+                          format: int32
+                        discount_percentage:
+                          type: number
+                          description: Valor de desconto a ser aplicado ao pix, em porcentagem. Não deve ser enviado caso o campo "discount" seja definido.
+                          format: double
+                        additiona_information:
+                          type: object
+                          description: Objeto chave/valor utilizado para adicionar informações sobre o pagamento. Esses dados serão visíveis para o consumidor na hora do pagamento.
+                          properties:
+                            Name:
+                              type: string
+                              description: Nome utilizado para adicionar informações sobre o pagamento.
+                            Value:
+                              type: string
+                              description: Valor utilizado para adicionar informações sobre o pagamento.
+                customer_settings:
+                  type: object
+                  description: Define os dados do cliente, se aplicável.
+                  properties:
+                    customer_id:
+                      type: string
+                      description: Código do cliente.
+                    customer:
+                      type: object
+                      description: Dados do cliente. Não deverá ser enviado caso o campo "customer_id" seja definido.
+                      required:
+                      - name
+                      properties:
+                        name:
+                          type: string
+                          description: 'Nome do cliente. Max: 64 caracteres.'
+                        type:
+                          type: string
+                          description: 'Tipo de cliente. Valores possíveis: individual (pessoa física) ou company (pessoa jurídica). Obrigatório, caso o document seja enviado.'
+                        email:
+                          type: string
+                          description: 'E-mail do cliente. Max: 64 caracteres.'
+                        code:
+                          type: string
+                          description: 'Código de referência do cliente no sistema da loja. Max: 52 caracteres.'
+                        document:
+                          type: string
+                          description: 'CPF, CNPJ ou PASSAPORTE do cliente. Max: 16 caracteres para CPF e CNPJ e Max: 50 caracteres para PASSAPORTE.'
+                        document_type:
+                          type: string
+                          description: 'Tipo de documento. Valores possíveis: "CPF", "CNPJ" ou "PASSPORT".'
+                        gender:
+                          type: string
+                          description: 'Sexo do cliente . Valores possíveis: male ou female.'
+                        address:
+                          type: object
+                          description: Endereço do cliente.
+                          properties:
+                            country:
+                              type: string
+                              description: País (Código do país no formato ISO 3166-1 alpha-2)(2 digitos)
+                            state:
+                              type: string
+                              description: Estado (Código do estado no formato ISO 3166-2).
+                            city:
+                              type: string
+                              description: Cidade.
+                            zip_code:
+                              type: string
+                              description: Código Postal (CEP) (Apenas numérico).
+                            line_1:
+                              type: string
+                              description: Dados principais do endereço. Neste campo deve ser informado Número, Rua, Bairro, nesta ordem e separados por vírgula.
+                            line_2:
+                              type: string
+                              description: Dados complementares do endereço. Neste campo pode ser informado complemento, referências.
+                        phones:
+                          type: object
+                          description: Telefone residencial do cliente.
+                          properties:
+                            home_phone:
+                              type: object
+                              description: Telefone residencial do cliente.
+                              properties:
+                                country_code:
+                                  type: string
+                                  description: Código do País (Apenas numérico).
+                                area_code:
+                                  type: string
+                                  description: Código da área (Apenas numérico).
+                                number:
+                                  type: string
+                                  description: Número do telefone (Apenas numérico).
+                            mobile_phone:
+                              type: object
+                              description: Telefone celular do cliente.
+                              properties:
+                                country_code:
+                                  type: string
+                                  description: Código do País (Apenas numérico).
+                                area_code:
+                                  type: string
+                                  description: Código da área (Apenas numérico).
+                                number:
+                                  type: string
+                                  description: Número do telefone (Apenas numérico).
+                        birthdate:
+                          type: string
+                          description: Data de nascimento do cliente.
+                          format: date
+                        metadata:
+                          type: string
+                          description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o cliente.
+                cart_settings:
+                  type: object
+                  description: Define os dados do carrinho que será pago pelo link de pagamento.
+                  properties:
+                    shipping_cost:
+                      type: integer
+                      description: Valor de entrega, em centavos
+                      format: int32
+                    items:
+                      type: array
+                      description: Define os itens que estão inclusos no carrinho que será pago pelo link.
+                      items:
+                        properties:
+                          name:
+                            type: string
+                            description: Nome do item.
+                          description:
+                            type: string
+                            description: Descrição do item. Máximo de xxx caracteres
+                          amount:
+                            type: integer
+                            description: Valor unitário do item, em centavos.
+                            format: int32
+                          shipping_cost:
+                            type: integer
+                            description: Valor de entrega do item, em centavos.
+                            format: int32
+                          default_quantity:
+                            type: integer
+                            description: Quantidade de itens.
+                            format: int32
+                        required:
+                        - name
+                        - amount
+                        - default_quantity
+                        type: object
+                    recurrences:
+                      type: array
+                      description: Define as configurações da recorrência que será gerada a partir do pagamento do link.
+                      items:
+                        properties:
+                          plan_id:
+                            type: string
+                            description: Id do plano com as configurações da assinatura que será gerada.
+                          plan:
+                            type: object
+                            description: Dados do plano da assinatura que será gerada. Não deverá ser enviado caso o campo "plan_id" seja definido.
+                          start_in:
+                            type: integer
+                            description: Data de início da assinatura, em dias. Não deverá ser enviado caso o campo "start_at" seja definido.
+                            format: int32
+                          start_at:
+                            type: string
+                            description: Data de início da assinatura. Não deverá ser enviado caso o campo "start_in" seja definido.
+                            format: date
+                        type: object
+                layout_settings:
+                  type: object
+                  description: Dados de layout.
+                  properties:
+                    image_url:
+                      type: string
+                      description: Logo que será utilizado no checkout.
+                    primary_color:
+                      type: string
+                      description: Cor primária que será aplicada no checkout, em hexadecimal.
+                    secondary_color:
+                      type: string
+                      description: Cor secundária que será aplicada no checkout.
+                split_settings:
+                  type: object
+                  description: Define as regras de split de pagamento
+                  properties:
+                    rules:
+                      type: array
+                      description: Regras de split a serem enviadas no link de pamganeto
+                      items:
+                        properties:
+                          recipient_id:
+                            type: string
+                            description: 'Código do recebedor. Formato: re_XXXXXXXXXXXXXXXX.'
+                          amount:
+                            type: integer
+                            description: Valor destinado ao recebedor.
+                            format: int32
+                          type:
+                            type: string
+                            description: Tipo de divisão. Os valores possíveis são flat ou percentage.
+                            default: percentage
+                            enum:
+                            - flat
+                            - percentage
+                          options:
+                            type: object
+                            description: Informações da responsabilidade do recebedor na transação.
+                            properties:
+                              liable:
+                                type: boolean
+                                description: Indica se o recebedor é responsável pela transação em caso de chargeback.
+                                default: true
+                              charge_processing_fee:
+                                type: boolean
+                                description: Indica se o recebedor vinculado à regra será cobrado pelas taxas da transação
+                                default: true
+                              charge_remainder_fee:
+                                type: boolean
+                                description: Indica se o recebedor vinculado à regra irá receber o restante dos recebíveis após uma divisão
+                                default: true
+                        type: object
+                flow_settings:
+                  type: object
+                  properties:
+                    success_url:
+                      type: string
+                      default: ''
+                      description: Define a url de redirecionamento ao final do checkout para permitir o comprador retornar a loja
+                  description: ''
+            examples:
+              Link de pedido:
+                value:
+                  payment_settings:
+                    accepted_payment_methods:
+                    - credit_card
+                    credit_card_settings:
+                      operation_type: auth_and_capture
+                      installments:
+                      - number: 1
+                        total: 12000
+                      - number: 2
+                        total: 12000
+                  cart_settings:
+                    items:
+                    - amount: 12000
+                      name: Banner
+                      default_quantity: 1
+                  name: Banner N12345
+                  type: order
+              Link de pedido (com acréscimo de juros):
+                value:
+                  payment_settings:
+                    accepted_payment_methods:
+                    - pix
+                    - boleto
+                    - credit_card
+                    credit_card_settings:
+                      operation_type: auth_and_capture
+                      installments_setup:
+                        max_installments: 12
+                        amount: 10000
+                        interest_type: simple
+                        interest_rate: 2
+                        free_installments: 1
+                  cart_settings:
+                    items:
+                    - amount: 5000
+                      name: Banner
+                      description: Banner personalizado
+                      default_quantity: 2
+                  name: 'Banner N67890 '
+                  type: order
+              Link de Recorrência:
+                value:
+                  max_paid_sessions: 1
+                  payment_settings:
+                    accepted_payment_methods:
+                    - credit_card
+                    credit_card_settings:
+                      operation_type: auth_and_capture
+                  customer_settings:
+                    customer_id: cus_8ka4RGDF9F7MvemD
+                  expires_at: '2024-05-12T19:44:39.5870000Z'
+                  cart_settings:
+                    recurrences:
+                    - start_in: 1
+                      plan_id: plan_odzJgEyf9fqgR7Kj
+                  name: Banner mensal N135
+                  type: subscription
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"payment_settings\": {\n        \"accepted_payment_methods\": [\n            \"credit_card\"\n        ],\n        \"credit_card_settings\": {\n            \"operation_type\": \"auth_and_capture\",\n            \"installments\": [\n                {\n                    \"number\": 1,\n                    \"total\": 12000\n                },\n                {\n                    \"number\": 2,\n                    \"total\": 12000\n                }\n            ]\n        }\n    },\n    \"cart_settings\": {\n        \"items\": [\n            {\n                \"amount\": 12000,\n                \"name\": \"Banner\",\n                \"default_quantity\": 1\n            }\n        ],\n       \"items_total_cost\": 12000,\n       \"total_cost\": 12000,\n       \"shipping_cost\": 0,\n       \"shipping_total_cost\": 0,\n    },\n    \"name\": \"Banner N12345\",\n    \"type\": \"order\",\n    \"total_sessions\": 0,\n    \"max_paid_sessions\": 0,\n    \"total_paid_sessions\": 0,\n    \"max_sessions\": 0,\n    \"created_at\": \"2024-05-13T01:09:40.6331583Z\",\n    \"url\": \"https://payment-link.pagar.me/pl_GNe8zkaO2MlBxxGcJcv0BALq9Pon514W\",\n    \"updated_at\": \"2024-05-13T01:09:40.6331583Z\",\n    \"id\": \"pl_GNe8zkaO2MlBxxGcJcv0BALq9Pon514W\",\n    \"expires_in\": 0,\n    \"status\": \"active\"\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      tags:
+      - Paymentlinks
+    get:
+      summary: Obter links de pagamento
+      description: ''
+      operationId: obter-links
+      parameters:
+      - name: name
+        in: query
+        description: Nome do link de pagamento gerado.
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: 'Status do link de pagamento gerado. Possíveis status: **building**, **active**, **cancelled**, **expired**'
+        schema:
+          type: string
+      - name: created_since
+        in: query
+        description: Define o filtro de data de criação do link de pagamento para busca. Formato ISO 8601.
+        schema:
+          type: string
+          format: date
+      - name: created_until
+        in: query
+        description: Define o filtro de data de criação do link de pagamento para busca. Formato ISO 8601.
+        schema:
+          type: string
+          format: date
+      - name: page
+        in: query
+        description: Página a ser recuperada.
+        schema:
+          type: integer
+          format: int32
+      - name: per_page
+        in: query
+        description: Quantidade de links de pagamento recuperados por página. Máximo 30.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Paymentlinks
+  /paymentlinks/{payment_link_id}:
+    get:
+      summary: Obter link de pagamento
+      description: ''
+      operationId: obter-link
+      parameters:
+      - name: payment_link_id
+        in: path
+        description: 'ID do link de pagamento. Exemplo: pl_gD2G97aVBqvREz3Hr4u1deLW40JlnmQ8'
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Paymentlinks
+  /paymentlinks/{payment_link_id}/cancel:
+    patch:
+      summary: Cancelar link de pagamento
+      description: ''
+      operationId: cancelar-um-link-de-pagamento
+      parameters:
+      - name: payment_link_id
+        in: path
+        description: 'ID do link de pagamento. Exemplo: pl_gD2G97aVBqvREz3Hr4u1deLW40JlnmQ8'
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: '204'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Paymentlinks
+  /paymentlinks.:
+    post:
+      summary: Criar link de pagamento
+      description: ''
+      operationId: create-link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              - payment_settings
+              - cart_settings
+              properties:
+                is_building:
+                  type: boolean
+                  description: Define se o link de pagamento será criado com o status building ou ativo, em caso de envio do campo true tal permite que você ative um link em determinado momento posteriormente, para realizar uma ação promocional, por exemplo;
+                  default: false
+                name:
+                  type: string
+                  description: Nome que será exibido na dashboard e ao buscar o link de pagamento através da API. Máximo de 64 caracteres.
+                type:
+                  type: string
+                  description: Define o tipo do link de pagamento a ser criado, podendo ser "order", para criação de pedidos, ou "subscription", para recorrências.
+                expires_at:
+                  type: string
+                  description: Define a data de expiração do link de pagamento. Formato ISO 8601. Caso não seja enviado o link não terá expiração por tempo. Não deve ser enviado caso o campo expires_in seja enviado.
+                  format: date
+                expires_in:
+                  type: integer
+                  description: Define o tempo de expiração do link de pagamento em minutos após o mesmo estar ativo. Tempo em minutos. Caso não seja enviado, o link não terá expiração por tempo. Não deve ser enviado caso o campo expires_at seja enviado.
+                  format: int32
+                max_sessions:
+                  type: integer
+                  description: Define o máximo de pedidos que o link de pagamento pode gerar, sejam eles pagos ou não. Caso não seja enviado, não haverá limite de pedidos criados.
+                  format: int32
+                max_paid_sessions:
+                  type: integer
+                  description: Define o máximo de pedidos pagos que o link de pagamento pode gerar. Caso não seja enviado, não haverá limite de pagamentos.
+                  format: int32
+                payment_settings:
+                  type: object
+                  description: Configurações de pagamento do link.
+                  properties:
+                    accepted_payment_methods:
+                      type: array
+                      description: 'Define os métodos de pagamento aceitos. Valores permitidos: "credit_card", "boleto" e "pix".'
+                      items:
+                        type: string
+                    statement_descriptor:
+                      type: string
+                      description: Define o identificador que irá aparecer na fatura do comprador. Limite de 13 caracteres.
+                    credit_card_settings:
+                      type: object
+                      description: Define as configurações de pagamento quando cartão de crédito for selecionado. Obrigatório quando enviado "credit_card" em "accepted_payment_methods".
+                      properties:
+                        operation_type:
+                          type: string
+                          description: Indica se a transação deve ser capturada ("auth_and_capture") ou apenas autorizada ("auth_only").
+                        delay_to_capture:
+                          type: integer
+                          description: Tempo pré-definido para a captura do pagamento após autorização. Valor em xxx.
+                          format: int32
+                        installments:
+                          type: array
+                          description: Configurações de parcelamento do link. Não deverá ser enviado caso o campo "installments_setup" seja definido.
+                          items:
+                            properties:
+                              number:
+                                type: integer
+                                description: Número de parcelas
+                                format: int32
+                              total:
+                                type: integer
+                                description: Valor total que será cobrado caso essa opção de parcelamento seja selecionada, em centavos.
+                                format: int32
+                            required:
+                            - number
+                            - total
+                            type: object
+                        installments_setup:
+                          type: object
+                          description: Configurações de parcelamento do link. Não deverá ser enviado caso o campo "installments" seja definido.
+                          properties:
+                            max_installments:
+                              type: integer
+                              description: Número máximo de parcelas permitido.
+                              format: int32
+                            amount:
+                              type: integer
+                              description: Valor total que será cobrado pelo link, em centavos.
+                              format: int32
+                            interest_type:
+                              type: string
+                              description: Tipo de cálculo utilizado para a inclusão de acréscimo de juros no parcelamento, se aplicável.
+                              default: simple
+                            interest_rate:
+                              type: integer
+                              description: Valor percentual que será utilizado para o acréscimo de juros no parcelamento.
+                              format: int32
+                            customer_fee:
+                              type: boolean
+                              description: Define se as taxas deverão ser automaticamente repassadas no parcelamento do link. Para clientes PSP, caso esse campo seja "true", os campos "interest_type" e "interest_rate" não devem ser enviados.
+                            free_installments:
+                              type: integer
+                              description: Número de parcelas que não terão acréscimo de juros.
+                              format: int32
+                            brand:
+                              type: string
+                              description: Define a bandeira para recuperar as taxas do lojista. Caso o campo "customer_fee" seja "true", e os campos "interest_type" e "interest_rate" não forem informados. Apenas para clientes PSP.
+                    boleto_settings:
+                      type: object
+                      description: Define as configurações de pagamento quando boleto for selecionado. Obrigatório quando enviado "boleto" em "accepted_payment_methods".
+                      properties:
+                        due_at:
+                          type: string
+                          description: Define a data de expiração do boleto gerado. Formato ISO 8601. Não deverá ser enviado caso o campo "due_in" seja definido.
+                          format: date
+                        due_in:
+                          type: integer
+                          description: Define quantidade de tempo para expiração do boleto a partir do momento que o mesmo é gerado. Valor em dias. Não deverá ser enviado caso o campo "due_in" seja definido.
+                          format: int32
+                        discount:
+                          type: integer
+                          description: Valor de desconto a ser aplicado ao boleto, em centavos. Não deve ser enviado caso o campo "discount_percentage" seja definido.
+                          format: int32
+                        discount_percentage:
+                          type: number
+                          description: Valor de desconto a ser aplicado ao boleto, em porcentagem. Não deve ser enviado caso o campo "discount" seja definido.
+                          format: double
+                        instructions:
+                          type: string
+                          description: Instruções do boleto. Máximo 255 caracteres.
+                    pix_settings:
+                      type: object
+                      description: Define as configurações de pagamento quando pix for selecionado. Obrigatório quando enviado "pix" em "accepted_payment_methods".
+                      properties:
+                        expires_in:
+                          type: integer
+                          description: Define quantidade de tempo para expiração do pix a partir do momento que o mesmo é gerado. Valor em segundos. Não deverá ser enviado caso o campo "expires_at" seja definido.
+                          format: int32
+                        expires_at:
+                          type: string
+                          description: Define a data de expiração do pix gerado. Formato ISO 8601. Não deverá ser enviado caso o campo "expires_in" seja definido.
+                          format: date
+                        discount:
+                          type: integer
+                          description: Valor de desconto a ser aplicado ao pix, em centavos. Não deve ser enviado caso o campo "discount_percentage" seja definido.
+                          format: int32
+                        discount_percentage:
+                          type: number
+                          description: Valor de desconto a ser aplicado ao pix, em porcentagem. Não deve ser enviado caso o campo "discount" seja definido.
+                          format: double
+                        additiona_information:
+                          type: object
+                          description: Objeto chave/valor utilizado para adicionar informações sobre o pagamento. Esses dados serão visíveis para o consumidor na hora do pagamento.
+                          properties:
+                            Name:
+                              type: string
+                              description: Nome utilizado para adicionar informações sobre o pagamento.
+                            Value:
+                              type: string
+                              description: Valor utilizado para adicionar informações sobre o pagamento.
+                customer_settings:
+                  type: object
+                  description: Define os dados do cliente, se aplicável.
+                  properties:
+                    customer_id:
+                      type: string
+                      description: Código do cliente.
+                    customer:
+                      type: object
+                      description: Dados do cliente. Não deverá ser enviado caso o campo "customer_id" seja definido.
+                      required:
+                      - name
+                      properties:
+                        name:
+                          type: string
+                          description: 'Nome do cliente. Max: 64 caracteres.'
+                        type:
+                          type: string
+                          description: 'Tipo de cliente. Valores possíveis: individual (pessoa física) ou company (pessoa jurídica). Obrigatório, caso o document seja enviado.'
+                        email:
+                          type: string
+                          description: 'E-mail do cliente. Max: 64 caracteres.'
+                        code:
+                          type: string
+                          description: 'Código de referência do cliente no sistema da loja. Max: 52 caracteres.'
+                        document:
+                          type: string
+                          description: 'CPF, CNPJ ou PASSAPORTE do cliente. Max: 16 caracteres para CPF e CNPJ e Max: 50 caracteres para PASSAPORTE.'
+                        document_type:
+                          type: string
+                          description: 'Tipo de documento. Valores possíveis: "CPF", "CNPJ" ou "PASSPORT".'
+                        gender:
+                          type: string
+                          description: 'Sexo do cliente . Valores possíveis: male ou female.'
+                        address:
+                          type: object
+                          description: Endereço do cliente.
+                          properties:
+                            country:
+                              type: string
+                              description: País (Código do país no formato ISO 3166-1 alpha-2)(2 digitos)
+                            state:
+                              type: string
+                              description: Estado (Código do estado no formato ISO 3166-2).
+                            city:
+                              type: string
+                              description: Cidade.
+                            zip_code:
+                              type: string
+                              description: Código Postal (CEP) (Apenas numérico).
+                            line_1:
+                              type: string
+                              description: Dados principais do endereço. Neste campo deve ser informado Número, Rua, Bairro, nesta ordem e separados por vírgula.
+                            line_2:
+                              type: string
+                              description: Dados complementares do endereço. Neste campo pode ser informado complemento, referências.
+                        phones:
+                          type: object
+                          description: Telefone residencial do cliente.
+                          properties:
+                            home_phone:
+                              type: object
+                              description: Telefone residencial do cliente.
+                              properties:
+                                country_code:
+                                  type: string
+                                  description: Código do País (Apenas numérico).
+                                area_code:
+                                  type: string
+                                  description: Código da área (Apenas numérico).
+                                number:
+                                  type: string
+                                  description: Número do telefone (Apenas numérico).
+                            mobile_phone:
+                              type: object
+                              description: Telefone celular do cliente.
+                              properties:
+                                country_code:
+                                  type: string
+                                  description: Código do País (Apenas numérico).
+                                area_code:
+                                  type: string
+                                  description: Código da área (Apenas numérico).
+                                number:
+                                  type: string
+                                  description: Número do telefone (Apenas numérico).
+                        birthdate:
+                          type: string
+                          description: Data de nascimento do cliente.
+                          format: date
+                        metadata:
+                          type: string
+                          description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o cliente.
+                cart_settings:
+                  type: object
+                  description: Define os dados do carrinho que será pago pelo link de pagamento.
+                  properties:
+                    shipping_cost:
+                      type: integer
+                      description: Valor de entrega, em centavos
+                      format: int32
+                    items:
+                      type: array
+                      description: Define os itens que estão inclusos no carrinho que será pago pelo link.
+                      items:
+                        properties:
+                          name:
+                            type: string
+                            description: Nome do item.
+                          description:
+                            type: string
+                            description: Descrição do item. Máximo de xxx caracteres
+                          amount:
+                            type: integer
+                            description: Valor unitário do item, em centavos.
+                            format: int32
+                          shipping_cost:
+                            type: integer
+                            description: Valor de entrega do item, em centavos.
+                            format: int32
+                          default_quantity:
+                            type: integer
+                            description: Quantidade de itens.
+                            format: int32
+                        required:
+                        - name
+                        - amount
+                        - default_quantity
+                        type: object
+                    recurrences:
+                      type: array
+                      description: Define as configurações da recorrência que será gerada a partir do pagamento do link.
+                      items:
+                        properties:
+                          plan_id:
+                            type: string
+                            description: Id do plano com as configurações da assinatura que será gerada.
+                          plan:
+                            type: object
+                            description: Dados do plano da assinatura que será gerada. Não deverá ser enviado caso o campo "plan_id" seja definido.
+                          start_in:
+                            type: integer
+                            description: Data de início da assinatura, em dias. Não deverá ser enviado caso o campo "start_at" seja definido.
+                            format: int32
+                          start_at:
+                            type: string
+                            description: Data de início da assinatura. Não deverá ser enviado caso o campo "start_in" seja definido.
+                            format: date
+                        type: object
+                layout_settings:
+                  type: object
+                  description: Dados de layout.
+                  properties:
+                    image_url:
+                      type: string
+                      description: Logo que será utilizado no checkout.
+                    primary_color:
+                      type: string
+                      description: Cor primária que será aplicada no checkout, em hexadecimal.
+                    secondary_color:
+                      type: string
+                      description: Cor secundária que será aplicada no checkout.
+            examples:
+              Link de pedido:
+                value:
+                  payment_settings:
+                    accepted_payment_methods:
+                    - credit_card
+                    credit_card_settings:
+                      operation_type: auth_and_capture
+                      installments:
+                      - number: 1
+                        total: 12000
+                      - number: 2
+                        total: 12000
+                  cart_settings:
+                    items:
+                    - amount: 12000
+                      name: Banner
+                      default_quantity: 1
+                  name: Banner N12345
+                  type: order
+              Link de pedido (com acréscimo de juros):
+                value:
+                  payment_settings:
+                    accepted_payment_methods:
+                    - pix
+                    - boleto
+                    - credit_card
+                    credit_card_settings:
+                      operation_type: auth_and_capture
+                      installments_setup:
+                        max_installments: 12
+                        amount: 10000
+                        interest_type: simple
+                        interest_rate: 2
+                        free_installments: 1
+                  cart_settings:
+                    items:
+                    - amount: 5000
+                      name: Banner
+                      description: Banner personalizado
+                      default_quantity: 2
+                  name: 'Banner N67890 '
+                  type: order
+              Link de Recorrência:
+                value:
+                  max_paid_sessions: 1
+                  payment_settings:
+                    accepted_payment_methods:
+                    - credit_card
+                    credit_card_settings:
+                      operation_type: auth_and_capture
+                  customer_settings:
+                    customer_id: cus_8ka4RGDF9F7MvemD
+                  expires_at: '2024-05-12T19:44:39.5870000Z'
+                  cart_settings:
+                    recurrences:
+                    - start_in: 1
+                      plan_id: plan_odzJgEyf9fqgR7Kj
+                  name: Banner mensal N135
+                  type: subscription
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"payment_settings\": {\n        \"accepted_payment_methods\": [\n            \"credit_card\"\n        ],\n        \"credit_card_settings\": {\n            \"operation_type\": \"auth_and_capture\",\n            \"installments\": [\n                {\n                    \"number\": 1,\n                    \"total\": 12000\n                },\n                {\n                    \"number\": 2,\n                    \"total\": 12000\n                }\n            ]\n        }\n    },\n    \"cart_settings\": {\n        \"items\": [\n            {\n                \"amount\": 12000,\n                \"name\": \"Banner\",\n                \"default_quantity\": 1\n            }\n        ],\n       \"items_total_cost\": 12000,\n       \"total_cost\": 12000,\n       \"shipping_cost\": 0,\n       \"shipping_total_cost\": 0,\n    },\n    \"name\": \"Banner N12345\",\n    \"type\": \"order\",\n    \"total_sessions\": 0,\n    \"max_paid_sessions\": 0,\n    \"total_paid_sessions\": 0,\n    \"max_sessions\": 0,\n    \"created_at\": \"2024-05-13T01:09:40.6331583Z\",\n    \"url\": \"https://payment-link.pagar.me/pl_GNe8zkaO2MlBxxGcJcv0BALq9Pon514W\",\n    \"updated_at\": \"2024-05-13T01:09:40.6331583Z\",\n    \"id\": \"pl_GNe8zkaO2MlBxxGcJcv0BALq9Pon514W\",\n    \"expires_in\": 0,\n    \"status\": \"active\"\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      tags:
+      - Paymentlinks
+components:
+  securitySchemes:
+    sec0:
+      type: http
+      scheme: basic
+x-readme-fauxas: true
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/ativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/atualizar-code-de-recebedor.md
+  - https://docs.pagar.me/reference/cancelar-assinatura-1.md
+  - https://docs.pagar.me/reference/cancelar-fatura-1.md
+  - https://docs.pagar.me/reference/cancelar-um-link-de-pagamento.md
+  - https://docs.pagar.me/reference/create-link.md
+  - https://docs.pagar.me/reference/criar-assinatura-avulsa.md
+  - https://docs.pagar.me/reference/criar-assinatura-de-plano-1.md
+  - https://docs.pagar.me/reference/criar-cliente-1.md
+  - https://docs.pagar.me/reference/criar-fatura-1.md
+  - https://docs.pagar.me/reference/criar-link-recebedor.md
+  - https://docs.pagar.me/reference/criar-link.md
+  - https://docs.pagar.me/reference/criar-pedido-2.md
+  - https://docs.pagar.me/reference/criar-pedido-com-antifraude.md
+  - https://docs.pagar.me/reference/criar-pedido-com-split-1.md
+  - https://docs.pagar.me/reference/criar-pedido-multicompradores.md
+  - https://docs.pagar.me/reference/criar-pedido-multimeios.md
+  - https://docs.pagar.me/reference/criar-plano-1.md
+  - https://docs.pagar.me/reference/criar-recebedor-1.md
+  - https://docs.pagar.me/reference/criar-token-cart%C3%A3o-1.md
+  - https://docs.pagar.me/reference/deletar-item.md
+  - https://docs.pagar.me/reference/desativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/editar-cliente-1.md
+  - https://docs.pagar.me/reference/editar-item-1.md
+  - https://docs.pagar.me/reference/editar-item-do-pedido.md
+  - https://docs.pagar.me/reference/editar-item.md
+  - https://docs.pagar.me/reference/editar-meio-de-pagamento-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-metadados-da-assinatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-da-fatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-do-plano-1.md
+  - https://docs.pagar.me/reference/editar-minimum-price-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-plano-1.md
+  - https://docs.pagar.me/reference/editar-recebedor-1.md
+  - https://docs.pagar.me/reference/enviar-webhook.md
+  - https://docs.pagar.me/reference/excluir-plano-1.md
+  - https://docs.pagar.me/reference/fechar-um-pedido.md
+  - https://docs.pagar.me/reference/incluir-desconto-1.md
+  - https://docs.pagar.me/reference/incluir-incremento-1.md
+  - https://docs.pagar.me/reference/incluir-item-1.md
+  - https://docs.pagar.me/reference/incluir-item-2.md
+  - https://docs.pagar.me/reference/incluir-item.md
+  - https://docs.pagar.me/reference/incluir-uso.md
+  - https://docs.pagar.me/reference/listar-assinaturas-1.md
+  - https://docs.pagar.me/reference/listar-ciclos-1.md
+  - https://docs.pagar.me/reference/listar-clientes-1.md
+  - https://docs.pagar.me/reference/listar-descontos-2.md
+  - https://docs.pagar.me/reference/listar-faturas-1.md
+  - https://docs.pagar.me/reference/listar-incrementos.md
+  - https://docs.pagar.me/reference/listar-pedidos.md
+  - https://docs.pagar.me/reference/listar-planos-1.md
+  - https://docs.pagar.me/reference/listar-recebedores-1.md
+  - https://docs.pagar.me/reference/listar-uso.md
+  - https://docs.pagar.me/reference/listar-webhooks.md
+  - https://docs.pagar.me/reference/obter-assinatura-1.md
+  - https://docs.pagar.me/reference/obter-ciclo-1.md
+  - https://docs.pagar.me/reference/obter-cliente-1.md
+  - https://docs.pagar.me/reference/obter-desconto-1.md
+  - https://docs.pagar.me/reference/obter-fatura-1.md
+  - https://docs.pagar.me/reference/obter-incremento-1.md
+  - https://docs.pagar.me/reference/obter-item-do-pedido.md
+  - https://docs.pagar.me/reference/obter-link.md
+  - https://docs.pagar.me/reference/obter-links.md
+  - https://docs.pagar.me/reference/obter-pedido.md
+  - https://docs.pagar.me/reference/obter-plano-1.md
+  - https://docs.pagar.me/reference/obter-recebedor-1.md
+  - https://docs.pagar.me/reference/obter-saldo.md
+  - https://docs.pagar.me/reference/obter-webhook.md
+  - https://docs.pagar.me/reference/remover-desconto-1.md
+  - https://docs.pagar.me/reference/remover-incremento-1.md
+  - https://docs.pagar.me/reference/remover-item-1.md
+  - https://docs.pagar.me/reference/remover-item.md
+  - https://docs.pagar.me/reference/remover-todos-os-itens.md
+  - https://docs.pagar.me/reference/remover-uso.md
+  - https://docs.pagar.me/reference/renovar-ciclo-1.md
+  - https://docs.pagar.me/reference/retornando-pagamentos-por-recebedor.md
+  - https://docs.pagar.me/reference/retornando-pagamentos.md
+  - https://docs.pagar.me/reference/retornando-um-pagamento.md
+  - https://docs.pagar.me/reference/retornando-urs-de-um-recebedor-v5.md
+  merge:
+    pages: 78
+    deduped: 82
+    conflicts_kept_first: 0

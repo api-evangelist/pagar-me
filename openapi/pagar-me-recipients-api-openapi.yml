@@ -1,0 +1,2209 @@
+openapi: 3.2.0
+info:
+  title: pagarme-api Recipients API
+  version: '5'
+servers:
+- url: https://api.pagar.me/core/v5
+security:
+- sec0: []
+tags:
+- name: Recipients
+paths:
+  /recipients:
+    post:
+      summary: Criar recebedor
+      description: Rota para criar um recebedor, definindo os dados do recebedor, transferência e qual a conta bancária que será utilizada para envio dos pagamentos.
+      operationId: criar-recebedor-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - register_information
+              - default_bank_account
+              properties:
+                code:
+                  type: string
+                  description: Referencia externa única por recebedor
+                register_information:
+                  type: object
+                  description: Dados cadastrais do recebedor. O objeto deve ser preenchido de acordo com o tipo do recebedor, Pessoa Física [PF] ou Pessoa Jurídica [PJ].
+                  required:
+                  - email
+                  - document
+                  - type
+                  - company_name
+                  - trading_name
+                  - annual_revenue
+                  - name
+                  - birthdate
+                  - monthly_income
+                  - professional_occupation
+                  properties:
+                    email:
+                      type: string
+                      description: '[PF/PJ] E-mail do recebedor.'
+                    document:
+                      type: string
+                      description: '[PF/PJ] Número do documento. Recebedores Pessoa Física preencherão o CPF e os recebedores Pessoa Jurídica preencherão o CNPJ.'
+                    type:
+                      type: string
+                      description: '[PF/PJ] Para recebedores Pessoa Física, utilizar ''individual'' e para recebedores Pessoa Jurídica, utilizar ''corporation''.'
+                    site_url:
+                      type: string
+                      description: '[PF/PJ] Site do recebedor. Observação: É necessário incluir o protocolo Http ou Https.'
+                    phone_numbers:
+                      type: object
+                      description: '[PJ] Telefone do recebedor.'
+                      required:
+                      - ddd
+                      - number
+                      properties:
+                        ddd:
+                          type: string
+                          description: DDD (Discagem Direta à Distância)
+                        number:
+                          type: string
+                          description: Número do telefone
+                        type:
+                          type: string
+                          description: Tipo do telefone
+                    company_name:
+                      type: string
+                      description: '[PJ] Nome fantasia do recebedor. Campo exclusivo para recebedores Pessoa Jurídica.'
+                    trading_name:
+                      type: string
+                      description: '[PJ] Razão social da empresa. Campo exclusivo para recebedores Pessoa Jurídica.'
+                    annual_revenue:
+                      type: integer
+                      description: '[PJ] Receita anual da empresa. Campo exclusivo para recebedores Pessoa Jurídica.'
+                      format: int32
+                    corporation_type:
+                      type: string
+                      description: '[PJ] Tipo da empresa. Campo exclusivo para recebedores Pessoa Jurídica.'
+                    founding_date:
+                      type: string
+                      description: '[PJ] Data de fundação da empresa. Campo exclusivo para recebedores Pessoa Jurídica.'
+                    main_address:
+                      type: object
+                      description: '[PJ] Endereço da empresa. Campo exclusivo para recebedores Pessoa Jurídica.'
+                      required:
+                      - street
+                      - complementary
+                      - street_number
+                      - neighborhood
+                      - city
+                      - state
+                      - zip_code
+                      - reference_point
+                      properties:
+                        street:
+                          type: string
+                          description: Rua
+                        complementary:
+                          type: string
+                          description: Complemento
+                        street_number:
+                          type: string
+                          description: Número
+                        neighborhood:
+                          type: string
+                          description: Bairro
+                        city:
+                          type: string
+                          description: Cidade
+                        state:
+                          type: string
+                          description: Estado
+                        zip_code:
+                          type: string
+                          description: CEP. Para endereço brasileiro, deve conter uma numeração de 8 dígitos
+                        reference_point:
+                          type: string
+                          description: Ponto de referência do endereço
+                    managing_partners:
+                      type: array
+                      description: '[PJ] Representante legal atrelado a empresa. Campo exclusivo para recebedores Pessoa Jurídica.'
+                      items:
+                        properties:
+                          name:
+                            type: string
+                            description: Nome do representante legal atrelado a empresa representada pelo recebedor
+                          email:
+                            type: string
+                            description: E-mail do representante legal atrelado a empresa representada pelo recebedor
+                          document:
+                            type: string
+                            description: Número do CPF do representante legal atrelado a empresa representada pelo recebedor
+                          type:
+                            type: string
+                            description: Sempre será 'individual'
+                          mother_name:
+                            type: string
+                            description: Nome da mãe do representante legal atrelado a empresa representada pelo recebedor
+                          birthdate:
+                            type: string
+                            description: Aniversário do representante legal atrelado a empresa representada pelo recebedor
+                          monthly_income:
+                            type: string
+                            description: 'Renda mensal média ou estimada declarada pelo representante legal atrelado a empresa representada pelo recebedor. Exemplo: de R$1.000,00 até R$2.000,00'
+                          professional_occupation:
+                            type: string
+                            description: Ocupação profissional do representante legal atrelado a empresa representada pelo recebedor
+                          self_declared_legal_representative:
+                            type: boolean
+                            description: Garantia de que aquele cadastro de pessoal física se identifica como representante legal do CNPJ do recebedor ao qual está atrelado
+                          address:
+                            type: object
+                            required:
+                            - street
+                            - complementary
+                            - street_number
+                            - neighborhood
+                            - city
+                            - state
+                            - zip_code
+                            - reference_point
+                            properties:
+                              street:
+                                type: string
+                                description: Rua
+                              complementary:
+                                type: string
+                                description: Complemento
+                              street_number:
+                                type: string
+                                description: Número
+                              neighborhood:
+                                type: string
+                                description: Bairro
+                              city:
+                                type: string
+                                description: Cidade
+                              state:
+                                type: string
+                                description: Estado
+                              zip_code:
+                                type: string
+                                description: CEP. Para endereço brasileiro, deve conter uma numeração de 8 dígitos
+                              reference_point:
+                                type: string
+                                description: Ponto de referência do endereço
+                          phone_numbers:
+                            type: array
+                            items:
+                              properties:
+                                ddd:
+                                  type: string
+                                  description: DDD (Discagem Direta à Distância)
+                                number:
+                                  type: string
+                                  description: Número do telefone
+                                type:
+                                  type: string
+                                  description: Tipo do telefone
+                              required:
+                              - ddd
+                              - number
+                              type: object
+                        required:
+                        - name
+                        - email
+                        - document
+                        - birthdate
+                        - monthly_income
+                        - professional_occupation
+                        - self_declared_legal_representative
+                        type: object
+                    name:
+                      type: string
+                      description: '[PF] Nome do recebedor. Campo exclusivo para recebedores Pessoa Física.'
+                    mother_name:
+                      type: string
+                      description: '[PF] Nome da mãe. Campo exclusivo para recebedores Pessoa Física.'
+                    birthdate:
+                      type: string
+                      description: '[PF] Aniversário. Campo exclusivo para recebedores Pessoa Física.'
+                    monthly_income:
+                      type: integer
+                      description: '[PF] Renda mensal. Campo exclusivo para recebedores Pessoa Física.'
+                      format: int32
+                    professional_occupation:
+                      type: string
+                      description: '[PF] Ocupação profissional. Campo exclusivo para recebedores Pessoa Física.'
+                    address:
+                      type: object
+                      description: '[PF] Endereço do recebedor.'
+                      required:
+                      - street
+                      - complementary
+                      - street_number
+                      - neighborhood
+                      - city
+                      - state
+                      - zip_code
+                      - reference_point
+                      properties:
+                        street:
+                          type: string
+                          description: Rua
+                        complementary:
+                          type: string
+                          description: Complemento
+                        street_number:
+                          type: string
+                          description: Número
+                        neighborhood:
+                          type: string
+                          description: Bairro
+                        city:
+                          type: string
+                          description: Cidade
+                        state:
+                          type: string
+                          description: Estado
+                        zip_code:
+                          type: string
+                          description: CEP. Para endereço brasileiro, deve conter uma numeração de 8 dígitos
+                        reference_point:
+                          type: string
+                          description: Ponto de referência do endereço
+                default_bank_account:
+                  type: object
+                  description: Dados da conta bancária do recebedor.
+                  required:
+                  - holder_name
+                  - holder_type
+                  - holder_document
+                  - bank
+                  - branch_number
+                  - account_number
+                  - account_check_digit
+                  - type
+                  properties:
+                    holder_name:
+                      type: string
+                      description: Nome do titular da conta.
+                    holder_type:
+                      type: string
+                      description: Tipo de titular. Valores possíveis são **individual** (pessoa física) ou **company** (pessoa jurídica).
+                    holder_document:
+                      type: string
+                      description: Número do documento do titular da conta. Deve ser igual ao documento do recebedor.
+                    bank:
+                      type: string
+                      description: Código do banco.
+                    branch_number:
+                      type: string
+                      description: Número da agência.
+                    branch_check_digit:
+                      type: string
+                      description: Código verificador da agência.
+                    account_number:
+                      type: string
+                      description: Número da conta. Máximo 13 caracteres numéricos
+                    account_check_digit:
+                      type: string
+                      description: Código verificador da conta.
+                    type:
+                      type: string
+                      description: Tipo da conta. Valores possíveis são **checking** ou **savings**.
+                    metadata:
+                      type: object
+                      description: Objeto chave/valor utilizado para armazenar informações adicionais sobre a conta bancária.
+                      properties: {}
+                transfer_settings:
+                  type: object
+                  description: Informações de transferência do recebedor
+                  properties:
+                    transfer_enabled:
+                      type: boolean
+                      description: _Indica se o recebedor receberá seus pagamentos automaticamente `.
+                    transfer_interval:
+                      type: string
+                      description: Indica a frequência das transferências automáticas para a conta do recebedor.
+                    transfer_day:
+                      type: integer
+                      description: Indica o dia em que ocorrerá as transferências automáticas.
+                      format: int32
+                automatic_anticipation_settings:
+                  type: object
+                  description: Informações de antecipação automática do recebedor
+                  properties:
+                    enabled:
+                      type: boolean
+                      description: Indica se o recebedor receberá antecipações automaticamente
+                    type:
+                      type: string
+                      description: ndica o tipo de antecipação automática que será configurado para a conta do recebedor. Valores possíveis **full** e **1025**.
+                    volume_percentage:
+                      type: string
+                      description: Indica o volume passível de ser antecipado para o recebedor.
+                    days:
+                      type: array
+                      description: Indica os dias em que ocorrerá as antecipações automáticas.
+                      items:
+                        type: string
+                    delay:
+                      type: string
+                      description: Indica a quantidade de dias que serão desconsiderados na contabilização do valor passível de ser antecipado. A contagem de dias é realizada a partir do dia da antecipação para trás
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o recebedor.
+            examples:
+              Request Pessoa Jurídica:
+                value:
+                  code: '1234'
+                  register_information:
+                    company_name: Recebedor pessoa juridica
+                    trading_name: Empresa LTDA
+                    email: empresax@avengers.com
+                    document: '77699131000133'
+                    type: corporation
+                    site_url: http://www.site.com
+                    annual_revenue: 1000000
+                    corporation_type: LTDA
+                    founding_date: '2010-10-30'
+                    main_address:
+                      street: Av. General Justo
+                      complementary: Bloco A
+                      street_number: '375'
+                      neighborhood: Centro
+                      city: Rio de Janeiro
+                      state: RJ
+                      zip_code: '20021130'
+                      reference_point: Ao lado da banca de jornal
+                    phone_numbers:
+                    - ddd: '21'
+                      number: '994647568'
+                      type: mobile
+                    managing_partners:
+                    - name: Tony Stark
+                      email: tstark@avengers.com
+                      document: '26224451990'
+                      type: individual
+                      mother_name: Nome da mae
+                      birthdate: 12/10/1995
+                      monthly_income: 120000
+                      professional_occupation: Vendedor
+                      self_declared_legal_representative: true
+                      address:
+                        street: Av. General Justo
+                        complementary: Bloco A
+                        street_number: '375'
+                        neighborhood: Centro
+                        city: Rio de Janeiro
+                        state: RJ
+                        zip_code: '20021130'
+                        reference_point: Ao lado da banca de jornal
+                      phone_numbers:
+                      - ddd: '27'
+                        number: '999992628'
+                        type: mobile
+                  transfer_settings:
+                    transfer_enabled: 'false'
+                    transfer_interval: Daily
+                    transfer_day: 0
+                  default_bank_account:
+                    holder_name: Tony Stark
+                    holder_type: individual
+                    holder_document: '26224451990'
+                    bank: '341'
+                    branch_number: '1234'
+                    branch_check_digit: '6'
+                    account_number: '12345'
+                    account_check_digit: '6'
+                    type: checking
+                  automatic_anticipation_settings:
+                    enabled: 'true'
+                    type: full
+                    volume_percentage: '50'
+                    delay: 'null'
+              Request Pessoa Física:
+                value:
+                  code: '1234'
+                  register_information:
+                    name: Recebedor Pessoa fisica
+                    email: tstark@avengers.com
+                    document: '26224451990'
+                    type: individual
+                    site_url: https://sitedorecebedor.com.br
+                    mother_name: Nome da mae
+                    birthdate: 12/10/1995
+                    monthly_income: 120000
+                    professional_occupation: Vendedor
+                    address:
+                      street: Av. General Justo
+                      complementary: Bloco A
+                      street_number: '375'
+                      neighborhood: Centro
+                      city: Rio de Janeiro
+                      state: RJ
+                      zip_code: '20021130'
+                      reference_point: Ao lado da banca de jornal
+                    phone_numbers:
+                    - ddd: '21'
+                      number: '994647568'
+                      type: mobile
+                  transfer_settings:
+                    transfer_enabled: 'false'
+                    transfer_interval: Daily
+                    transfer_day: 0
+                  default_bank_account:
+                    holder_name: Tony Stark
+                    holder_type: individual
+                    holder_document: '26224451990'
+                    bank: '341'
+                    branch_number: '1234'
+                    branch_check_digit: '6'
+                    account_number: '12345'
+                    account_check_digit: '6'
+                    type: checking
+                  automatic_anticipation_settings:
+                    enabled: 'true'
+                    type: full
+                    volume_percentage: '50'
+                    delay: 'null'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"re_clxnqkxk709sc019taqhmj4kf\",\n    \"name\": \"Antonio da Silva\",\n    \"email\": \"tstark@avengers.com\",\n    \"code\": \"21875b51-d4c3-46d3-aeee-d8b3112aab55\",\n    \"document\": \"26224451990\",\n    \"type\": \"individual\",\n    \"payment_mode\": \"bank_transfer\",\n    \"status\": \"active\",\n    \"created_at\": \"2024-06-20T20:50:31Z\",\n    \"updated_at\": \"2024-06-20T20:50:31Z\",\n    \"transfer_settings\": {\n        \"transfer_enabled\": true,\n        \"transfer_interval\": \"Weekly\",\n        \"transfer_day\": 1\n    },\n    \"default_bank_account\": {\n        \"id\": \"ba_LlpvMnqcXSO2EVW8\",\n        \"holder_name\": \"Tony Stark\",\n        \"holder_type\": \"individual\",\n        \"holder_document\": \"26224451990\",\n        \"bank\": \"341\",\n        \"branch_number\": \"1234\",\n        \"branch_check_digit\": \"6\",\n        \"account_number\": \"12345\",\n        \"account_check_digit\": \"6\",\n        \"type\": \"checking\",\n        \"status\": \"active\",\n        \"created_at\": \"2024-06-20T20:50:31Z\",\n        \"updated_at\": \"2024-06-20T20:50:31Z\",\n        \"metadata\": {\n            \"key\": \"value\"\n        }\n    },\n    \"gateway_recipients\": [\n        {\n            \"gateway\": \"pagarme\",\n            \"status\": \"active\",\n            \"pgid\": \"re_clxnqkxk709sc019taqhmj4kf\",\n            \"createdAt\": \"2024-06-20T20:50:31Z\",\n            \"updatedAt\": \"2024-06-20T20:50:31Z\"\n        }\n    ],\n    \"automatic_anticipation_settings\": {\n        \"enabled\": false,\n        \"type\": \"full\",\n        \"volume_percentage\": 0,\n        \"delay\": 365\n    },\n    \"metadata\": {\n        \"key\": \"value\"\n    },\n    \"register_information\": {\n        \"email\": \"tstark@avengers.com\",\n        \"document\": \"26224451990\",\n        \"type\": \"individual\",\n        \"site_url\": \"http://www.site.com\",\n        \"phone_numbers\": [\n            {\n                \"ddd\": \"77\",\n                \"number\": \"987655432\",\n                \"type\": \"mobile\"\n            }\n        ],\n        \"name\": \"Antonio da Silva\",\n        \"mother_name\": \"Maria da Silva\",\n        \"birthdate\": \"02/10/1990\",\n        \"monthly_income\": \"3000\",\n        \"professional_occupation\": \"Professor\",\n        \"address\": {\n            \"street\": \"Rua Alberto Carvalho\",\n            \"complementary\": \"Apto. 345\",\n            \"street_number\": \"111\",\n            \"neighborhood\": \"Gomes Pereira\",\n            \"city\": \"Porto Seguro\",\n            \"state\": \"BA\",\n            \"zip_code\": \"44900000\",\n            \"reference_point\": \"Próximo ao Posto Quatro Rodas\"\n        }\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: re_clxnqkxk709sc019taqhmj4kf
+                  name:
+                    type: string
+                    example: Antonio da Silva
+                  email:
+                    type: string
+                    example: tstark@avengers.com
+                  code:
+                    type: string
+                    example: 21875b51-d4c3-46d3-aeee-d8b3112aab55
+                  document:
+                    type: string
+                    example: '26224451990'
+                  type:
+                    type: string
+                    example: individual
+                  payment_mode:
+                    type: string
+                    example: bank_transfer
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2024-06-20T20:50:31Z'
+                  updated_at:
+                    type: string
+                    example: '2024-06-20T20:50:31Z'
+                  transfer_settings:
+                    type: object
+                    properties:
+                      transfer_enabled:
+                        type: boolean
+                        example: true
+                        default: true
+                      transfer_interval:
+                        type: string
+                        example: Weekly
+                      transfer_day:
+                        type: integer
+                        example: 1
+                        default: 0
+                  default_bank_account:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: ba_LlpvMnqcXSO2EVW8
+                      holder_name:
+                        type: string
+                        example: Tony Stark
+                      holder_type:
+                        type: string
+                        example: individual
+                      holder_document:
+                        type: string
+                        example: '26224451990'
+                      bank:
+                        type: string
+                        example: '341'
+                      branch_number:
+                        type: string
+                        example: '1234'
+                      branch_check_digit:
+                        type: string
+                        example: '6'
+                      account_number:
+                        type: string
+                        example: '12345'
+                      account_check_digit:
+                        type: string
+                        example: '6'
+                      type:
+                        type: string
+                        example: checking
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2024-06-20T20:50:31Z'
+                      updated_at:
+                        type: string
+                        example: '2024-06-20T20:50:31Z'
+                      metadata:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            example: value
+                  gateway_recipients:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gateway:
+                          type: string
+                          example: pagarme
+                        status:
+                          type: string
+                          example: active
+                        pgid:
+                          type: string
+                          example: re_clxnqkxk709sc019taqhmj4kf
+                        createdAt:
+                          type: string
+                          example: '2024-06-20T20:50:31Z'
+                        updatedAt:
+                          type: string
+                          example: '2024-06-20T20:50:31Z'
+                  automatic_anticipation_settings:
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                        example: false
+                        default: true
+                      type:
+                        type: string
+                        example: full
+                      volume_percentage:
+                        type: integer
+                        example: 0
+                        default: 0
+                      delay:
+                        type: integer
+                        example: 365
+                        default: 0
+                  metadata:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        example: value
+                  register_information:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        example: tstark@avengers.com
+                      document:
+                        type: string
+                        example: '26224451990'
+                      type:
+                        type: string
+                        example: individual
+                      site_url:
+                        type: string
+                        example: http://www.site.com
+                      phone_numbers:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            ddd:
+                              type: string
+                              example: '77'
+                            number:
+                              type: string
+                              example: '987655432'
+                            type:
+                              type: string
+                              example: mobile
+                      name:
+                        type: string
+                        example: Antonio da Silva
+                      mother_name:
+                        type: string
+                        example: Maria da Silva
+                      birthdate:
+                        type: string
+                        example: 02/10/1990
+                      monthly_income:
+                        type: string
+                        example: '3000'
+                      professional_occupation:
+                        type: string
+                        example: Professor
+                      address:
+                        type: object
+                        properties:
+                          street:
+                            type: string
+                            example: Rua Alberto Carvalho
+                          complementary:
+                            type: string
+                            example: Apto. 345
+                          street_number:
+                            type: string
+                            example: '111'
+                          neighborhood:
+                            type: string
+                            example: Gomes Pereira
+                          city:
+                            type: string
+                            example: Porto Seguro
+                          state:
+                            type: string
+                            example: BA
+                          zip_code:
+                            type: string
+                            example: '44900000'
+                          reference_point:
+                            type: string
+                            example: Próximo ao Posto Quatro Rodas
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Recipients
+    get:
+      summary: Listar recebedores
+      description: Retorna uma lista de objetos com os dados dos recebedor encontrados.
+      operationId: listar-recebedores-1
+      parameters:
+      - name: page
+        in: query
+        description: Página atual.
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: Quantidade de itens por página.
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"data\": [\n        {\n            \"id\": \"rp_Gxb5NJNiqvf0Y5Xv\",\n            \"name\": \"Tony Stark\",\n            \"email\": \"tstark@avengers.com\",\n            \"document\": \"26224451990\",\n            \"description\": \"Recebedor Tony Stark\",\n            \"type\": \"individual\",\n            \"status\": \"active\",\n            \"created_at\": \"2017-10-27T16:12:37Z\",\n            \"updated_at\": \"2017-10-27T16:12:37Z\",\n            \"transfer_settings\": {\n                \"transfer_enabled\": false,\n                \"transfer_interval\": \"Daily\",\n                \"transfer_day\": 0\n             },\n            \"default_bank_account\": {\n                \"id\": \"ba_KOoYDmEHvIEYD6v3\",\n                \"holder_name\": \"Tony Stark\",\n                \"holder_type\": \"individual\",\n                \"holder_document\": \"26224451990\",\n                \"bank\": \"341\",\n                \"branch_number\": \"12345\",\n                \"branch_check_digit\": \"6\",\n                \"account_number\": \"12345\",\n                \"account_check_digit\": \"6\",\n                \"type\": \"checking\",\n                \"status\": \"active\",\n                \"created_at\": \"2017-10-27T19:03:21Z\",\n                \"updated_at\": \"2017-10-27T19:03:21Z\",\n                \"metadata\": {\n                    \"meta_key\": \"meta_value\"\n                }\n            },\n            \"metadata\": {\n                \"key\": \"value\"\n            }\n        }\n    ],\n    \"paging\": {\n        \"total\": 1\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: rp_Gxb5NJNiqvf0Y5Xv
+                        name:
+                          type: string
+                          example: Tony Stark
+                        email:
+                          type: string
+                          example: tstark@avengers.com
+                        document:
+                          type: string
+                          example: '26224451990'
+                        description:
+                          type: string
+                          example: Recebedor Tony Stark
+                        type:
+                          type: string
+                          example: individual
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2017-10-27T16:12:37Z'
+                        updated_at:
+                          type: string
+                          example: '2017-10-27T16:12:37Z'
+                        transfer_settings:
+                          type: object
+                          properties:
+                            transfer_enabled:
+                              type: boolean
+                              example: false
+                              default: true
+                            transfer_interval:
+                              type: string
+                              example: Daily
+                            transfer_day:
+                              type: integer
+                              example: 0
+                              default: 0
+                        default_bank_account:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: ba_KOoYDmEHvIEYD6v3
+                            holder_name:
+                              type: string
+                              example: Tony Stark
+                            holder_type:
+                              type: string
+                              example: individual
+                            holder_document:
+                              type: string
+                              example: '26224451990'
+                            bank:
+                              type: string
+                              example: '341'
+                            branch_number:
+                              type: string
+                              example: '12345'
+                            branch_check_digit:
+                              type: string
+                              example: '6'
+                            account_number:
+                              type: string
+                              example: '12345'
+                            account_check_digit:
+                              type: string
+                              example: '6'
+                            type:
+                              type: string
+                              example: checking
+                            status:
+                              type: string
+                              example: active
+                            created_at:
+                              type: string
+                              example: '2017-10-27T19:03:21Z'
+                            updated_at:
+                              type: string
+                              example: '2017-10-27T19:03:21Z'
+                            metadata:
+                              type: object
+                              properties:
+                                meta_key:
+                                  type: string
+                                  example: meta_value
+                        metadata:
+                          type: object
+                          properties:
+                            key:
+                              type: string
+                              example: value
+                  paging:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 1
+                        default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Recipients
+  /recipients/:recipientId/settlements:
+    get:
+      summary: Retornando pagamentos por recebedor
+      description: Retorna um Array contendo objetos de pagamentos (settlements) de um recebedor ordenados a partir da data de criação colocando os mais recentes no topo.
+      operationId: retornando-pagamentos-por-recebedor
+      parameters:
+      - name: recipient_id
+        in: path
+        description: ID do recebedor
+        schema:
+          type: string
+        required: true
+      - name: payment_date_start
+        in: query
+        description: Início da data de pagamento (inclusivo). Data no formato YYYY-MM-DD
+        required: true
+        schema:
+          type: string
+      - name: payment_date_end
+        in: query
+        description: Fim da data de pagamento (inclusivo). Data no formato YYYY-MM-DD
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Recipients
+  /recipients/:recipient_id/receivable-units:
+    get:
+      summary: Retornando URs de um Recebedor
+      description: ''
+      operationId: retornando-urs-de-um-recebedor-v5
+      parameters:
+      - name: start_date
+        in: query
+        description: Dia inicial da consulta de agenda. Deve ser informado em timestamp
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: end_date
+        in: query
+        description: Dia final da consulta de agenda. Dia inicial da consulta de agenda. Deve ser informado em timestamp
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  [\n  {\n    \"payment_method\": \"credit_card\",\n    \"card_brand\": \"amex\",\n    \"amount\": 16661,\n    \"chargeback_amount\": -253,\n    \"chargeback_refund_amount\": 952,\n    \"credit_amount\": 16569,\n    \"fee_amount\": -33,\n    \"liquidation_amount\": -376,\n    \"refund_amount\": -382,\n    \"payment_date\": \"2023-09-22\"\n  }\n  ]\n}"
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Recipients
+  /recipients/{recipient_id}:
+    put:
+      summary: Editar recebedor
+      description: Rota para editar um recebedor, definindo os dados do recebedor, transferência e qual a conta bancária que será utilizada para envio dos pagamentos.
+      operationId: editar-recebedor-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                register_information:
+                  type: object
+                  description: Dados cadastrais do recebedor. O objeto deve ser preenchido de acordo com o tipo do recebedor, Pessoa Física [PF] ou Pessoa Jurídica [PJ]. A edição é apenas possível para campos que ainda não estejam preenchidos. Os campos com valores não serão possíveis de editar.
+                  properties:
+                    email:
+                      type: string
+                      description: '[PF/PJ] E-mail do recebedor.'
+                    document:
+                      type: string
+                      description: '[PF/PJ] Para recebedores Pessoa Física, utilizar ''individual'' e para recebedores Pessoa Jurídica, utilizar ''corporation''.'
+                    site_url:
+                      type: string
+                      description: '[PF/PJ] Site do recebedor. Observação: É necessário incluir o protocolo Http ou Https.'
+                    phone_numbers:
+                      type: array
+                      description: '[PJ/PJ] Telefone do recebedor.'
+                      items:
+                        properties:
+                          ddd:
+                            type: string
+                            description: DDD (Discagem Direta à Distância)
+                          number:
+                            type: string
+                            description: Número do telefone
+                          type:
+                            type: string
+                            description: Tipo do telefone
+                        required:
+                        - ddd
+                        - number
+                        type: object
+                    main_address:
+                      type: object
+                      required:
+                      - street
+                      - complementary
+                      - street_number
+                      - neighborhood
+                      - city
+                      - state
+                      - zip_code
+                      - reference_point
+                      properties:
+                        street:
+                          type: string
+                          description: Rua
+                        complementary:
+                          type: string
+                          description: Complemento
+                        street_number:
+                          type: string
+                          description: Número
+                        neighborhood:
+                          type: string
+                          description: Bairro
+                        city:
+                          type: string
+                          description: Cidade
+                        state:
+                          type: string
+                          description: Estado
+                        zip_code:
+                          type: string
+                          description: CEP. Para endereço brasileiro, deve conter uma numeração de 8 dígitos
+                        reference_point:
+                          type: string
+                          description: Ponto de referência do endereço
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o recebedor.
+            examples:
+              Request Pessoa Jurídica:
+                value:
+                  register_information:
+                    type: corporation
+                    document: '27123482000123'
+                    site_url: http://www.site.com
+                    company_name: Jorge e Isabel Publicidade e Propaganda Alterado
+                    trading_name: Jorge e Isabel Publicidade e Propaganda ME Alterado
+                    annual_revenue: '100000000'
+                    email: alterado@teste.com
+                    founding_date: 10/11/2010
+                    cnae: 8599-6/03
+                    managing_partners:
+                    - document: '26224451990'
+                      type: individual
+                      name: João da Silva Alterado
+                      birthdate: 10/02/1995 Alterado
+                      email: alterado@teste.com
+                      monthly_income: '30000'
+                      professional_occupation: Professor Alterado
+                      self_declared_legal_representative: true
+                      address:
+                        street: Av.Santos Lopes Alterada
+                        complementary: Apto. 104 Alterado
+                        street_number: 189 Alterado
+                        neighborhood: Centro Alterado
+                        city: Irecê Alterado
+                        state: BA Alterado
+                        zip_code: 44900000 Alterado
+                        reference_point: Em frente ao clube de tiro 1910 Alterado
+                      phone_numbers:
+                      - ddd: '75'
+                        number: '98999999'
+                        type: celular
+                      - ddd: '75'
+                        number: '98777777'
+                        type: celular
+                    main_address:
+                      street: Av.Santos Lopes Alterado
+                      complementary: Apto. 104 Alterado
+                      street_number: 189 Alterado
+                      neighborhood: Centro Alterado
+                      city: Irecê Alterado
+                      state: BA Alterado
+                      zip_code: 44900000 Alterado
+                      reference_point: Em frente ao clube de tiro 1910 Alterado
+                    phone_numbers:
+                    - ddd: '75'
+                      number: '97999991'
+                      type: celular
+                  metadata:
+                    meta_key: meta_value
+              Request Pessoa Física:
+                value:
+                  register_information:
+                    email: change@avengers.com
+                    document: '26224451990'
+                    type: individual
+                    site_url: http://www.site.com
+                    phone_numbers:
+                    - ddd: '85'
+                      number: '987655433'
+                      type: celular
+                    name: Antonio da Silva e Santos
+                    mother_name: Maria da Silva Santos
+                    birthdate: 02/02/1990
+                    monthly_income: '30000'
+                    professional_occupation: Padeiro
+                    address:
+                      street: Rua Alberto Pereira
+                      complementary: Apto. 348
+                      street_number: '115'
+                      neighborhood: Gomes Souza
+                      city: Campina Grande
+                      state: PB
+                      zip_code: '44900012'
+                      reference_point: Em frente a UFPB
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: ''
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      tags:
+      - Recipients
+    get:
+      summary: Obter recebedor
+      description: Retorna um objeto com os dados de um recebedor específico.
+      operationId: obter-recebedor-1
+      parameters:
+      - name: recipient_id
+        in: path
+        description: Código do recebedor.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Contrato antigo:
+                  value: "{\n    \"id\": \"rp_P6b2aBqtPsbwG7xw\",\n    \"name\": \"Tony Stark\",\n    \"email\": \"tstark@pagar.me\",\n    \"document\": \"26224451990\",\n    \"description\": \"Recebedor tony stark\",\n    \"type\": \"individual\",\n    \"status\": \"active\",\n    \"created_at\": \"2017-08-03T20:29:28Z\",\n    \"updated_at\": \"2017-08-03T20:29:28Z\",\n    \"transfer_settings\": {\n         \"transfer_enabled\": false,\n         \"transfer_interval\": \"Daily\",\n         \"transfer_day\": 0\n    },\n    \"default_bank_account\": {\n        \"id\": \"ba_Ez2lE71FBUPa3XZK\",\n        \"holder_name\": \"Tony Stark\",\n        \"holder_type\": \"individual\",\n        \"holder_document\": \"26224451990\",\n        \"bank\": \"341\",\n        \"branch_number\": \"12345\",\n        \"branch_check_digit\": \"6\",\n        \"account_number\": \"12345\",\n        \"account_check_digit\": \"6\",\n        \"type\": \"checking\",\n        \"status\": \"active\",\n        \"created_at\": \"2017-08-03T20:29:28Z\",\n        \"updated_at\": \"2017-08-03T20:29:28Z\",\n        \"metadata\": {\n            \"key\": \"value\"\n        }\n    },\n    \"gateway_recipients\": [\n        {\n            \"gateway\": \"pagarme\",\n            \"status\": \"active\",\n            \"pgid\": \"re_cj5aaa5i000cdhj6ernz14j1i\",\n            \"createdAt\": \"2017-08-03T20:29:28Z\",\n            \"updatedAt\": \"2017-08-03T20:29:28Z\"\n        }\n    ],\n    \"metadata\": {\n        \"key\": \"value\"\n    }\n}"
+                Contrato novo - PF:
+                  value: "{\n    \"id\": \"re_clt7l11wu03cl019tj3frja7x\",\n    \"name\": \"Antonio da Silva\",\n    \"email\": \"tstark@avengers.com\",\n    \"code\": \"2c0b5b0b-7be5-4a29-b26d-12dd7ed71311\",\n    \"document\": \"26224451990\",\n    \"type\": \"individual\",\n    \"payment_mode\": \"bank_transfer\",\n    \"status\": \"active\",\n    \"created_at\": \"2024-02-29T18:51:57Z\",\n    \"updated_at\": \"2024-02-29T18:51:57Z\",\n    \"transfer_settings\": {\n        \"transfer_enabled\": true,\n        \"transfer_interval\": \"Weekly\",\n        \"transfer_day\": 1\n    },\n    \"default_bank_account\": {\n        \"id\": \"ba_dO5X325CBHr3QYe9\",\n        \"holder_name\": \"Tony Stark\",\n        \"holder_type\": \"individual\",\n        \"holder_document\": \"26224451990\",\n        \"bank\": \"341\",\n        \"branch_number\": \"1234\",\n        \"branch_check_digit\": \"6\",\n        \"account_number\": \"12345\",\n        \"account_check_digit\": \"6\",\n        \"type\": \"checking\",\n        \"status\": \"active\",\n        \"created_at\": \"2024-02-29T18:51:57Z\",\n        \"updated_at\": \"2024-02-29T18:51:57Z\",\n        \"metadata\": {\n            \"key\": \"value\"\n        }\n    },\n    \"gateway_recipients\": [\n        {\n            \"gateway\": \"pagarme\",\n            \"status\": \"active\",\n            \"pgid\": \"re_clt7l11wu03cl019tj3frja7x\",\n            \"createdAt\": \"2024-02-29T18:51:58Z\",\n            \"updatedAt\": \"2024-02-29T18:51:58Z\"\n        }\n    ],\n    \"automatic_anticipation_settings\": {\n        \"enabled\": false,\n        \"type\": \"full\",\n        \"volume_percentage\": 0,\n        \"delay\": 365\n    },\n    \"metadata\": {\n        \"key\": \"value\"\n    },\n    \"register_information\": {\n        \"email\": \"tstark@avengers.com\",\n        \"document\": \"26224451990\",\n        \"type\": \"individual\",\n        \"site_url\": \"http://www.site.com\",\n        \"phone_numbers\": [\n            {\n                \"ddd\": \"77\",\n                \"number\": \"987655432\",\n                \"type\": \"mobile\"\n            }\n        ],\n        \"name\": \"Antonio da Silva\",\n        \"mother_name\": \"Maria da Silva\",\n        \"birthdate\": \"02/10/1990\",\n        \"monthly_income\": \"300000\",\n        \"professional_occupation\": \"Professor\",\n        \"address\": {\n            \"street\": \"Rua Alberto Carvalho\",\n            \"complementary\": \"Apto. 345\",\n            \"street_number\": \"111\",\n            \"neighborhood\": \"Gomes Pereira\",\n            \"city\": \"Porto Seguro\",\n            \"state\": \"BA\",\n            \"zip_code\": \"44900000\",\n            \"reference_point\": \"Próximo ao Posto Quatro Rodas\"\n        }\n    }\n}"
+                Contrato novo - PJ:
+                  value: "{\n    \"id\": \"re_clt7md7ej03th019tm0n4c1ct\",\n    \"name\": \"Jorge e Isabel Publicidade e Propaganda\",\n    \"email\": \"teste@teste.com\",\n    \"code\": \"2c0b5b0b-7be5-4a29-b26d-12dd7ed713e0\",\n    \"document\": \"27123482000123\",\n    \"type\": \"company\",\n    \"payment_mode\": \"bank_transfer\",\n    \"status\": \"active\",\n    \"created_at\": \"2024-02-29T19:29:24Z\",\n    \"updated_at\": \"2024-02-29T19:29:24Z\",\n    \"transfer_settings\": {\n        \"transfer_enabled\": true,\n        \"transfer_interval\": \"Weekly\",\n        \"transfer_day\": 1\n    },\n    \"default_bank_account\": {\n        \"id\": \"ba_301y9evH6NIgy6rl\",\n        \"holder_name\": \"Tony Stark\",\n        \"holder_type\": \"individual\",\n        \"holder_document\": \"27123482000123\",\n        \"bank\": \"341\",\n        \"branch_number\": \"1234\",\n        \"branch_check_digit\": \"6\",\n        \"account_number\": \"12345\",\n        \"account_check_digit\": \"6\",\n        \"type\": \"checking\",\n        \"status\": \"active\",\n        \"created_at\": \"2024-02-29T19:29:24Z\",\n        \"updated_at\": \"2024-02-29T19:29:24Z\",\n        \"metadata\": {\n            \"key\": \"value\"\n        }\n    },\n    \"gateway_recipients\": [\n        {\n            \"gateway\": \"pagarme\",\n            \"status\": \"active\",\n            \"pgid\": \"re_clt7md7ej03th019tm0n4c1ct\",\n            \"createdAt\": \"2024-02-29T19:29:24Z\",\n            \"updatedAt\": \"2024-02-29T19:29:24Z\"\n        }\n    ],\n    \"automatic_anticipation_settings\": {\n        \"enabled\": false,\n        \"type\": \"full\",\n        \"volume_percentage\": 0,\n        \"delay\": 365\n    },\n    \"metadata\": {\n        \"key\": \"value\"\n    },\n    \"register_information\": {\n        \"email\": \"teste@teste.com\",\n        \"document\": \"27123482000123\",\n        \"type\": \"corporation\",\n        \"site_url\": \"http://www.site.com\",\n        \"phone_numbers\": [\n            {\n                \"ddd\": \"71\",\n                \"number\": \"99999999\",\n                \"type\": \"mobile\"\n            }\n        ],\n        \"company_name\": \"Jorge e Isabel Publicidade e Propaganda\",\n        \"trading_name\": \"Jorge e Isabel Publicidade e Propaganda ME\",\n        \"annual_revenue\": \"100000000\",\n        \"founding_date\": \"10/10/2010\",\n        \"cnae\": \"4651-6/01\",\n        \"main_address\": {\n            \"street\": \"Av.Santos Lopes\",\n            \"complementary\": \"Apto. 104\",\n            \"street_number\": \"189\",\n            \"neighborhood\": \"Centro\",\n            \"city\": \"Irecê\",\n            \"state\": \"BA\",\n            \"zip_code\": \"44900000\",\n            \"reference_point\": \"Em frente ao clube de tiro 1910\"\n        },\n        \"managing_partners\": [\n            {\n                \"name\": \"João da Silva\",\n                \"email\": \"teste@teste.com\",\n                \"document\": \"26224451990\",\n                \"type\": \"individual\",\n                \"birthdate\": \"10/02/1995\",\n                \"monthly_income\": \"300000\",\n                \"professional_occupation\": \"Professor\",\n                \"self_declared_representative\": true,\n                \"address\": {\n                    \"street\": \"Av.Santos Lopes\",\n                    \"complementary\": \"Apto. 104\",\n                    \"street_number\": \"189\",\n                    \"neighborhood\": \"Centro\",\n                    \"city\": \"Irecê\",\n                    \"state\": \"BA\",\n                    \"zip_code\": \"44900000\",\n                    \"reference_point\": \"Em frente ao clube de tiro 1910\"\n                },\n                \"phone_numbers\": [\n                    {\n                        \"ddd\": \"71\",\n                        \"number\": \"99999999\",\n                        \"type\": \"mobile\"\n                    },\n                    {\n                        \"ddd\": \"71\",\n                        \"number\": \"97777777\",\n                        \"type\": \"mobile\"\n                    }\n                ]\n            }\n        ]\n    }\n}"
+              schema:
+                oneOf:
+                - title: Contrato antigo
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: rp_P6b2aBqtPsbwG7xw
+                    name:
+                      type: string
+                      example: Tony Stark
+                    email:
+                      type: string
+                      example: tstark@pagar.me
+                    document:
+                      type: string
+                      example: '26224451990'
+                    description:
+                      type: string
+                      example: Recebedor tony stark
+                    type:
+                      type: string
+                      example: individual
+                    status:
+                      type: string
+                      example: active
+                    created_at:
+                      type: string
+                      example: '2017-08-03T20:29:28Z'
+                    updated_at:
+                      type: string
+                      example: '2017-08-03T20:29:28Z'
+                    transfer_settings:
+                      type: object
+                      properties:
+                        transfer_enabled:
+                          type: boolean
+                          example: false
+                          default: true
+                        transfer_interval:
+                          type: string
+                          example: Daily
+                        transfer_day:
+                          type: integer
+                          example: 0
+                          default: 0
+                    default_bank_account:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: ba_Ez2lE71FBUPa3XZK
+                        holder_name:
+                          type: string
+                          example: Tony Stark
+                        holder_type:
+                          type: string
+                          example: individual
+                        holder_document:
+                          type: string
+                          example: '26224451990'
+                        bank:
+                          type: string
+                          example: '341'
+                        branch_number:
+                          type: string
+                          example: '12345'
+                        branch_check_digit:
+                          type: string
+                          example: '6'
+                        account_number:
+                          type: string
+                          example: '12345'
+                        account_check_digit:
+                          type: string
+                          example: '6'
+                        type:
+                          type: string
+                          example: checking
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2017-08-03T20:29:28Z'
+                        updated_at:
+                          type: string
+                          example: '2017-08-03T20:29:28Z'
+                        metadata:
+                          type: object
+                          properties:
+                            key:
+                              type: string
+                              example: value
+                    gateway_recipients:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          gateway:
+                            type: string
+                            example: pagarme
+                          status:
+                            type: string
+                            example: active
+                          pgid:
+                            type: string
+                            example: re_cj5aaa5i000cdhj6ernz14j1i
+                          createdAt:
+                            type: string
+                            example: '2017-08-03T20:29:28Z'
+                          updatedAt:
+                            type: string
+                            example: '2017-08-03T20:29:28Z'
+                    metadata:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          example: value
+                - title: Contrato novo - PF
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: re_clt7l11wu03cl019tj3frja7x
+                    name:
+                      type: string
+                      example: Antonio da Silva
+                    email:
+                      type: string
+                      example: tstark@avengers.com
+                    code:
+                      type: string
+                      example: 2c0b5b0b-7be5-4a29-b26d-12dd7ed71311
+                    document:
+                      type: string
+                      example: '26224451990'
+                    type:
+                      type: string
+                      example: individual
+                    payment_mode:
+                      type: string
+                      example: bank_transfer
+                    status:
+                      type: string
+                      example: active
+                    created_at:
+                      type: string
+                      example: '2024-02-29T18:51:57Z'
+                    updated_at:
+                      type: string
+                      example: '2024-02-29T18:51:57Z'
+                    transfer_settings:
+                      type: object
+                      properties:
+                        transfer_enabled:
+                          type: boolean
+                          example: true
+                          default: true
+                        transfer_interval:
+                          type: string
+                          example: Weekly
+                        transfer_day:
+                          type: integer
+                          example: 1
+                          default: 0
+                    default_bank_account:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: ba_dO5X325CBHr3QYe9
+                        holder_name:
+                          type: string
+                          example: Tony Stark
+                        holder_type:
+                          type: string
+                          example: individual
+                        holder_document:
+                          type: string
+                          example: '26224451990'
+                        bank:
+                          type: string
+                          example: '341'
+                        branch_number:
+                          type: string
+                          example: '1234'
+                        branch_check_digit:
+                          type: string
+                          example: '6'
+                        account_number:
+                          type: string
+                          example: '12345'
+                        account_check_digit:
+                          type: string
+                          example: '6'
+                        type:
+                          type: string
+                          example: checking
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2024-02-29T18:51:57Z'
+                        updated_at:
+                          type: string
+                          example: '2024-02-29T18:51:57Z'
+                        metadata:
+                          type: object
+                          properties:
+                            key:
+                              type: string
+                              example: value
+                    gateway_recipients:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          gateway:
+                            type: string
+                            example: pagarme
+                          status:
+                            type: string
+                            example: active
+                          pgid:
+                            type: string
+                            example: re_clt7l11wu03cl019tj3frja7x
+                          createdAt:
+                            type: string
+                            example: '2024-02-29T18:51:58Z'
+                          updatedAt:
+                            type: string
+                            example: '2024-02-29T18:51:58Z'
+                    automatic_anticipation_settings:
+                      type: object
+                      properties:
+                        enabled:
+                          type: boolean
+                          example: false
+                          default: true
+                        type:
+                          type: string
+                          example: full
+                        volume_percentage:
+                          type: integer
+                          example: 0
+                          default: 0
+                        delay:
+                          type: integer
+                          example: 365
+                          default: 0
+                    metadata:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          example: value
+                    register_information:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          example: tstark@avengers.com
+                        document:
+                          type: string
+                          example: '26224451990'
+                        type:
+                          type: string
+                          example: individual
+                        site_url:
+                          type: string
+                          example: http://www.site.com
+                        phone_numbers:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              ddd:
+                                type: string
+                                example: '77'
+                              number:
+                                type: string
+                                example: '987655432'
+                              type:
+                                type: string
+                                example: mobile
+                        name:
+                          type: string
+                          example: Antonio da Silva
+                        mother_name:
+                          type: string
+                          example: Maria da Silva
+                        birthdate:
+                          type: string
+                          example: 02/10/1990
+                        monthly_income:
+                          type: string
+                          example: '300000'
+                        professional_occupation:
+                          type: string
+                          example: Professor
+                        address:
+                          type: object
+                          properties:
+                            street:
+                              type: string
+                              example: Rua Alberto Carvalho
+                            complementary:
+                              type: string
+                              example: Apto. 345
+                            street_number:
+                              type: string
+                              example: '111'
+                            neighborhood:
+                              type: string
+                              example: Gomes Pereira
+                            city:
+                              type: string
+                              example: Porto Seguro
+                            state:
+                              type: string
+                              example: BA
+                            zip_code:
+                              type: string
+                              example: '44900000'
+                            reference_point:
+                              type: string
+                              example: Próximo ao Posto Quatro Rodas
+                - title: Contrato novo - PJ
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: re_clt7md7ej03th019tm0n4c1ct
+                    name:
+                      type: string
+                      example: Jorge e Isabel Publicidade e Propaganda
+                    email:
+                      type: string
+                      example: teste@teste.com
+                    code:
+                      type: string
+                      example: 2c0b5b0b-7be5-4a29-b26d-12dd7ed713e0
+                    document:
+                      type: string
+                      example: '27123482000123'
+                    type:
+                      type: string
+                      example: company
+                    payment_mode:
+                      type: string
+                      example: bank_transfer
+                    status:
+                      type: string
+                      example: active
+                    created_at:
+                      type: string
+                      example: '2024-02-29T19:29:24Z'
+                    updated_at:
+                      type: string
+                      example: '2024-02-29T19:29:24Z'
+                    transfer_settings:
+                      type: object
+                      properties:
+                        transfer_enabled:
+                          type: boolean
+                          example: true
+                          default: true
+                        transfer_interval:
+                          type: string
+                          example: Weekly
+                        transfer_day:
+                          type: integer
+                          example: 1
+                          default: 0
+                    default_bank_account:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: ba_301y9evH6NIgy6rl
+                        holder_name:
+                          type: string
+                          example: Tony Stark
+                        holder_type:
+                          type: string
+                          example: individual
+                        holder_document:
+                          type: string
+                          example: '27123482000123'
+                        bank:
+                          type: string
+                          example: '341'
+                        branch_number:
+                          type: string
+                          example: '1234'
+                        branch_check_digit:
+                          type: string
+                          example: '6'
+                        account_number:
+                          type: string
+                          example: '12345'
+                        account_check_digit:
+                          type: string
+                          example: '6'
+                        type:
+                          type: string
+                          example: checking
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2024-02-29T19:29:24Z'
+                        updated_at:
+                          type: string
+                          example: '2024-02-29T19:29:24Z'
+                        metadata:
+                          type: object
+                          properties:
+                            key:
+                              type: string
+                              example: value
+                    gateway_recipients:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          gateway:
+                            type: string
+                            example: pagarme
+                          status:
+                            type: string
+                            example: active
+                          pgid:
+                            type: string
+                            example: re_clt7md7ej03th019tm0n4c1ct
+                          createdAt:
+                            type: string
+                            example: '2024-02-29T19:29:24Z'
+                          updatedAt:
+                            type: string
+                            example: '2024-02-29T19:29:24Z'
+                    automatic_anticipation_settings:
+                      type: object
+                      properties:
+                        enabled:
+                          type: boolean
+                          example: false
+                          default: true
+                        type:
+                          type: string
+                          example: full
+                        volume_percentage:
+                          type: integer
+                          example: 0
+                          default: 0
+                        delay:
+                          type: integer
+                          example: 365
+                          default: 0
+                    metadata:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          example: value
+                    register_information:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          example: teste@teste.com
+                        document:
+                          type: string
+                          example: '27123482000123'
+                        type:
+                          type: string
+                          example: corporation
+                        site_url:
+                          type: string
+                          example: http://www.site.com
+                        phone_numbers:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              ddd:
+                                type: string
+                                example: '71'
+                              number:
+                                type: string
+                                example: '99999999'
+                              type:
+                                type: string
+                                example: mobile
+                        company_name:
+                          type: string
+                          example: Jorge e Isabel Publicidade e Propaganda
+                        trading_name:
+                          type: string
+                          example: Jorge e Isabel Publicidade e Propaganda ME
+                        annual_revenue:
+                          type: string
+                          example: '100000000'
+                        founding_date:
+                          type: string
+                          example: 10/10/2010
+                        cnae:
+                          type: string
+                          example: 4651-6/01
+                        main_address:
+                          type: object
+                          properties:
+                            street:
+                              type: string
+                              example: Av.Santos Lopes
+                            complementary:
+                              type: string
+                              example: Apto. 104
+                            street_number:
+                              type: string
+                              example: '189'
+                            neighborhood:
+                              type: string
+                              example: Centro
+                            city:
+                              type: string
+                              example: Irecê
+                            state:
+                              type: string
+                              example: BA
+                            zip_code:
+                              type: string
+                              example: '44900000'
+                            reference_point:
+                              type: string
+                              example: Em frente ao clube de tiro 1910
+                        managing_partners:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: João da Silva
+                              email:
+                                type: string
+                                example: teste@teste.com
+                              document:
+                                type: string
+                                example: '26224451990'
+                              type:
+                                type: string
+                                example: individual
+                              birthdate:
+                                type: string
+                                example: 10/02/1995
+                              monthly_income:
+                                type: string
+                                example: '300000'
+                              professional_occupation:
+                                type: string
+                                example: Professor
+                              self_declared_representative:
+                                type: boolean
+                                example: true
+                                default: true
+                              address:
+                                type: object
+                                properties:
+                                  street:
+                                    type: string
+                                    example: Av.Santos Lopes
+                                  complementary:
+                                    type: string
+                                    example: Apto. 104
+                                  street_number:
+                                    type: string
+                                    example: '189'
+                                  neighborhood:
+                                    type: string
+                                    example: Centro
+                                  city:
+                                    type: string
+                                    example: Irecê
+                                  state:
+                                    type: string
+                                    example: BA
+                                  zip_code:
+                                    type: string
+                                    example: '44900000'
+                                  reference_point:
+                                    type: string
+                                    example: Em frente ao clube de tiro 1910
+                              phone_numbers:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    ddd:
+                                      type: string
+                                      example: '71'
+                                    number:
+                                      type: string
+                                      example: '99999999'
+                                    type:
+                                      type: string
+                                      example: mobile
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Recipients
+  /recipients/{recipient_id}/balance:
+    get:
+      summary: Obter saldo
+      description: ''
+      operationId: obter-saldo
+      parameters:
+      - name: recipient_id
+        in: path
+        description: Identificador do recebedor
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"currency\": \"BRL\",\n    \"available_amount\": 0,\n    \"waiting_funds_amount\": 0,\n    \"transferred_amount\": 0,\n    \"recipient\": {\n        \"id\": \"rp_pVZR1qZi64F9bR5e\",\n        \"name\": \"First recipient\",\n        \"email\": \"first_recipient@pagar.me\",\n        \"document\": \"12728994706\",\n        \"description\": \"Descrição do recebedor 1\",\n        \"type\": \"individual\",\n        \"status\": \"active\",\n        \"created_at\": \"2020-10-08T21:35:26Z\",\n        \"updated_at\": \"2020-10-17T18:54:06Z\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    example: BRL
+                  available_amount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  waiting_funds_amount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  transferred_amount:
+                    type: integer
+                    example: 0
+                    default: 0
+                  recipient:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: rp_pVZR1qZi64F9bR5e
+                      name:
+                        type: string
+                        example: First recipient
+                      email:
+                        type: string
+                        example: first_recipient@pagar.me
+                      document:
+                        type: string
+                        example: '12728994706'
+                      description:
+                        type: string
+                        example: Descrição do recebedor 1
+                      type:
+                        type: string
+                        example: individual
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2020-10-08T21:35:26Z'
+                      updated_at:
+                        type: string
+                        example: '2020-10-17T18:54:06Z'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Recipients
+  /recipients/{recipient_id}/code:
+    patch:
+      summary: Editar code de recebedor
+      description: ''
+      operationId: atualizar-code-de-recebedor
+      parameters:
+      - name: recipient_id
+        in: path
+        description: Identificador do recebedor
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - Code
+              properties:
+                Code:
+                  type: string
+                  description: Referencia externa única por recebedor
+            examples:
+              Request Example:
+                value:
+                  code: '123'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"rp_23452cBK6lP\",\n    \"name\": \"Tony Stark\",\n    \"email\": \"tstark@avengers.com\",\n    \"document\": \"223451990\",\n    \"description\": \"Recebedor Tony Stark\",\n    \"type\": \"individual\",\n    \"status\": \"active\",\n    \"created_at\": \"2018-05-23T16:17:39Z\",\n    \"updated_at\": \"2018-05-23T16:17:39Z\",\n    \"code\": \"123\",\n    \"transfer_settings\": {\n        \"transfer_enabled\": false,\n        \"transfer_interval\": \"Daily\",\n        \"transfer_day\": 0\n    },\n    \"default_bank_account\": {\n        \"id\": \"ba_2LYnR234Og\",\n        \"holder_name\": \"Tony Stark\",\n        \"holder_type\": \"individual\",\n        \"holder_document\": \"26224451990\",\n        \"bank\": \"341\",\n        \"branch_number\": \"12345\",\n        \"branch_check_digit\": \"6\",\n        \"account_number\": \"12345\",\n        \"account_check_digit\": \"6\",\n        \"type\": \"checking\",\n        \"status\": \"active\",\n        \"created_at\": \"2018-05-23T16:17:40Z\",\n        \"updated_at\": \"2018-05-23T16:17:40Z\",\n        \"metadata\": {\n            \"key\": \"value\"\n        }\n    },\n      \"automatic_anticipation_settings\": {\n        \"enabled\": true,\n        \"type\": \"full\",\n        \"volume_percentage\": 50,\n        \"delay\": 365,\n        \"days\": [\n            1,\n            3,\n            5\n        ]\n    },\n    \"gateway_recipients\": [\n        {\n            \"gateway\": \"pagarme\",\n            \"status\": \"active\",\n            \"pgid\": \"re_cjhjb34244o9jw6dyx5aizxn\",\n            \"createdAt\": \"2018-05-23T16:17:45Z\",\n            \"updatedAt\": \"2018-05-23T16:17:45Z\"\n        }\n    ],\n    \"metadata\": {\n        \"key\": \"value\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: rp_23452cBK6lP
+                  name:
+                    type: string
+                    example: Tony Stark
+                  email:
+                    type: string
+                    example: tstark@avengers.com
+                  document:
+                    type: string
+                    example: '223451990'
+                  description:
+                    type: string
+                    example: Recebedor Tony Stark
+                  type:
+                    type: string
+                    example: individual
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2018-05-23T16:17:39Z'
+                  updated_at:
+                    type: string
+                    example: '2018-05-23T16:17:39Z'
+                  code:
+                    type: string
+                    example: '123'
+                  transfer_settings:
+                    type: object
+                    properties:
+                      transfer_enabled:
+                        type: boolean
+                        example: false
+                        default: true
+                      transfer_interval:
+                        type: string
+                        example: Daily
+                      transfer_day:
+                        type: integer
+                        example: 0
+                        default: 0
+                  default_bank_account:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: ba_2LYnR234Og
+                      holder_name:
+                        type: string
+                        example: Tony Stark
+                      holder_type:
+                        type: string
+                        example: individual
+                      holder_document:
+                        type: string
+                        example: '26224451990'
+                      bank:
+                        type: string
+                        example: '341'
+                      branch_number:
+                        type: string
+                        example: '12345'
+                      branch_check_digit:
+                        type: string
+                        example: '6'
+                      account_number:
+                        type: string
+                        example: '12345'
+                      account_check_digit:
+                        type: string
+                        example: '6'
+                      type:
+                        type: string
+                        example: checking
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2018-05-23T16:17:40Z'
+                      updated_at:
+                        type: string
+                        example: '2018-05-23T16:17:40Z'
+                      metadata:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            example: value
+                  automatic_anticipation_settings:
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                        example: true
+                        default: true
+                      type:
+                        type: string
+                        example: full
+                      volume_percentage:
+                        type: integer
+                        example: 50
+                        default: 0
+                      delay:
+                        type: integer
+                        example: 365
+                        default: 0
+                      days:
+                        type: array
+                        items:
+                          type: integer
+                          example: 1
+                          default: 0
+                  gateway_recipients:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gateway:
+                          type: string
+                          example: pagarme
+                        status:
+                          type: string
+                          example: active
+                        pgid:
+                          type: string
+                          example: re_cjhjb34244o9jw6dyx5aizxn
+                        createdAt:
+                          type: string
+                          example: '2018-05-23T16:17:45Z'
+                        updatedAt:
+                          type: string
+                          example: '2018-05-23T16:17:45Z'
+                  metadata:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        example: value
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Recipients
+  /recipients/{recipient_id}/kyc_link:
+    post:
+      summary: Criar link de de Prova de Vida (KYC)
+      description: Rota para gerar o QR Code de acesso ao webapp.
+      operationId: criar-link-recebedor
+      parameters:
+      - name: recipient_id
+        in: path
+        description: Código do recebedor.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"url\": \"www.pagar.me/kyc/14214214215...\",\n    \"base64_qrcode\": \"PD56bWwgdVyc2lvb...pIi8+PC9zdmc+\",\n    \"expires_at\": \"2025-05-10T17:17:26Z\"\n}"
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: www.pagar.me/kyc/14214214215...
+                  base64_qrcode:
+                    type: string
+                    example: PD56bWwgdVyc2lvb...pIi8+PC9zdmc+
+                  expires_at:
+                    type: string
+                    example: '2025-05-10T17:17:26Z'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"errors\": [\n        {\n            \"message\": \"Must be passed a parameter to Create QrCode.\"\n        }\n    ]\n}"
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: Must be passed a parameter to Create QrCode.
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"errors\": [\n        {\n            \"message\": \"re_clsnosxwp000a019ts7a262ay doesn´t have any kyc with partially_denied status.\"\n        }\n    ]\n}"
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: re_clsnosxwp000a019ts7a262ay doesn´t have any kyc with partially_denied status.
+      deprecated: false
+      x-readme:
+        code-samples:
+        - language: curl
+          code: "curl --request POST \\\n     --url https://api.pagar.me/core/v5/recipients/re_clsnosxwp000a019ts7a262ay/kyc_link \\\n     --header 'accept: application/json' \\\n     --header 'content-type: application/json'"
+        samples-languages:
+        - curl
+      tags:
+      - Recipients
+components:
+  securitySchemes:
+    sec0:
+      type: http
+      scheme: basic
+x-readme-fauxas: true
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/ativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/atualizar-code-de-recebedor.md
+  - https://docs.pagar.me/reference/cancelar-assinatura-1.md
+  - https://docs.pagar.me/reference/cancelar-fatura-1.md
+  - https://docs.pagar.me/reference/cancelar-um-link-de-pagamento.md
+  - https://docs.pagar.me/reference/create-link.md
+  - https://docs.pagar.me/reference/criar-assinatura-avulsa.md
+  - https://docs.pagar.me/reference/criar-assinatura-de-plano-1.md
+  - https://docs.pagar.me/reference/criar-cliente-1.md
+  - https://docs.pagar.me/reference/criar-fatura-1.md
+  - https://docs.pagar.me/reference/criar-link-recebedor.md
+  - https://docs.pagar.me/reference/criar-link.md
+  - https://docs.pagar.me/reference/criar-pedido-2.md
+  - https://docs.pagar.me/reference/criar-pedido-com-antifraude.md
+  - https://docs.pagar.me/reference/criar-pedido-com-split-1.md
+  - https://docs.pagar.me/reference/criar-pedido-multicompradores.md
+  - https://docs.pagar.me/reference/criar-pedido-multimeios.md
+  - https://docs.pagar.me/reference/criar-plano-1.md
+  - https://docs.pagar.me/reference/criar-recebedor-1.md
+  - https://docs.pagar.me/reference/criar-token-cart%C3%A3o-1.md
+  - https://docs.pagar.me/reference/deletar-item.md
+  - https://docs.pagar.me/reference/desativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/editar-cliente-1.md
+  - https://docs.pagar.me/reference/editar-item-1.md
+  - https://docs.pagar.me/reference/editar-item-do-pedido.md
+  - https://docs.pagar.me/reference/editar-item.md
+  - https://docs.pagar.me/reference/editar-meio-de-pagamento-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-metadados-da-assinatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-da-fatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-do-plano-1.md
+  - https://docs.pagar.me/reference/editar-minimum-price-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-plano-1.md
+  - https://docs.pagar.me/reference/editar-recebedor-1.md
+  - https://docs.pagar.me/reference/enviar-webhook.md
+  - https://docs.pagar.me/reference/excluir-plano-1.md
+  - https://docs.pagar.me/reference/fechar-um-pedido.md
+  - https://docs.pagar.me/reference/incluir-desconto-1.md
+  - https://docs.pagar.me/reference/incluir-incremento-1.md
+  - https://docs.pagar.me/reference/incluir-item-1.md
+  - https://docs.pagar.me/reference/incluir-item-2.md
+  - https://docs.pagar.me/reference/incluir-item.md
+  - https://docs.pagar.me/reference/incluir-uso.md
+  - https://docs.pagar.me/reference/listar-assinaturas-1.md
+  - https://docs.pagar.me/reference/listar-ciclos-1.md
+  - https://docs.pagar.me/reference/listar-clientes-1.md
+  - https://docs.pagar.me/reference/listar-descontos-2.md
+  - https://docs.pagar.me/reference/listar-faturas-1.md
+  - https://docs.pagar.me/reference/listar-incrementos.md
+  - https://docs.pagar.me/reference/listar-pedidos.md
+  - https://docs.pagar.me/reference/listar-planos-1.md
+  - https://docs.pagar.me/reference/listar-recebedores-1.md
+  - https://docs.pagar.me/reference/listar-uso.md
+  - https://docs.pagar.me/reference/listar-webhooks.md
+  - https://docs.pagar.me/reference/obter-assinatura-1.md
+  - https://docs.pagar.me/reference/obter-ciclo-1.md
+  - https://docs.pagar.me/reference/obter-cliente-1.md
+  - https://docs.pagar.me/reference/obter-desconto-1.md
+  - https://docs.pagar.me/reference/obter-fatura-1.md
+  - https://docs.pagar.me/reference/obter-incremento-1.md
+  - https://docs.pagar.me/reference/obter-item-do-pedido.md
+  - https://docs.pagar.me/reference/obter-link.md
+  - https://docs.pagar.me/reference/obter-links.md
+  - https://docs.pagar.me/reference/obter-pedido.md
+  - https://docs.pagar.me/reference/obter-plano-1.md
+  - https://docs.pagar.me/reference/obter-recebedor-1.md
+  - https://docs.pagar.me/reference/obter-saldo.md
+  - https://docs.pagar.me/reference/obter-webhook.md
+  - https://docs.pagar.me/reference/remover-desconto-1.md
+  - https://docs.pagar.me/reference/remover-incremento-1.md
+  - https://docs.pagar.me/reference/remover-item-1.md
+  - https://docs.pagar.me/reference/remover-item.md
+  - https://docs.pagar.me/reference/remover-todos-os-itens.md
+  - https://docs.pagar.me/reference/remover-uso.md
+  - https://docs.pagar.me/reference/renovar-ciclo-1.md
+  - https://docs.pagar.me/reference/retornando-pagamentos-por-recebedor.md
+  - https://docs.pagar.me/reference/retornando-pagamentos.md
+  - https://docs.pagar.me/reference/retornando-um-pagamento.md
+  - https://docs.pagar.me/reference/retornando-urs-de-um-recebedor-v5.md
+  merge:
+    pages: 78
+    deduped: 82
+    conflicts_kept_first: 0

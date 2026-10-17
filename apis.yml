@@ -365,9 +365,11 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/criar-pedido-2
     type: APIReference
-  description: Create, list, retrieve, and manage orders — the top-level payment object in the Pagar.me Core API v5. Each order can contain one
-    or more charges paid via credit card, debit card, Pix, boleto, voucher, Google Pay, or private label card. Supports add-charge, cancellation,
-    capture, and refund flows, item-level pricing, customer association, and full split rules for marketplaces.
+  description: >-
+    Create, list, retrieve, and manage orders — the top-level payment object in the Pagar.me Core API
+    v5. Each order can contain one or more charges paid via credit card, debit card, Pix, boleto, voucher,
+    Google Pay, or private label card. Supports add-charge, cancellation, capture, and refund flows, item-level
+    pricing, customer association, and full split rules for marketplaces.
 - aid: pagar-me:pagarme-charges-api
   name: Pagar.me Charges API
   tags:
@@ -391,9 +393,11 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/obter-cobrança
     type: APIReference
-  description: Manage individual charges (cobranças) — the unit of capture inside an order. Get a charge, edit its payment method or saved card,
-    capture a pre-authorized amount, refund all or part of it, and inspect the chargeback lifecycle. Charges expose the full last-four / brand
-    / acquirer / NSU detail that finance and reconciliation tooling needs.
+  description: >-
+    Manage individual charges (cobranças) — the unit of capture inside an order. Get a charge, edit its
+    payment method or saved card, capture a pre-authorized amount, refund all or part of it, and inspect
+    the chargeback lifecycle. Charges expose the full last-four / brand / acquirer / NSU detail that finance
+    and reconciliation tooling needs.
 - aid: pagar-me:pagarme-customers-api
   name: Pagar.me Customers API
   tags:
@@ -408,8 +412,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/criar-cliente-1
     type: APIReference
-  description: Create and manage end-customer (buyer) records — personal data, CPF/CNPJ, contact info, and addresses — so that orders, subscriptions,
-    and saved cards can be tied to a stable customer identity. Underpins the customer wallet / one-click-buy experience.
+  description: >-
+    Create and manage end-customer (buyer) records — personal data, CPF/CNPJ, contact info, and addresses
+    — so that orders, subscriptions, and saved cards can be tied to a stable customer identity. Underpins
+    the customer wallet / one-click-buy experience.
 - aid: pagar-me:pagarme-cards-api
   name: Pagar.me Cards API
   tags:
@@ -425,9 +431,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/cartões-1
     type: APIReference
-  description: Tokenize, save, and edit credit/debit cards inside a Pagar.me customer wallet, off-load PCI scope, and reuse cards for one-click
-    buy and recurring charges. Supports network token (token de bandeira) issuance, the Card Updater service for automatic re-tokenization, and
-    private label cards.
+  description: >-
+    Tokenize, save, and edit credit/debit cards inside a Pagar.me customer wallet, off-load PCI scope,
+    and reuse cards for one-click buy and recurring charges. Supports network token (token de bandeira)
+    issuance, the Card Updater service for automatic re-tokenization, and private label cards.
 - aid: pagar-me:pagarme-plans-api
   name: Pagar.me Plans API
   tags:
@@ -445,8 +452,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/planos-1
     type: APIReference
-  description: Define reusable recurring billing plans — pricing, billing cycle (days/weeks/months), trial period, installment count, accepted
-    payment methods, and items — to back subscription products. Plans are the template that customer subscriptions instantiate.
+  description: >-
+    Define reusable recurring billing plans — pricing, billing cycle (days/weeks/months), trial period,
+    installment count, accepted payment methods, and items — to back subscription products. Plans are
+    the template that customer subscriptions instantiate.
 - aid: pagar-me:pagarme-subscriptions-api
   name: Pagar.me Subscriptions API
   tags:
@@ -466,9 +475,11 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/assinaturas-1
     type: APIReference
-  description: Create customer subscriptions either from a saved plan or as standalone (avulsa) subscriptions, renew billing cycles, edit payment
-    method / card / discount / minimum price, change items, and inspect each cycle's invoice and charge. Powers SaaS, streaming, education, club-of-the-month,
-    and other recurring revenue businesses on Pagar.me.
+  description: >-
+    Create customer subscriptions either from a saved plan or as standalone (avulsa) subscriptions, renew
+    billing cycles, edit payment method / card / discount / minimum price, change items, and inspect each
+    cycle's invoice and charge. Powers SaaS, streaming, education, club-of-the-month, and other recurring
+    revenue businesses on Pagar.me.
 - aid: pagar-me:pagarme-recipients-api
   name: Pagar.me Recipients API
   tags:
@@ -490,9 +501,11 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/recebedores-1
     type: APIReference
-  description: Onboard and manage recipients (recebedores) — the sub-merchants that receive split payments in a marketplace. Create the recipient,
-    run the KYC / prova de vida flow, attach bank accounts, configure automatic transfer settings (anticipation, withdrawal schedule, fees), and
-    update their identifying code. Backbone of every Pagar.me marketplace integration.
+  description: >-
+    Onboard and manage recipients (recebedores) — the sub-merchants that receive split payments in a marketplace.
+    Create the recipient, run the KYC / prova de vida flow, attach bank accounts, configure automatic
+    transfer settings (anticipation, withdrawal schedule, fees), and update their identifying code. Backbone
+    of every Pagar.me marketplace integration.
 - aid: pagar-me:pagarme-transfers-api
   name: Pagar.me Transfers API
   tags:
@@ -507,8 +520,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/objeto-transferência
     type: APIReference
-  description: Create, cancel, list, and retrieve transfers from a recipient's Pagar.me balance to their registered bank account, plus pull the
-    official transfer receipt (comprovante). Pair with the Withdrawals object for on-demand payouts in marketplace and split scenarios.
+  description: >-
+    Create, cancel, list, and retrieve transfers from a recipient's Pagar.me balance to their registered
+    bank account, plus pull the official transfer receipt (comprovante). Pair with the Withdrawals object
+    for on-demand payouts in marketplace and split scenarios.
 - aid: pagar-me:pagarme-balance-operations-api
   name: Pagar.me Balance Operations API
   tags:
@@ -528,8 +543,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/operação-de-saldo
     type: APIReference
-  description: Inspect the per-recipient balance ledger — every credit, debit, fee, refund, chargeback, anticipation, transfer, and adjustment
-    that moves money in or out of a Pagar.me account. The canonical source of truth for finance reconciliation against Pagar.me.
+  description: >-
+    Inspect the per-recipient balance ledger — every credit, debit, fee, refund, chargeback, anticipation,
+    transfer, and adjustment that moves money in or out of a Pagar.me account. The canonical source of
+    truth for finance reconciliation against Pagar.me.
 - aid: pagar-me:pagarme-receivables-api
   name: Pagar.me Receivables API
   tags:
@@ -543,8 +560,9 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/retornando-recebíveis
     type: APIReference
-  description: List the merchant's future receivables — the installments of credit-card sales that will settle over the coming weeks and months.
-    The basis for cash-flow forecasting and for any anticipation simulation.
+  description: >-
+    List the merchant's future receivables — the installments of credit-card sales that will settle over
+    the coming weeks and months. The basis for cash-flow forecasting and for any anticipation simulation.
 - aid: pagar-me:pagarme-anticipation-api
   name: Pagar.me Anticipation API
   tags:
@@ -559,9 +577,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/objeto-antecipação
     type: APIReference
-  description: Anticipate receivables (antecipação) — Pagar.me's working-capital product that lets a merchant or marketplace recipient pull future
-    credit-card installments to today's balance for a fee. Supports spot simulation, limits inspection, anticipation creation, list, and cancellation
-    of pending requests.
+  description: >-
+    Anticipate receivables (antecipação) — Pagar.me's working-capital product that lets a merchant or
+    marketplace recipient pull future credit-card installments to today's balance for a fee. Supports
+    spot simulation, limits inspection, anticipation creation, list, and cancellation of pending requests.
 - aid: pagar-me:pagarme-settlements-api
   name: Pagar.me Settlements API
   tags:
@@ -581,8 +600,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/objeto-settlements
     type: APIReference
-  description: Retrieve settlements (pagamentos) — the actual money movements out of Pagar.me to recipients — individually, in bulk, or scoped
-    to a specific recipient. Closes the loop between the Balance Operations ledger and the Transfers/Withdrawals that deliver funds to bank accounts.
+  description: >-
+    Retrieve settlements (pagamentos) — the actual money movements out of Pagar.me to recipients — individually,
+    in bulk, or scoped to a specific recipient. Closes the loop between the Balance Operations ledger
+    and the Transfers/Withdrawals that deliver funds to bank accounts.
 - aid: pagar-me:pagarme-disputes-api
   name: Pagar.me Disputes & Chargebacks API
   tags:
@@ -602,8 +623,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/disputas
     type: APIReference
-  description: List and retrieve disputes (disputas) and chargebacks raised against the merchant's transactions, including the new chargeback-specific
-    charge status. Lets risk and finance teams reconcile losses and feed dispute evidence workflows.
+  description: >-
+    List and retrieve disputes (disputas) and chargebacks raised against the merchant's transactions,
+    including the new chargeback-specific charge status. Lets risk and finance teams reconcile losses
+    and feed dispute evidence workflows.
 - aid: pagar-me:pagarme-payment-links-api
   name: Pagar.me Payment Links API
   tags:
@@ -618,8 +641,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/checkout-link
     type: APIReference
-  description: Generate, list, retrieve, activate, and cancel payment links — short URLs that wrap a Pagar.me Checkout for sale-by-link, WhatsApp
-    commerce, Instagram bio links, and lightweight invoicing. Includes the hosted checkout response object that returns success and failure callbacks.
+  description: >-
+    Generate, list, retrieve, activate, and cancel payment links — short URLs that wrap a Pagar.me Checkout
+    for sale-by-link, WhatsApp commerce, Instagram bio links, and lightweight invoicing. Includes the
+    hosted checkout response object that returns success and failure callbacks.
 - aid: pagar-me:pagarme-contracts-api
   name: Pagar.me Contracts & URs API
   tags:
@@ -634,9 +659,10 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5
     type: APIReference
-  description: Manage contract effects and Unidades de Recebíveis (URs) under the Brazilian Central Bank's Resoluções BCB 264 and 349 receivables-registry
-    regime. List contract effects, contest a contract, list contests, and pull URs by recipient — the regulatory surface every Brazilian sub-acquirer
-    integration must cover.
+  description: >-
+    Manage contract effects and Unidades de Recebíveis (URs) under the Brazilian Central Bank's Resoluções
+    BCB 264 and 349 receivables-registry regime. List contract effects, contest a contract, list contests,
+    and pull URs by recipient — the regulatory surface every Brazilian sub-acquirer integration must cover.
 - aid: pagar-me:pagarme-webhooks-api
   name: Pagar.me Webhooks API
   tags:
@@ -658,9 +684,10 @@ apis:
     type: APIReference
   - url: https://docs.pagar.me/docs/webhooks
     type: GettingStarted
-  description: Subscribe to and receive signed webhook events for every meaningful state change on Pagar.me — order.paid, charge.captured, charge.refunded,
-    subscription.created, recipient.kyc_updated, dispute.opened, and the rest of the catalog. The asynchronous backbone of any production Pagar.me
-    integration.
+  description: >-
+    Subscribe to and receive signed webhook events for every meaningful state change on Pagar.me — order.paid,
+    charge.captured, charge.refunded, subscription.created, recipient.kyc_updated, dispute.opened, and
+    the rest of the catalog. The asynchronous backbone of any production Pagar.me integration.
 - aid: pagar-me:pagarme-checkout-pagarme
   name: Pagar.me Hosted Checkout
   tags:
@@ -679,42 +706,169 @@ apis:
     type: Documentation
   - url: https://docs.pagar.me/docs/checkout_pagarme_skill_subscription
     type: Documentation
-  description: Pagar.me's drop-in hosted Checkout. Embed Pagar.me's PCI-compliant payment form to take credit card, Pix, and boleto for one-off
-    orders and subscriptions, with first-class AI/agent integration patterns (Claude Code, Codex, Cursor, Copilot) documented as Checkout Skills.
-- aid: pagar-me:pagar-me-disputas
+  description: >-
+    Pagar.me's drop-in hosted Checkout. Embed Pagar.me's PCI-compliant payment form to take credit card,
+    Pix, and boleto for one-off orders and subscriptions, with first-class AI/agent integration patterns
+    (Claude Code, Codex, Cursor, Copilot) documented as Checkout Skills.
+- aid: pagar-me:pagar-me-contestations-api
+  name: Pagar.me Contestations API
+  description: The Contestations API from Pagar.me — 1 operation(s) for contestations.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Contestations
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-contestations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-customers-api
+  name: Pagar.me Customers API
+  description: The Customers API from Pagar.me — 2 operation(s) for customers.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-customers-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-disputas-api
   name: Pagar.me Disputas API
-  description: Operações relacionadas à busca de disputas de chargeback. Aqui é possível ver o estado atual da disputa, histórico de eventos daquela
-    disputa, dentre outras informações relevantes.
+  description: >-
+    Operações relacionadas à busca de disputas de chargeback. Aqui é possível ver o estado atual da disputa,
+    histórico de eventos daquela disputa, dentre outras informações relevantes.
   humanURL: https://docs.pagar.me/reference
   baseURL: https://api.pagar.me/core/v5
   tags:
   - Disputas
   properties:
   - type: OpenAPI
-    url: openapi/pagar-me-disputas-openapi.yml
+    url: openapi/pagar-me-disputas-api-openapi.yml
   - type: JSONSchema
     url: json-schema/pagar-me-dispute-schema.json
-- aid: pagar-me:pagar-me-pagarme-api
-  name: Pagar.me Me Pagarme API
-  description: The Me Pagarme API from Pagar.me — 49 operation(s) for me pagarme.
+- aid: pagar-me:pagar-me-hooks-api
+  name: Pagar.me Hooks API
+  description: The Hooks API from Pagar.me — 3 operation(s) for hooks.
   humanURL: https://docs.pagar.me/reference
   baseURL: https://api.pagar.me/core/v5
   tags:
-  - Me Pagarme
+  - Hooks
   properties:
   - type: OpenAPI
-    url: openapi/pagar-me-pagarme-api-openapi.yml
-- aid: pagar-me:pagar-me-pagarme-api-register-v5
-  name: Pagar.me Me Pagarme Api Register V5 Openapi.Yml API
-  description: The Me Pagarme Api Register V5 Openapi.Yml API from Pagar.me — 3 operation(s) for me pagarme api register v5 openapi.yml.
+    url: openapi/pagar-me-hooks-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-invoices-api
+  name: Pagar.me Invoices API
+  description: The Invoices API from Pagar.me — 3 operation(s) for invoices.
   humanURL: https://docs.pagar.me/reference
   baseURL: https://api.pagar.me/core/v5
   tags:
-  - Me Pagarme Api Register V5 Openapi.Yml
+  - Invoices
   properties:
   - type: OpenAPI
-    url: openapi/pagar-me-pagarme-api-register-v5-openapi.yml
-
+    url: openapi/pagar-me-invoices-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-orders-api
+  name: Pagar.me Orders API
+  description: The Orders API from Pagar.me — 5 operation(s) for orders.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-orders-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-paymentlinks-api
+  name: Pagar.me Paymentlinks API
+  description: The Paymentlinks API from Pagar.me — 4 operation(s) for paymentlinks.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Paymentlinks
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-paymentlinks-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-plans-api
+  name: Pagar.me Plans API
+  description: The Plans API from Pagar.me — 5 operation(s) for plans.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Plans
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-plans-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-recipients-api
+  name: Pagar.me Recipients API
+  description: The Recipients API from Pagar.me — 7 operation(s) for recipients.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Recipients
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-recipients-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-settlement-obligations-api
+  name: Pagar.me Settlement Obligations API
+  description: >-
+    The Settlement Obligations API from Pagar.me — 2 operation(s) for settlement obligations.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Settlement Obligations
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-settlement-obligations-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-settlements-api
+  name: Pagar.me Settlements API
+  description: The Settlements API from Pagar.me — 2 operation(s) for settlements.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Settlements
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-settlements-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-subscriptions-api
+  name: Pagar.me Subscriptions API
+  description: The Subscriptions API from Pagar.me — 17 operation(s) for subscriptions.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-subscriptions-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
+- aid: pagar-me:pagar-me-tokens-api
+  name: Pagar.me Tokens API
+  description: The Tokens API from Pagar.me — 1 operation(s) for tokens.
+  humanURL: https://docs.pagar.me/reference
+  baseURL: https://api.pagar.me/core/v5
+  tags:
+  - Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/pagar-me-tokens-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/pagar-me-dispute-schema.json
 x-readme-harvest:
   date: '2026-10-14'
   ops: 80

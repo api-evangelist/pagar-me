@@ -1,0 +1,1760 @@
+openapi: 3.2.0
+info:
+  title: pagarme-api Plans API
+  version: '5'
+servers:
+- url: https://api.pagar.me/core/v5
+security:
+- sec0: []
+tags:
+- name: Plans
+paths:
+  /plans:
+    post:
+      summary: Criar plano
+      description: Este recurso possibilita a criação de um `plan` que poderá ser utilizado futuramente para a criação de uma assinatura. Para mais detalhes consulte a pagina principal do objeto.
+      operationId: criar-plano-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: 'Nome do plano. Max: 64 caracteres.'
+                description:
+                  type: string
+                  description: Descrição do plano.
+                shippable:
+                  type: boolean
+                  description: Indica se o plano oferece entrega.
+                payment_methods:
+                  type: array
+                  description: 'Meios de pagamento disponíveis para assinaturas criadas a partir do plano. <br>Valores possíveis: **credit_card**, **boleto** ou **debit_card**. Caso nenhum seja informado, o único meio de pagamento disponível por padrão será **credit_card**'
+                  items:
+                    type: string
+                installments:
+                  type: array
+                  description: Opções de parcelamento disponíveis para assinaturas criadas a partir do plano.<br>Caso não seja informado, o plano irá disponibilizar apenas assinaturas com pagamentos à vista. O número de parcelas deverá ser 1 em recorrências.
+                  items:
+                    type: integer
+                    format: int32
+                minimum_price:
+                  type: integer
+                  description: Valor mínimo em centavos da fatura.
+                  format: int32
+                statement_descriptor:
+                  type: string
+                  description: 'Texto exibido na fatura do cartão. <br>Será aplicado para assinaturas de cartão de crédito criadas a partir do plano. Max: 13 caracteres.'
+                currency:
+                  type: string
+                  description: 'Moeda. Valores possíveis: **BRL**.'
+                interval:
+                  type: string
+                  description: 'Frequência da recorrência. Valores possíveis: **day**,**week**, **month** ou **year**.'
+                  default: month
+                interval_count:
+                  type: integer
+                  description: 'Número de intervalos de acordo com a propriedade **interval** entre cada cobrança da assinatura. <br>Ex.: plano mensal = **interval_count** (1) e **interval** (month) <br> plano trimestral = **interval_count** (3) e **interval** (month) <br> plano semestral = **interval_count** (6) e** interval** (month)'
+                  default: 1
+                  format: int32
+                trial_period_days:
+                  type: integer
+                  description: Dias de teste. A assinatura será iniciada após o término deste período.
+                  format: int32
+                billing_type:
+                  type: string
+                  description: 'Tipo de cobrança. Valores possíveis: **prepaid**, **postpaid **ou **exact_day**.'
+                billing_days:
+                  type: array
+                  description: Dias disponíveis para cobrança das assinaturas criadas a partir do plano. Deve ser maior ou igual a 1 e menor ou igual a 28. **Obrigatório**, caso o **billing_type** seja igual a **exact_day**.
+                  items:
+                    type: integer
+                    format: int32
+                items:
+                  type: array
+                  description: Itens do plano. [Saiba mais sobre um itens do plano](https://docs.pagar.me/reference/item-do-plano-1)
+                  items:
+                    properties:
+                      description:
+                        type: string
+                        description: Descrição de itens.
+                      quantity:
+                        type: string
+                        description: Quantidade de itens.
+                      pricing_scheme:
+                        type: object
+                        description: Esquema de precificação do item.
+                        required:
+                        - scheme_type
+                        properties:
+                          scheme_type:
+                            type: string
+                            description: 'Esquema de precificação do item. Valores possíveis: **unit**, **package**, **volume** e **tier**. Valor default: unit'
+                            default: Unit
+                          price:
+                            type: integer
+                            description: 'Valor do item. Este atributo está disponível para o scheme_type : **Unit**'
+                            format: int32
+                          mininum_price:
+                            type: integer
+                            description: Valor mínimo a ser cobrado.
+                            format: int32
+                          price_brackets:
+                            type: array
+                            description: 'Intervalo de preços. Este atributo está disponível para os scheme_type : **package**, **volume** e **tier**.'
+                            items:
+                              properties:
+                                start_quantity:
+                                  type: integer
+                                  description: Valor que define a quantidade inicial de unidades do intervalo.
+                                  format: int32
+                                end_quantity:
+                                  type: integer
+                                  description: Valor que define a quantidade final de unidades do intervalo.
+                                  format: int32
+                                overage_price:
+                                  type: integer
+                                  description: Valor para cálculo do preço por unidade que exceder o intervalo.
+                                  format: int32
+                                price:
+                                  type: integer
+                                  description: 'Valor para cálculo do preço dentro do intervalo. OBS: o preço a ser cobrado do cliente será calculado de acordo com a quantidade e o scheme_type'
+                                  format: int32
+                              type: object
+                      cycles:
+                        type: string
+                        description: Indica quantas vezes o item será cobrado.
+                    type: object
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o plano.<br>[Saiba mais sobre metadata](https://docs.pagar.me/reference/metadata-1)
+                pricing_scheme:
+                  type: object
+                  description: Esquema de precificação.<br>Obrigatório na ausência de **items**.
+                  required:
+                  - scheme_type
+                  properties:
+                    scheme_type:
+                      type: string
+                      description: 'Esquema de precificação do item. Valores possíveis: **unit**, **package**, **volume** e **tier**. Valor default: unit'
+                      default: Unit
+                    price:
+                      type: integer
+                      description: 'Valor do item. Este atributo está disponível para o scheme_type : **Unit**'
+                      format: int32
+                    mininum_price:
+                      type: integer
+                      description: Valor mínimo a ser cobrado.
+                      format: int32
+                    price_brackets:
+                      type: array
+                      description: 'Intervalo de preços. Este atributo está disponível para os scheme_type : **package**, **volume** e **tier**.'
+                      items:
+                        properties:
+                          start_quantity:
+                            type: integer
+                            description: Valor que define a quantidade inicial de unidades do intervalo.
+                            format: int32
+                          end_quantity:
+                            type: integer
+                            description: Valor que define a quantidade final de unidades do intervalo.
+                            format: int32
+                          overage_price:
+                            type: integer
+                            description: Valor para cálculo do preço por unidade que exceder o intervalo.
+                            format: int32
+                          price:
+                            type: integer
+                            description: 'Valor para cálculo do preço dentro do intervalo. OBS: o preço a ser cobrado do cliente será calculado de acordo com a quantidade e o scheme_type'
+                            format: int32
+                        type: object
+                quantity:
+                  type: integer
+                  description: Quantidade para o **pricing_scheme**.<br>Obrigatório quando o **pricing_scheme.scheme_type** for igual a **unit**.
+                  default: null
+                  format: int32
+            examples:
+              Request Example:
+                value:
+                  name: Plano Gold
+                  currency: BRL
+                  interval: month
+                  interval_count: 3
+                  billing_type: prepaid
+                  minimum_price: 10000
+                  installments:
+                  - 3
+                  payment_methods:
+                  - credit_card
+                  - boleto
+                  items:
+                  - name: Musculação
+                    quantity: 1
+                    pricing_scheme:
+                      price: 18990
+                  - name: Matrícula
+                    cycles: 1
+                    quantity: 1
+                    pricing_scheme:
+                      price: 5990
+                  metadata:
+                    id: my_plan_id
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"plan_0z5Jd4dFk3t9Jo4m\",\n    \"name\": \"Plano Gold\",\n    \"url\": \"plans/plan_0z5Jd4dFk3t9Jo4m/simu/plano-gold\",\n    \"minimum_price\": 10000,\n    \"interval\": \"month\",\n    \"interval_count\": 3,\n    \"billing_type\": \"prepaid\",\n    \"payment_methods\": [\n        \"credit_card\",\n        \"boleto\"\n    ],\n    \"installments\": [\n        3\n    ],\n    \"status\": \"active\",\n    \"status_reason\": \"null\"\n    \"currency\": \"BRL\",\n    \"created_at\": \"2019-01-22T17:24:02Z\",\n    \"updated_at\": \"2019-01-22T17:24:02Z\",\n    \"items\": [\n        {\n            \"id\": \"pi_d97LMgRCmOFdWREe\",\n            \"name\": \"Musculação\",\n            \"quantity\": 1,\n            \"status\": \"active\",\n            \"created_at\": \"2019-01-22T17:24:02Z\",\n            \"updated_at\": \"2019-01-22T17:24:02Z\",\n            \"pricing_scheme\": {\n                \"price\": 18990,\n                \"scheme_type\": \"unit\"\n            }\n        },\n        {\n            \"id\": \"pi_2rXolMkFxRILvw1M\",\n            \"name\": \"Matrícula\",\n            \"quantity\": 1,\n            \"status\": \"active\",\n            \"cycles\": 1,\n            \"created_at\": \"2019-01-22T17:24:02Z\",\n            \"updated_at\": \"2019-01-22T17:24:02Z\",\n            \"pricing_scheme\": {\n                \"price\": 5990,\n                \"scheme_type\": \"unit\"\n            }\n        }\n    ],\n    \"metadata\": {\n        \"id\": \"my_plan_id\"\n    }\n}"
+        '422':
+          description: '422'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"The request is invalid.\",\n    \"errors\": {\n        \"plan.name\": [\n            \"The name field is required.\"\n        ]\n    },\n    \"request\": {\n        \"payment_methods\": [\n            \"credit_card\"\n        ],\n        \"installments\": [\n            3\n        ],\n        \"minimum_price\": 10000,\n        \"currency\": \"BRL\",\n        \"interval\": \"month\",\n        \"interval_count\": 3,\n        \"billing_type\": \"prepaid\",\n        \"items\": [\n            {\n                \"name\": \"Musculação\",\n                \"quantity\": 1,\n                \"pricing_scheme\": {\n                    \"price\": 18990,\n                    \"scheme_type\": \"unit\"\n                }\n            },\n            {\n                \"name\": \"Matrícula\",\n                \"quantity\": 1,\n                \"cycles\": 1,\n                \"pricing_scheme\": {\n                    \"price\": 5990,\n                    \"scheme_type\": \"unit\"\n                }\n            }\n        ],\n        \"metadata\": {\n            \"id\": \"my_plan_id\"\n        }\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request is invalid.
+                  errors:
+                    type: object
+                    properties:
+                      plan.name:
+                        type: array
+                        items:
+                          type: string
+                          example: The name field is required.
+                  request:
+                    type: object
+                    properties:
+                      payment_methods:
+                        type: array
+                        items:
+                          type: string
+                          example: credit_card
+                      installments:
+                        type: array
+                        items:
+                          type: integer
+                          example: 3
+                          default: 0
+                      minimum_price:
+                        type: integer
+                        example: 10000
+                        default: 0
+                      currency:
+                        type: string
+                        example: BRL
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 3
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: prepaid
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: Musculação
+                            quantity:
+                              type: integer
+                              example: 1
+                              default: 0
+                            pricing_scheme:
+                              type: object
+                              properties:
+                                price:
+                                  type: integer
+                                  example: 18990
+                                  default: 0
+                                scheme_type:
+                                  type: string
+                                  example: unit
+                      metadata:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: my_plan_id
+      deprecated: false
+      tags:
+      - Plans
+    get:
+      summary: Listar planos
+      description: Este recurso permite listar seus planos. Pode ser utilizados alguns parâmetros como filtro da listagem.
+      operationId: listar-planos-1
+      parameters:
+      - name: name
+        in: query
+        description: Nome do plano.
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: 'Status do plano.<br>Valores possíveis: **active**, **inactive** ou **deleted**'
+        schema:
+          type: string
+      - name: created_since
+        in: query
+        description: Data de início do período de criação a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: created_until
+        in: query
+        description: Data final do período de criação a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: page
+        in: query
+        description: Página atual.
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        description: Quantidade de itens por página.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"data\": [\n    {\n      \"id\": \"plan_21r4CTG0ux77Qv13\",\n      \"name\": \"Plano Gold\",\n      \"url\": \"/plan_21r4CTG0ux77Qv13/academia/plano-gold\",\n      \"minimum_price\": 10000,\n      \"currency\": \"BRL\",\n      \"interval\": \"month\",\n      \"interval_count\": 3,\n      \"billing_type\": \"prepaid\",\n      \"installments\": 3,\n      \"status\": \"active\",\n      \"created_at\": \"2016-07-12T18:25:40Z\",\n      \"updated_at\": \"2016-07-12T18:25:40Z\",\n      \"items\": [\n        {\n          \"id\": \"pi_3j1EG9ousipHjcUL\",\n          \"name\": \"Musculação\",\n          \"status\": \"active\",\n          \"created_at\": \"2016-07-12T18:25:40Z\",\n          \"updated_at\": \"2016-07-12T18:25:40Z\",\n          \"pricing_scheme\": {\n            \"price\": 18990,\n            \"scheme_type\": \"unit\"\n          }\n        },\n        {\n          \"id\": \"pi_6ggvuaJNS2LVq1i6\",\n          \"name\": \"Matrícula\",\n          \"cycles\": 1,\n          \"status\": \"active\",\n          \"created_at\": \"2016-07-12T18:25:40Z\",\n          \"updated_at\": \"2016-07-12T18:25:40Z\",\n          \"pricing_scheme\": {\n            \"price\": 5990,\n            \"scheme_type\": \"unit\"\n          }\n        }\n      ],\n      \"metadata\": {\n        \"id\": \"my_plan_id\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"total_items\": 1,\n    \"current_page\": 1,\n    \"total_pages\": 1\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: plan_21r4CTG0ux77Qv13
+                        name:
+                          type: string
+                          example: Plano Gold
+                        url:
+                          type: string
+                          example: /plan_21r4CTG0ux77Qv13/academia/plano-gold
+                        minimum_price:
+                          type: integer
+                          example: 10000
+                          default: 0
+                        currency:
+                          type: string
+                          example: BRL
+                        interval:
+                          type: string
+                          example: month
+                        interval_count:
+                          type: integer
+                          example: 3
+                          default: 0
+                        billing_type:
+                          type: string
+                          example: prepaid
+                        installments:
+                          type: integer
+                          example: 3
+                          default: 0
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        updated_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        items:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: pi_3j1EG9ousipHjcUL
+                              name:
+                                type: string
+                                example: Musculação
+                              status:
+                                type: string
+                                example: active
+                              created_at:
+                                type: string
+                                example: '2016-07-12T18:25:40Z'
+                              updated_at:
+                                type: string
+                                example: '2016-07-12T18:25:40Z'
+                              pricing_scheme:
+                                type: object
+                                properties:
+                                  price:
+                                    type: integer
+                                    example: 18990
+                                    default: 0
+                                  scheme_type:
+                                    type: string
+                                    example: unit
+                        metadata:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: my_plan_id
+                  paging:
+                    type: object
+                    properties:
+                      total_items:
+                        type: integer
+                        example: 1
+                        default: 0
+                      current_page:
+                        type: integer
+                        example: 1
+                        default: 0
+                      total_pages:
+                        type: integer
+                        example: 1
+                        default: 0
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Plan not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan not found.
+      deprecated: false
+      tags:
+      - Plans
+  /plans/{plan_id}:
+    put:
+      summary: Editar plano
+      description: Com o verbo HTTP PUT, através do identificador do plano (`plan_id`) é possível atualizar os dados do plano.
+      operationId: editar-plano-1
+      parameters:
+      - name: plan_id
+        in: path
+        description: 'Código do plano.<br>Formato: `plan_XXXXXXXXXXXXXXXX`.'
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - status
+              - currency
+              - interval
+              - interval_count
+              properties:
+                name:
+                  type: string
+                  description: 'Nome do plano. Max: 64 caracteres.'
+                status:
+                  type: string
+                  description: 'Status do plano. Valores possíveis: **active** ou **inactive**'
+                description:
+                  type: string
+                  description: Descrição do plano.
+                shippable:
+                  type: boolean
+                  description: Indica se o plano oferece entrega.
+                payment_methods:
+                  type: array
+                  description: 'Meios de pagamento disponíveis para assinaturas criadas a partir do plano. <br>Valores possíveis: **credit_card**, **boleto** ou **debit_card**. Caso nenhum seja informado, o único meio de pagamento disponível por padrão será **credit_card**'
+                  items:
+                    type: string
+                installments:
+                  type: array
+                  description: Opções de parcelamento disponíveis para assinaturas criadas a partir do plano.<br>Caso não seja informado, o plano irá disponibilizar apenas assinaturas com pagamentos à vista.
+                  items:
+                    type: integer
+                    format: int32
+                minimum_price:
+                  type: integer
+                  description: Valor mínimo em centavos da fatura.
+                  format: int32
+                statement_descriptor:
+                  type: string
+                  description: Texto exibido na fatura do cartão. <br>Será aplicado para assinaturas de cartão de crédito criadas a partir do plano.
+                currency:
+                  type: string
+                  description: 'Moeda. Valores possíveis: **BRL**,  **ARS**,  **BOB**,  **CLP**,  **COP **,  **MXN**,  **PYG**,  **USD **,  **UYU** e **EUR**.'
+                interval:
+                  type: string
+                  description: 'Frequência da recorrência. Valores possíveis: **day**,**week**, **month** ou **year**.'
+                  default: month
+                interval_count:
+                  type: integer
+                  description: 'Número de intervalos de acordo com a propriedade **interval** entre cada cobrança da assinatura. <br>Ex.: plano mensal = **interval_count** (1) e **interval** (month) <br> plano trimestral = **interval_count** (3) e **interval** (month) <br> plano semestral = **interval_count** (6) e** interval** (month)'
+                  default: 1
+                  format: int32
+                trial_period_days:
+                  type: integer
+                  description: Dias de teste. A assinatura será iniciada após o término deste período.
+                  format: int32
+                billing_type:
+                  type: string
+                  description: 'Tipo de cobrança. Valores possíveis: **prepaid**, **postpaid **ou **exact_day**.'
+                billing_days:
+                  type: array
+                  description: Dias disponíveis para cobrança das assinaturas criadas a partir do plano. Deve ser maior ou igual a 1 e menor ou igual a 28. **Obrigatório**, caso o **billing_type** seja igual a **exact_day**.
+                  items:
+                    type: integer
+                    format: int32
+                items:
+                  type: array
+                  description: Itens do plano. [Saiba mais sobre um itens do plano](https://docs.pagar.me/reference/item-do-plano-1)
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o plano.<br>[Saiba mais sobre metadata](https://docs.pagar.me/reference/metadata-1)
+            examples:
+              Request Example:
+                value:
+                  name: Plano Silver
+                  description: Esse plano oferece acesso aos programas de musculação e todos os equipamentos e atividades coletivas terrestres.
+                  currency: BRL
+                  interval: month
+                  interval_count: 3
+                  billing_type: prepaid
+                  statement_descriptor: SILVER
+                  minimum_price: 10000
+                  status: active
+                  payment_methods:
+                  - credit_card
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"plan_21r4CTG0ux77Qv13\",\n  \"name\": \"Plano Gold\",\n  \"description\": \"Esse plano oferece acesso aos programas de musculação e todos os equipamentos e atividades coletivas terrestres.\",\n  \"url\": \"/plan_21r4CTG0ux77Qv13/academia/plano-silver\",\n  \"currency\": \"BRL\",\n  \"interval\": \"month\",\n  \"interval_count\": 3,\n  \"billing_type\": \"prepaid\",\n  \"installments\": 3,\n  \"statement_descriptor\": \"SILVER\",\n  \"status\": \"active\",\n  \"created_at\": \"2016-07-12T18:25:40Z\",\n  \"updated_at\": \"2016-07-12T18:25:40Z\",\n  \"minimum_price\": 10000,\n  \"items\": [\n    {\n      \"id\": \"pi_3j1EG9ousipHjcUL\",\n      \"name\": \"Musculação\",\n      \"status\": \"active\",\n      \"created_at\": \"2016-07-12T18:25:40Z\",\n      \"updated_at\": \"2016-07-12T18:25:40Z\",\n      \"pricing_scheme\": {\n        \"price\": 18990,\n      \t\"scheme_type\": \"unit\"\n      }\n    },\n    {\n      \"id\": \"pi_6ggvuaJNS2LVq1i6\",\n      \"name\": \"Matrícula\",\n      \"cycles\": 1,\n      \"status\": \"active\",\n      \"created_at\": \"2016-07-12T18:25:40Z\",\n      \"updated_at\": \"2016-07-12T18:25:40Z\",\n      \"pricing_scheme\": {\n        \"price\": 5990,\n        \"scheme_type\": \"unit\"\n      }\n    }\n  ],\n  \"metadata\": {\n    \"id\": \"my_plan_id\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: plan_21r4CTG0ux77Qv13
+                  name:
+                    type: string
+                    example: Plano Gold
+                  description:
+                    type: string
+                    example: Esse plano oferece acesso aos programas de musculação e todos os equipamentos e atividades coletivas terrestres.
+                  url:
+                    type: string
+                    example: /plan_21r4CTG0ux77Qv13/academia/plano-silver
+                  currency:
+                    type: string
+                    example: BRL
+                  interval:
+                    type: string
+                    example: month
+                  interval_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  billing_type:
+                    type: string
+                    example: prepaid
+                  installments:
+                    type: integer
+                    example: 3
+                    default: 0
+                  statement_descriptor:
+                    type: string
+                    example: SILVER
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  updated_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  minimum_price:
+                    type: integer
+                    example: 10000
+                    default: 0
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: pi_3j1EG9ousipHjcUL
+                        name:
+                          type: string
+                          example: Musculação
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        updated_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        pricing_scheme:
+                          type: object
+                          properties:
+                            price:
+                              type: integer
+                              example: 18990
+                              default: 0
+                            scheme_type:
+                              type: string
+                              example: unit
+                  metadata:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: my_plan_id
+        '422':
+          description: '422'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"The request is invalid.\",\n    \"errors\": {\n        \"plan.name\": [\n            \"The name field is required.\"\n        ]\n    },\n    \"request\": {\n        \"payment_methods\": [\n            \"credit_card\"\n        ],\n        \"installments\": [\n            3\n        ],\n        \"minimum_price\": 10000,\n        \"currency\": \"BRL\",\n        \"interval\": \"month\",\n        \"interval_count\": 3,\n        \"billing_type\": \"prepaid\",\n        \"items\": [\n            {\n                \"name\": \"Musculação\",\n                \"quantity\": 1,\n                \"pricing_scheme\": {\n                    \"price\": 18990,\n                    \"scheme_type\": \"unit\"\n                }\n            },\n            {\n                \"name\": \"Matrícula\",\n                \"quantity\": 1,\n                \"cycles\": 1,\n                \"pricing_scheme\": {\n                    \"price\": 5990,\n                    \"scheme_type\": \"unit\"\n                }\n            }\n        ],\n        \"metadata\": {\n            \"id\": \"my_plan_id\"\n        }\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request is invalid.
+                  errors:
+                    type: object
+                    properties:
+                      plan.name:
+                        type: array
+                        items:
+                          type: string
+                          example: The name field is required.
+                  request:
+                    type: object
+                    properties:
+                      payment_methods:
+                        type: array
+                        items:
+                          type: string
+                          example: credit_card
+                      installments:
+                        type: array
+                        items:
+                          type: integer
+                          example: 3
+                          default: 0
+                      minimum_price:
+                        type: integer
+                        example: 10000
+                        default: 0
+                      currency:
+                        type: string
+                        example: BRL
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 3
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: prepaid
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: Musculação
+                            quantity:
+                              type: integer
+                              example: 1
+                              default: 0
+                            pricing_scheme:
+                              type: object
+                              properties:
+                                price:
+                                  type: integer
+                                  example: 18990
+                                  default: 0
+                                scheme_type:
+                                  type: string
+                                  example: unit
+                      metadata:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: my_plan_id
+      deprecated: false
+      tags:
+      - Plans
+    get:
+      summary: Obter plano
+      description: A partir do identificador de um plano criado (`plan_id`) é possível recuperar as informações deste plano.
+      operationId: obter-plano-1
+      parameters:
+      - name: plan_id
+        in: path
+        description: 'Código do plano.<br>Formato: `plan_XXXXXXXXXXXXXXXX`.'
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"plan_21r4CTG0ux77Qv13\",\n  \"name\": \"Plano Gold\",\n  \"url\": \"/plan_21r4CTG0ux77Qv13/academia/plano-gold\",\n  \"currency\": \"BRL\",\n  \"interval\": \"month\",\n  \"interval_count\": 3,\n  \"billing_type\": \"prepaid\",\n  \"installments\": 3,\n  \"status\": \"active\",\n  \"minimum_price\": 10000,\n  \"created_at\": \"2016-07-12T18:25:40Z\",\n  \"updated_at\": \"2016-07-12T18:25:40Z\",\n  \"items\": [\n    {\n      \"id\": \"pi_3j1EG9ousipHjcUL\",\n      \"name\": \"Musculação\",\n      \"status\": \"active\",\n      \"created_at\": \"2016-07-12T18:25:40Z\",\n      \"updated_at\": \"2016-07-12T18:25:40Z\",\n      \"pricing_scheme\": {\n        \"price\": 18990,\n      \t\"scheme_type\": \"unit\"\n      }\n    },\n    {\n      \"id\": \"pi_6ggvuaJNS2LVq1i6\",\n      \"name\": \"Matrícula\",\n      \"cycles\": 1,\n      \"status\": \"active\",\n      \"created_at\": \"2016-07-12T18:25:40Z\",\n      \"updated_at\": \"2016-07-12T18:25:40Z\",\n      \"pricing_scheme\": {\n        \"price\": 5990,\n        \"scheme_type\": \"unit\"\n      }\n    }\n  ],\n  \"metadata\": {\n    \"id\": \"my_plan_id\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: plan_21r4CTG0ux77Qv13
+                  name:
+                    type: string
+                    example: Plano Gold
+                  url:
+                    type: string
+                    example: /plan_21r4CTG0ux77Qv13/academia/plano-gold
+                  currency:
+                    type: string
+                    example: BRL
+                  interval:
+                    type: string
+                    example: month
+                  interval_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  billing_type:
+                    type: string
+                    example: prepaid
+                  installments:
+                    type: integer
+                    example: 3
+                    default: 0
+                  status:
+                    type: string
+                    example: active
+                  minimum_price:
+                    type: integer
+                    example: 10000
+                    default: 0
+                  created_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  updated_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: pi_3j1EG9ousipHjcUL
+                        name:
+                          type: string
+                          example: Musculação
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        updated_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        pricing_scheme:
+                          type: object
+                          properties:
+                            price:
+                              type: integer
+                              example: 18990
+                              default: 0
+                            scheme_type:
+                              type: string
+                              example: unit
+                  metadata:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: my_plan_id
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Plan not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan not found.
+      deprecated: false
+      tags:
+      - Plans
+    delete:
+      summary: Excluir plano
+      description: Com o verbo HTTP DELETE, através do identificador do plano (`plan_id`) é possível excluir um plano.
+      operationId: excluir-plano-1
+      parameters:
+      - name: plan_id
+        in: path
+        description: Código do plano
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"plan_21r4CTG0ux77Qv13\",\n  \"name\": \"Plano Gold\",\n  \"description\": \"Esse plano oferece acesso aos programas de musculação e todos os equipamentos e atividades coletivas terrestres.\",\n  \"url\": \"/plan_21r4CTG0ux77Qv13/academia/plano-silver\",\n  \"minimum_price\": 10000,\n  \"currency\": \"BRL\",\n  \"interval\": \"month\",\n  \"interval_count\": 3,\n  \"billing_type\": \"prepaid\",\n  \"installments\": 3,\n  \"statement_descriptor\": \"SILVER\",\n  \"status\": \"deleted\",\n  \"created_at\": \"2016-07-12T18:25:40Z\",\n  \"updated_at\": \"2016-07-12T18:25:40Z\",\n  \"deleted_at\": \"2016-07-15T13:41:02Z\",\n  \"items\": [\n    {\n      \"id\": \"pi_3j1EG9ousipHjcUL\",\n      \"name\": \"Musculação\",\n      \"status\": \"active\",\n      \"created_at\": \"2016-07-12T18:25:40Z\",\n      \"updated_at\": \"2016-07-12T18:25:40Z\",\n      \"pricing_scheme\": {\n        \"price\": 18990,\n      \t\"scheme_type\": \"unit\"\n      }\n    },\n    {\n      \"id\": \"pi_6ggvuaJNS2LVq1i6\",\n      \"name\": \"Matrícula\",\n      \"cycles\": 1,\n      \"status\": \"active\",\n      \"created_at\": \"2016-07-12T18:25:40Z\",\n      \"updated_at\": \"2016-07-12T18:25:40Z\",\n      \"pricing_scheme\": {\n        \"price\": 5990,\n        \"scheme_type\": \"unit\"\n      }\n    }\n  ],\n  \"metadata\": {\n    \"id\": \"my_plan_id\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: plan_21r4CTG0ux77Qv13
+                  name:
+                    type: string
+                    example: Plano Gold
+                  description:
+                    type: string
+                    example: Esse plano oferece acesso aos programas de musculação e todos os equipamentos e atividades coletivas terrestres.
+                  url:
+                    type: string
+                    example: /plan_21r4CTG0ux77Qv13/academia/plano-silver
+                  minimum_price:
+                    type: integer
+                    example: 10000
+                    default: 0
+                  currency:
+                    type: string
+                    example: BRL
+                  interval:
+                    type: string
+                    example: month
+                  interval_count:
+                    type: integer
+                    example: 3
+                    default: 0
+                  billing_type:
+                    type: string
+                    example: prepaid
+                  installments:
+                    type: integer
+                    example: 3
+                    default: 0
+                  statement_descriptor:
+                    type: string
+                    example: SILVER
+                  status:
+                    type: string
+                    example: deleted
+                  created_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  updated_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  deleted_at:
+                    type: string
+                    example: '2016-07-15T13:41:02Z'
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: pi_3j1EG9ousipHjcUL
+                        name:
+                          type: string
+                          example: Musculação
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        updated_at:
+                          type: string
+                          example: '2016-07-12T18:25:40Z'
+                        pricing_scheme:
+                          type: object
+                          properties:
+                            price:
+                              type: integer
+                              example: 18990
+                              default: 0
+                            scheme_type:
+                              type: string
+                              example: unit
+                  metadata:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: my_plan_id
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Plan not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan not found.
+      deprecated: false
+      tags:
+      - Plans
+  /plans/{plan_id}/items:
+    post:
+      summary: Incluir item
+      description: Através do identificador do plano (`plan_id`) é possível incluir itens ao plano associado.
+      operationId: incluir-item-2
+      parameters:
+      - name: plan_id
+        in: path
+        description: 'Código do plano.<br>Formato: `plan_XXXXXXXXXXXXXXXX`'
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - pricing_scheme
+              properties:
+                name:
+                  type: string
+                  description: 'Nome do item. <br>Max.: 64 caracteres.'
+                description:
+                  type: string
+                  description: 'Descrição do item. <br>Max.: 256 caracteres.'
+                quantity:
+                  type: integer
+                  description: Quantidade de itens. <br>**Obrigatório**, caso o pricing_scheme.type for igual a **unit**.
+                  format: int32
+                cycles:
+                  type: integer
+                  description: 'Número de ciclos durante o qual o item será cobrado. Ex: Um item com `cycles` = 1 representa que um item será cobrado apenas uma vez.<br>Caso não seja informado, o item será cobrado até que seja desativado.'
+                  format: int32
+                pricing_scheme:
+                  type: object
+                  description: Esquema de precificação. <br>[Saiba mais sobre precificação](https://docs.pagar.me/reference/precifica%C3%A7%C3%A3o).
+                  required:
+                  - scheme_type
+                  properties:
+                    scheme_type:
+                      type: string
+                      description: 'Esquema de precificação do item. Valores possíveis: **unit**, **package**, **volume** e **tier**. Valor default: unit'
+                      default: Unit
+                    price:
+                      type: integer
+                      description: 'Valor do item. Este atributo está disponível para o scheme_type : **Unit**'
+                      format: int32
+                    mininum_price:
+                      type: integer
+                      description: Valor mínimo a ser cobrado.
+                      format: int32
+                    price_brackets:
+                      type: array
+                      description: 'Intervalo de preços. Este atributo está disponível para os scheme_type : **package**, **volume** e **tier**.'
+                      items:
+                        properties:
+                          start_quantity:
+                            type: integer
+                            description: Valor que define a quantidade inicial de unidades do intervalo.
+                            format: int32
+                          end_quantity:
+                            type: integer
+                            description: Valor que define a quantidade final de unidades do intervalo.
+                            format: int32
+                          overage_price:
+                            type: integer
+                            description: Valor para cálculo do preço por unidade que exceder o intervalo.
+                            format: int32
+                          price:
+                            type: integer
+                            description: 'Valor para cálculo do preço dentro do intervalo. OBS: o preço a ser cobrado do cliente será calculado de acordo com a quantidade e o scheme_type'
+                            format: int32
+                        type: object
+            examples:
+              Request Example:
+                value:
+                  name: Avaliação física
+                  cycles: 1
+                  quantity: 1
+                  pricing_scheme:
+                    price: 9990
+                    scheme_type: unit
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"pi_eBTaVnXD8Zhb8glr\",\n  \"name\": \"Avaliação física\",\n  \"cycles\": 1,\n  \"status\": \"active\",\n  \"created_at\": \"2016-07-12T18:25:40Z\",\n  \"updated_at\": \"2016-07-12T18:25:40Z\",\n  \"pricing_scheme\": {\n    \"price\": 9990,\n    \"scheme_type\": \"unit\"\n  },\n  \"plan\": {\n    \"id\": \"plan_21r4CTG0ux77Qv13\",\n    \"name\": \"Plano Gold\",\n    \"url\": \"/plan_21r4CTG0ux77Qv13/academia/plano-gold\",\n    \"currency\": \"BRL\",\n    \"interval\": \"month\",\n    \"interval_count\": 3,\n    \"billing_type\": \"prepaid\",\n    \"installments\": 3,\n    \"status\": \"active\",\n    \"created_at\": \"2016-07-12T17:25:40Z\",\n    \"updated_at\": \"2016-07-12T17:25:40Z\",\n    \"metadata\": {\n      \"id\": \"my_plan_id\"\n    }\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: pi_eBTaVnXD8Zhb8glr
+                  name:
+                    type: string
+                    example: Avaliação física
+                  cycles:
+                    type: integer
+                    example: 1
+                    default: 0
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  updated_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  pricing_scheme:
+                    type: object
+                    properties:
+                      price:
+                        type: integer
+                        example: 9990
+                        default: 0
+                      scheme_type:
+                        type: string
+                        example: unit
+                  plan:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: plan_21r4CTG0ux77Qv13
+                      name:
+                        type: string
+                        example: Plano Gold
+                      url:
+                        type: string
+                        example: /plan_21r4CTG0ux77Qv13/academia/plano-gold
+                      currency:
+                        type: string
+                        example: BRL
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 3
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: prepaid
+                      installments:
+                        type: integer
+                        example: 3
+                        default: 0
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2016-07-12T17:25:40Z'
+                      updated_at:
+                        type: string
+                        example: '2016-07-12T17:25:40Z'
+                      metadata:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: my_plan_id
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Plan not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan not found.
+        '412':
+          description: '412'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"The request is invalid.\",\n    \"errors\": {\n        \"item.name\": [\n            \"The name field is required.\"\n        ]\n    },\n    \"request\": {\n        \"quantity\": 1,\n        \"cycles\": 1,\n        \"pricing_scheme\": {\n            \"price\": 99,\n            \"scheme_type\": \"unit\"\n        }\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The request is invalid.
+                  errors:
+                    type: object
+                    properties:
+                      item.name:
+                        type: array
+                        items:
+                          type: string
+                          example: The name field is required.
+                  request:
+                    type: object
+                    properties:
+                      quantity:
+                        type: integer
+                        example: 1
+                        default: 0
+                      cycles:
+                        type: integer
+                        example: 1
+                        default: 0
+                      pricing_scheme:
+                        type: object
+                        properties:
+                          price:
+                            type: integer
+                            example: 99
+                            default: 0
+                          scheme_type:
+                            type: string
+                            example: unit
+      deprecated: false
+      tags:
+      - Plans
+  /plans/{plan_id}/items/{item_id}:
+    put:
+      summary: Editar item
+      description: Com o verbo _HTTP PUT_, através dos identificadores do item (`plan_item_id`) e do plano (`plan_id`) associado é possível atualizar os dados do item do plano.
+      operationId: editar-item-1
+      parameters:
+      - name: plan_id
+        in: path
+        description: 'Código do plano.<br>Formato: `plan_XXXXXXXXXXXXXXXX`'
+        schema:
+          type: string
+        required: true
+      - name: item_id
+        in: path
+        description: 'Código do item do plano. <br>Formato: `pi_XXXXXXXXXXXXXXXX`'
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - pricing_scheme
+              - status
+              properties:
+                name:
+                  type: string
+                  description: 'Nome do item. <br>Max.: 64 caracteres.'
+                description:
+                  type: string
+                  description: 'Descrição do item. <br>Max.: 256 caracteres.'
+                quantity:
+                  type: integer
+                  description: Quantidade de itens. <br>**Obrigatório**, caso o pricing_scheme.type for igual a **unit**.
+                  format: int32
+                cycles:
+                  type: integer
+                  description: 'Número de ciclos durante o qual o item será cobrado. Ex: Um item com `cycles` = 1 representa que um item será cobrado apenas uma vez.<br>Caso não seja informado, o item será cobrado até que seja desativado.'
+                  format: int32
+                pricing_scheme:
+                  type: object
+                  description: Esquema de precificação. <br>[Saiba mais sobre precificação](https://docs.pagar.me/reference/precifica%C3%A7%C3%A3o).
+                  required:
+                  - scheme_type
+                  properties:
+                    scheme_type:
+                      type: string
+                      description: 'Esquema de precificação do item. Valores possíveis: **unit**, **package**, **volume** e **tier**. Valor default: unit'
+                      default: Unit
+                    price:
+                      type: integer
+                      description: 'Valor do item. Este atributo está disponível para o scheme_type : **Unit**'
+                      format: int32
+                    mininum_price:
+                      type: integer
+                      description: Valor mínimo a ser cobrado.
+                      format: int32
+                    price_brackets:
+                      type: array
+                      description: 'Intervalo de preços. Este atributo está disponível para os scheme_type : **package**, **volume** e **tier**.'
+                      items:
+                        properties:
+                          start_quantity:
+                            type: integer
+                            description: Valor que define a quantidade inicial de unidades do intervalo.
+                            format: int32
+                          end_quantity:
+                            type: integer
+                            description: Valor que define a quantidade final de unidades do intervalo.
+                            format: int32
+                          overage_price:
+                            type: integer
+                            description: Valor para cálculo do preço por unidade que exceder o intervalo.
+                            format: int32
+                          price:
+                            type: integer
+                            description: 'Valor para cálculo do preço dentro do intervalo. OBS: o preço a ser cobrado do cliente será calculado de acordo com a quantidade e o scheme_type'
+                            format: int32
+                        type: object
+                status:
+                  type: string
+                  description: 'Valores possíveis: **active** ou **inactive**'
+            examples:
+              Request Example:
+                value:
+                  name: Avaliação física
+                  description: Avaliação + Exame médico
+                  quantity: 1
+                  cycles: 1
+                  pricing_scheme:
+                    price: 9990
+                    scheme_type: unit
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"pi_eBTaVnXD8Zhb8glr\",\n  \"name\": \"Avaliação física\",\n  \"description\": \"Avaliação + Exame médico\",\n  \"cycles\": 1,\n  \"status\": \"active\",\n  \"created_at\": \"2016-07-12T18:25:40Z\",\n  \"updated_at\": \"2016-07-12T18:25:40Z\",\n  \"pricing_scheme\": {\n    \"price\": 9990,\n    \"scheme_type\": \"unit\"\n  },\n  \"plan\": {\n    \"id\": \"plan_21r4CTG0ux77Qv13\",\n    \"name\": \"Plano Gold\",\n    \"url\": \"/plan_21r4CTG0ux77Qv13/academia/plano-gold\",\n    \"currency\": \"BRL\",\n    \"interval\": \"month\",\n    \"interval_count\": 3,\n    \"billing_type\": \"prepaid\",\n    \"installments\": 3,\n    \"status\": \"active\",\n    \"created_at\": \"2016-07-12T17:25:40Z\",\n    \"updated_at\": \"2016-07-12T17:25:40Z\",\n    \"metadata\": {\n      \"id\": \"my_plan_id\"\n    }\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: pi_eBTaVnXD8Zhb8glr
+                  name:
+                    type: string
+                    example: Avaliação física
+                  description:
+                    type: string
+                    example: Avaliação + Exame médico
+                  cycles:
+                    type: integer
+                    example: 1
+                    default: 0
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  updated_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  pricing_scheme:
+                    type: object
+                    properties:
+                      price:
+                        type: integer
+                        example: 9990
+                        default: 0
+                      scheme_type:
+                        type: string
+                        example: unit
+                  plan:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: plan_21r4CTG0ux77Qv13
+                      name:
+                        type: string
+                        example: Plano Gold
+                      url:
+                        type: string
+                        example: /plan_21r4CTG0ux77Qv13/academia/plano-gold
+                      currency:
+                        type: string
+                        example: BRL
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 3
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: prepaid
+                      installments:
+                        type: integer
+                        example: 3
+                        default: 0
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2016-07-12T17:25:40Z'
+                      updated_at:
+                        type: string
+                        example: '2016-07-12T17:25:40Z'
+                      metadata:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: my_plan_id
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Item not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Item not found.
+      deprecated: false
+      tags:
+      - Plans
+    delete:
+      summary: Remover item
+      description: Com o verbo _HTTP DELETE_, através dos identificadores do item (`plan_item_id`) e do plano (`plan_id`) associado é possível remover um item do plano.
+      operationId: remover-item-1
+      parameters:
+      - name: plan_id
+        in: path
+        description: 'Código do plano.<br>Formato: `plan_XXXXXXXXXXXXXXXX`'
+        schema:
+          type: string
+        required: true
+      - name: item_id
+        in: path
+        description: 'Código do item do plano. <br>Formato: `pi_XXXXXXXXXXXXXXXX`'
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"pi_eBTaVnXD8Zhb8glr\",\n  \"name\": \"Avaliação física\",\n  \"description\": \"Avaliação + Exame médico\",\n  \"cycles\": 1,\n  \"status\": \"deleted\",\n  \"created_at\": \"2016-07-12T18:25:40Z\",\n  \"updated_at\": \"2016-07-12T18:25:40Z\",\n  \"deleted_at\": \"2016-07-15T13:41:02Z\",\n  \"pricing_scheme\": {\n    \"price\": 9990,\n    \"scheme_type\": \"unit\"\n  },\n  \"plan\": {\n    \"id\": \"plan_21r4CTG0ux77Qv13\",\n    \"name\": \"Plano Gold\",\n    \"url\": \"/plan_21r4CTG0ux77Qv13/academia/plano-gold\",\n    \"currency\": \"BRL\",\n    \"interval\": \"month\",\n    \"interval_count\": 3,\n    \"billing_type\": \"prepaid\",\n    \"installments\": 3,\n    \"status\": \"active\",\n    \"created_at\": \"2016-07-12T17:25:40Z\",\n    \"updated_at\": \"2016-07-12T17:25:40Z\",\n    \"metadata\": {\n      \"id\": \"my_plan_id\"\n    }\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: pi_eBTaVnXD8Zhb8glr
+                  name:
+                    type: string
+                    example: Avaliação física
+                  description:
+                    type: string
+                    example: Avaliação + Exame médico
+                  cycles:
+                    type: integer
+                    example: 1
+                    default: 0
+                  status:
+                    type: string
+                    example: deleted
+                  created_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  updated_at:
+                    type: string
+                    example: '2016-07-12T18:25:40Z'
+                  deleted_at:
+                    type: string
+                    example: '2016-07-15T13:41:02Z'
+                  pricing_scheme:
+                    type: object
+                    properties:
+                      price:
+                        type: integer
+                        example: 9990
+                        default: 0
+                      scheme_type:
+                        type: string
+                        example: unit
+                  plan:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: plan_21r4CTG0ux77Qv13
+                      name:
+                        type: string
+                        example: Plano Gold
+                      url:
+                        type: string
+                        example: /plan_21r4CTG0ux77Qv13/academia/plano-gold
+                      currency:
+                        type: string
+                        example: BRL
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 3
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: prepaid
+                      installments:
+                        type: integer
+                        example: 3
+                        default: 0
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2016-07-12T17:25:40Z'
+                      updated_at:
+                        type: string
+                        example: '2016-07-12T17:25:40Z'
+                      metadata:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: my_plan_id
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Item not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Item not found.
+      deprecated: false
+      tags:
+      - Plans
+  /plans/{plan_id}/metadata:
+    patch:
+      summary: Editar metadados do plano
+      description: Com o verbo _HTTP PATCH_, através do identificador do plano (`plan_id`) é possível atualizar o objeto `metadata` do plano.
+      operationId: editar-metadados-do-plano-1
+      parameters:
+      - name: plan_id
+        in: path
+        description: 'Código do plano.<br>Formato: `plan_XXXXXXXXXXXXXXXX`.'
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - metadata
+              properties:
+                metadata:
+                  type: object
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o plano.
+                  properties: {}
+            examples:
+              Request Example:
+                value:
+                  metadata:
+                    code: '1234'
+                    company: Avengers
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"plan_jEJWD1qF2Xf92eKv\",\n    \"name\": \"Premium\",\n    \"description\": \"Vá de Premium. E seja feliz!\",\n    \"url\": \"/plans/plan_jEJWD1qF2Xf92eKv/pagarme-teste/premium\",\n    \"statement_descriptor\": \"Spotify\",\n    \"interval\": \"month\",\n    \"interval_count\": 1,\n    \"minimum_price\": 10000,\n    \"billing_type\": \"postpaid\",\n    \"payment_methods\": [\n        \"boleto\",\n        \"credit_card\"\n    ],\n    \"installments\": [\n        1\n    ],\n    \"status\": \"active\",\n    \"currency\": \"BRL\",\n    \"created_at\": \"2017-08-10T21:27:08Z\",\n    \"updated_at\": \"2017-08-10T21:33:24Z\",\n    \"items\": [\n        {\n            \"id\": \"pi_JDG10BpS1sKwboXk\",\n            \"name\": \"Premium\",\n            \"quantity\": 1,\n            \"status\": \"active\",\n            \"created_at\": \"2017-08-10T21:27:08Z\",\n            \"updated_at\": \"2017-08-10T21:27:08Z\",\n            \"pricing_scheme\": {\n                \"price\": 1490,\n                \"scheme_type\": \"unit\"\n            }\n        }\n    ],\n    \"metadata\": {\n        \"code\": \"1234\",\n        \"company\": \"Avengers\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: plan_jEJWD1qF2Xf92eKv
+                  name:
+                    type: string
+                    example: Premium
+                  description:
+                    type: string
+                    example: Vá de Premium. E seja feliz!
+                  url:
+                    type: string
+                    example: /plans/plan_jEJWD1qF2Xf92eKv/pagarme-teste/premium
+                  statement_descriptor:
+                    type: string
+                    example: Spotify
+                  interval:
+                    type: string
+                    example: month
+                  interval_count:
+                    type: integer
+                    example: 1
+                    default: 0
+                  minimum_price:
+                    type: integer
+                    example: 10000
+                    default: 0
+                  billing_type:
+                    type: string
+                    example: postpaid
+                  payment_methods:
+                    type: array
+                    items:
+                      type: string
+                      example: boleto
+                  installments:
+                    type: array
+                    items:
+                      type: integer
+                      example: 1
+                      default: 0
+                  status:
+                    type: string
+                    example: active
+                  currency:
+                    type: string
+                    example: BRL
+                  created_at:
+                    type: string
+                    example: '2017-08-10T21:27:08Z'
+                  updated_at:
+                    type: string
+                    example: '2017-08-10T21:33:24Z'
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: pi_JDG10BpS1sKwboXk
+                        name:
+                          type: string
+                          example: Premium
+                        quantity:
+                          type: integer
+                          example: 1
+                          default: 0
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2017-08-10T21:27:08Z'
+                        updated_at:
+                          type: string
+                          example: '2017-08-10T21:27:08Z'
+                        pricing_scheme:
+                          type: object
+                          properties:
+                            price:
+                              type: integer
+                              example: 1490
+                              default: 0
+                            scheme_type:
+                              type: string
+                              example: unit
+                  metadata:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: '1234'
+                      company:
+                        type: string
+                        example: Avengers
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Plan not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan not found.
+      deprecated: false
+      tags:
+      - Plans
+components:
+  securitySchemes:
+    sec0:
+      type: http
+      scheme: basic
+x-readme-fauxas: true
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/ativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/atualizar-code-de-recebedor.md
+  - https://docs.pagar.me/reference/cancelar-assinatura-1.md
+  - https://docs.pagar.me/reference/cancelar-fatura-1.md
+  - https://docs.pagar.me/reference/cancelar-um-link-de-pagamento.md
+  - https://docs.pagar.me/reference/create-link.md
+  - https://docs.pagar.me/reference/criar-assinatura-avulsa.md
+  - https://docs.pagar.me/reference/criar-assinatura-de-plano-1.md
+  - https://docs.pagar.me/reference/criar-cliente-1.md
+  - https://docs.pagar.me/reference/criar-fatura-1.md
+  - https://docs.pagar.me/reference/criar-link-recebedor.md
+  - https://docs.pagar.me/reference/criar-link.md
+  - https://docs.pagar.me/reference/criar-pedido-2.md
+  - https://docs.pagar.me/reference/criar-pedido-com-antifraude.md
+  - https://docs.pagar.me/reference/criar-pedido-com-split-1.md
+  - https://docs.pagar.me/reference/criar-pedido-multicompradores.md
+  - https://docs.pagar.me/reference/criar-pedido-multimeios.md
+  - https://docs.pagar.me/reference/criar-plano-1.md
+  - https://docs.pagar.me/reference/criar-recebedor-1.md
+  - https://docs.pagar.me/reference/criar-token-cart%C3%A3o-1.md
+  - https://docs.pagar.me/reference/deletar-item.md
+  - https://docs.pagar.me/reference/desativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/editar-cliente-1.md
+  - https://docs.pagar.me/reference/editar-item-1.md
+  - https://docs.pagar.me/reference/editar-item-do-pedido.md
+  - https://docs.pagar.me/reference/editar-item.md
+  - https://docs.pagar.me/reference/editar-meio-de-pagamento-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-metadados-da-assinatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-da-fatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-do-plano-1.md
+  - https://docs.pagar.me/reference/editar-minimum-price-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-plano-1.md
+  - https://docs.pagar.me/reference/editar-recebedor-1.md
+  - https://docs.pagar.me/reference/enviar-webhook.md
+  - https://docs.pagar.me/reference/excluir-plano-1.md
+  - https://docs.pagar.me/reference/fechar-um-pedido.md
+  - https://docs.pagar.me/reference/incluir-desconto-1.md
+  - https://docs.pagar.me/reference/incluir-incremento-1.md
+  - https://docs.pagar.me/reference/incluir-item-1.md
+  - https://docs.pagar.me/reference/incluir-item-2.md
+  - https://docs.pagar.me/reference/incluir-item.md
+  - https://docs.pagar.me/reference/incluir-uso.md
+  - https://docs.pagar.me/reference/listar-assinaturas-1.md
+  - https://docs.pagar.me/reference/listar-ciclos-1.md
+  - https://docs.pagar.me/reference/listar-clientes-1.md
+  - https://docs.pagar.me/reference/listar-descontos-2.md
+  - https://docs.pagar.me/reference/listar-faturas-1.md
+  - https://docs.pagar.me/reference/listar-incrementos.md
+  - https://docs.pagar.me/reference/listar-pedidos.md
+  - https://docs.pagar.me/reference/listar-planos-1.md
+  - https://docs.pagar.me/reference/listar-recebedores-1.md
+  - https://docs.pagar.me/reference/listar-uso.md
+  - https://docs.pagar.me/reference/listar-webhooks.md
+  - https://docs.pagar.me/reference/obter-assinatura-1.md
+  - https://docs.pagar.me/reference/obter-ciclo-1.md
+  - https://docs.pagar.me/reference/obter-cliente-1.md
+  - https://docs.pagar.me/reference/obter-desconto-1.md
+  - https://docs.pagar.me/reference/obter-fatura-1.md
+  - https://docs.pagar.me/reference/obter-incremento-1.md
+  - https://docs.pagar.me/reference/obter-item-do-pedido.md
+  - https://docs.pagar.me/reference/obter-link.md
+  - https://docs.pagar.me/reference/obter-links.md
+  - https://docs.pagar.me/reference/obter-pedido.md
+  - https://docs.pagar.me/reference/obter-plano-1.md
+  - https://docs.pagar.me/reference/obter-recebedor-1.md
+  - https://docs.pagar.me/reference/obter-saldo.md
+  - https://docs.pagar.me/reference/obter-webhook.md
+  - https://docs.pagar.me/reference/remover-desconto-1.md
+  - https://docs.pagar.me/reference/remover-incremento-1.md
+  - https://docs.pagar.me/reference/remover-item-1.md
+  - https://docs.pagar.me/reference/remover-item.md
+  - https://docs.pagar.me/reference/remover-todos-os-itens.md
+  - https://docs.pagar.me/reference/remover-uso.md
+  - https://docs.pagar.me/reference/renovar-ciclo-1.md
+  - https://docs.pagar.me/reference/retornando-pagamentos-por-recebedor.md
+  - https://docs.pagar.me/reference/retornando-pagamentos.md
+  - https://docs.pagar.me/reference/retornando-um-pagamento.md
+  - https://docs.pagar.me/reference/retornando-urs-de-um-recebedor-v5.md
+  merge:
+    pages: 78
+    deduped: 82
+    conflicts_kept_first: 0

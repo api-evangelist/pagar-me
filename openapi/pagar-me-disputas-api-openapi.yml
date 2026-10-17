@@ -1,0 +1,957 @@
+openapi: 3.2.0
+info:
+  title: Disputas API
+  version: v2026-02-01
+  description: '# Introdução
+
+
+    Fornecemos uma API para consulta e gestão de chargebacks, permitindo listar, filtrar e acompanhar eventos, além de executar ações dentro do fluxo de contestação.'
+servers:
+- url: https://api.stone.com.br
+  description: production
+- url: https://sandbox.api.stone.com.br
+  description: sandbox
+tags:
+- name: Disputas
+  description: Operações relacionadas à busca de disputas de chargeback. Aqui é possível ver o estado atual da disputa, histórico de eventos daquela disputa, dentre outras informações relevantes.
+paths:
+  /v1/disputes:
+    get:
+      summary: Lista disputas de chargeback
+      description: Retorna uma lista paginada de disputas com base nos filtros fornecidos.
+      tags:
+      - Disputas
+      parameters:
+      - name: createdAt__lte
+        in: query
+        description: 'Filtra valores menores ou iguais à data fornecida. A API aceita datetimes em RFC3339 com timezone (ex.: `2026-02-26T20:02:18Z`) ou datas no formato `YYYY-MM-DD`.
+
+          '
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            example: '2026-02-26T20:02:18Z'
+          - type: string
+            format: date
+            example: '2026-02-26'
+      - name: createdAt__gte
+        in: query
+        description: 'Filtra valores maiores ou iguais à data fornecida. A API aceita datetimes em RFC3339 com timezone (ex.: `2026-02-26T20:02:18Z`) ou datas no formato `YYYY-MM-DD`.
+
+          '
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+            example: '2026-02-26T20:02:18Z'
+          - type: string
+            format: date
+            example: '2026-02-26'
+      - name: status
+        in: query
+        description: Filtra pelo status da disputa.
+        schema:
+          type: string
+      - name: reason.code
+        in: query
+        description: Filtra pelo código do motivo do chargeback.
+        schema:
+          type: integer
+      - name: network
+        in: query
+        description: Filtra pela bandeira do cartão.
+        schema:
+          type: string
+      - name: cycle
+        in: query
+        description: 'Filtra pelo ciclo de chargeback em que a disputa está. Aceita múltiplos valores.
+
+          '
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - FIRST
+            - SECOND
+          example:
+          - FIRST
+      - name: cycleStatus
+        in: query
+        description: 'Filtra pelo status da disputa dentro do ciclo atual. Aceita múltiplos valores.
+
+          '
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - RECEIVED
+            - GUARANTEE_ANALYZED
+            - EVIDENCE_RECEIVED
+            - REPRESENTED
+            - REVERSED
+            - WON
+            - LOST
+            - EXPIRED
+          example:
+          - RECEIVED
+      - name: forwardCursor
+        in: query
+        description: Identificador para avançar na paginação.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Número máximo de registros a serem retornados.
+        schema:
+          type: integer
+          default: 5
+          maximum: 100
+      responses:
+        '200':
+          description: Lista de disputas retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dispute'
+                  page:
+                    type: object
+                    properties:
+                      forwardCursor:
+                        type:
+                        - string
+                        - 'null'
+                        description: Identificador para o inicio da próxima página.
+              examples:
+                default:
+                  summary: Exemplo de listagem de disputas
+                  value:
+                    data:
+                    - disputeId: '12345'
+                      transactionId: '67890'
+                      chargeId: ch_xpto
+                      createdAt: '2026-02-20T14:30:00Z'
+                      updatedAt: '2026-02-22T10:15:00Z'
+                      responseDeadline: '2026-03-05T23:59:59Z'
+                      chargebackAmount:
+                        amount: '150.47'
+                        currencyCode: BRL
+                      debitedAmount:
+                        amount: '150.47'
+                        currencyCode: BRL
+                      status: WAITING_MERCHANT_EVIDENCES
+                      reason:
+                        code: '4853'
+                        description: FRAUD
+                      stage: CHARGEBACK
+                      cycle: FIRST
+                      cycleStatus: RECEIVED
+                      network: VISA
+                      institution: STONE
+                      events:
+                      - type: FIRST_CHARGEBACK
+                        createdAt: '2026-02-20T14:30:00Z'
+                      - type: DISPUTE_NOTIFIED
+                        createdAt: '2026-02-20T14:35:00Z'
+                    page:
+                      forwardCursor: eyJpZCI6MTIzNDV9
+        '400':
+          description: Parâmetros de filtro inválidos.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/invalid-request
+                title: Invalid Request
+                status: 400
+                detail: Could not parse query parameters.
+                instance: /v1/disputes
+                traceId: abc-123-trace
+        '500':
+          description: Erro inesperado ao processar a requisição.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: An unexpected error occurred on the server. Please try again later. If the issue persists, contact support with the trace ID.
+                instance: /v1/disputes
+                traceId: abc-123-trace
+      operationId: getV1Disputes
+      x-operation-id-source: derived
+  /v1/disputes/{dispute_id}:
+    get:
+      summary: Consulta uma disputa específica
+      tags:
+      - Disputas
+      parameters:
+      - name: dispute_id
+        in: path
+        required: true
+        description: ID único da disputa.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Detalhes da disputa encontrados.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+              examples:
+                default:
+                  summary: Exemplo de uma disputa
+                  value:
+                    disputeId: '12345'
+                    transactionId: '67890'
+                    chargeId: ch_xpto
+                    createdAt: '2026-02-20T14:30:00Z'
+                    updatedAt: '2026-02-25T09:00:00Z'
+                    responseDeadline: '2026-03-05T23:59:59Z'
+                    chargebackAmount:
+                      amount: '250.00'
+                      currencyCode: BRL
+                    debitedAmount:
+                      amount: '250.00'
+                      currencyCode: BRL
+                    status: WON
+                    reason:
+                      code: '4837'
+                      description: COMMERCIAL_DISPUTE
+                    stage: CHARGEBACK
+                    cycle: FIRST
+                    cycleStatus: WON
+                    network: MASTERCARD
+                    institution: PAGAR.ME
+                    events:
+                    - type: FIRST_CHARGEBACK
+                      createdAt: '2026-02-20T14:30:00Z'
+                    - type: DISPUTE_NOTIFIED
+                      createdAt: '2026-02-20T14:35:00Z'
+                    - type: MERCHANT_EVIDENCE_RECEIVED
+                      createdAt: '2026-02-22T11:00:00Z'
+                    - type: EVIDENCE_ANALYSIS_ACCEPTED
+                      createdAt: '2026-02-25T09:00:00Z'
+                    guarantee:
+                      status: NOT_GUARANTEED
+                      reason: deadline_expired
+                      updatedAt: '2026-02-25T09:00:00Z'
+                reversed:
+                  summary: Exemplo de uma disputa revertida (REVERSED / FIRST_CHARGEBACK_REVERSED)
+                  value:
+                    disputeId: '12346'
+                    transactionId: '67891'
+                    chargeId: ch_xpto
+                    createdAt: '2026-02-20T14:30:00Z'
+                    updatedAt: '2026-02-27T16:45:00Z'
+                    responseDeadline: '2026-03-05T23:59:59Z'
+                    chargebackAmount:
+                      amount: '250.00'
+                      currencyCode: BRL
+                    debitedAmount:
+                      amount: '250.00'
+                      currencyCode: BRL
+                    status: REVERSED
+                    reason:
+                      code: '4837'
+                      description: COMMERCIAL_DISPUTE
+                    stage: CHARGEBACK
+                    cycle: FIRST
+                    cycleStatus: REVERSED
+                    network: MASTERCARD
+                    institution: PAGAR.ME
+                    events:
+                    - type: FIRST_CHARGEBACK
+                      createdAt: '2026-02-20T14:30:00Z'
+                    - type: DISPUTE_NOTIFIED
+                      createdAt: '2026-02-20T14:35:00Z'
+                    - type: FIRST_CHARGEBACK_REVERSED
+                      createdAt: '2026-02-27T16:45:00Z'
+        '404':
+          description: Disputa não encontrada.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/resource-not-found
+                title: Resource Not Found
+                status: 404
+                detail: Dispute '12332125088527' could not be found.
+                instance: /v1/disputes/12332125088527
+                traceId: abc-123-trace
+        '500':
+          description: Erro inesperado ao processar a requisição.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: An unexpected error occurred on the server. Please try again later. If the issue persists, contact support with the trace ID.
+                instance: /v1/disputes/12332125088527
+                traceId: abc-123-trace
+      operationId: getV1DisputesByDisputeId
+      x-operation-id-source: derived
+  /v1/disputes/{dispute_id}/evidences:
+    post:
+      summary: Envia evidências de defesa para uma disputa
+      description: 'Precisa de ajuda com a integração? Manda um email para `chargeback.tech@stone.com.br`.
+
+
+        Submete um ou mais arquivos PDF como evidências de defesa para uma disputa de chargeback existente,
+
+        em um único multipart. A validação é **all-or-nothing** — se qualquer arquivo falhar (MIME, tamanho,
+
+        extensão, limite de páginas), todos são rejeitados.
+
+
+        **Limites:**
+
+        * Por arquivo: ≤ 2 MB.
+
+        * Por disputa: máximo de 10 páginas no total (somatório de páginas entre todos os arquivos enviados — ex.: 1 PDF de 10 páginas já ocupa o limite, então não cabe mais nenhum arquivo).
+
+        * Por requisição: ≤ 11 MB no total.'
+      tags:
+      - Disputas
+      parameters:
+      - name: dispute_id
+        in: path
+        required: true
+        description: ID único da disputa.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - files
+              properties:
+                files:
+                  type: array
+                  description: Um ou mais arquivos PDF. Use o nome de campo `files` em cada parte do multipart.
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Evidência recebida com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  disputeId:
+                    type: string
+                  status:
+                    type: string
+                    example: received
+                  message:
+                    type: string
+                    example: Evidence received successfully.
+        '400':
+          description: 'Requisição inválida — multipart malformado, campo `files` ausente, ou arquivo(s) rejeitado(s)
+
+            na validação. Quando a submissão é rejeitada por validação de arquivo, a resposta inclui os
+
+            campos de extensão `validated_files` e `transaction_batch_errors` (conforme RFC 9457)
+
+            detalhando cada falha por arquivo e por transação. O `detail` é um sumário legível
+
+            agregando os códigos de erro.
+
+
+            **Importante:** a validação é all-or-nothing — basta um arquivo falhar para a submissão
+
+            inteira ser rejeitada.
+
+            '
+          content:
+            application/problem+json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/ProblemDetail'
+                - $ref: '#/components/schemas/FileValidationProblemDetail'
+              examples:
+                file-name-is-not-valid:
+                  summary: FILE_NAME_IS_NOT_VALID
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: FILE_NAME_IS_NOT_VALID'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - FILE_NAME_IS_NOT_VALID
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                file-size-too-small:
+                  summary: FILE_SIZE_TOO_SMALL
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: FILE_SIZE_TOO_SMALL'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - FILE_SIZE_TOO_SMALL
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                file-size-too-big:
+                  summary: FILE_SIZE_TOO_BIG
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: FILE_SIZE_TOO_BIG'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - FILE_SIZE_TOO_BIG
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                file-mime-type-not-allowed:
+                  summary: FILE_MIME_TYPE_NOT_ALLOWED
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: FILE_MIME_TYPE_NOT_ALLOWED'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - FILE_MIME_TYPE_NOT_ALLOWED
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                file-extension-not-allowed:
+                  summary: FILE_EXTENSION_NOT_ALLOWED
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: FILE_EXTENSION_NOT_ALLOWED'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - FILE_EXTENSION_NOT_ALLOWED
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                dispute-not-found-to-informed-transaction-id:
+                  summary: DISPUTE_NOT_FOUND_TO_INFORMED_TRANSACTION_ID
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: DISPUTE_NOT_FOUND_TO_INFORMED_TRANSACTION_ID'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - DISPUTE_NOT_FOUND_TO_INFORMED_TRANSACTION_ID
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                dispute-status-not-allowed:
+                  summary: DISPUTE_STATUS_NOT_ALLOWED
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: DISPUTE_STATUS_NOT_ALLOWED'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - DISPUTE_STATUS_NOT_ALLOWED
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                dispute-doesnt-belong-to-merchant:
+                  summary: DISPUTE_DOESNT_BELONG_TO_MERCHANT
+                  value:
+                    type: /errors/invalid-file
+                    title: Invalid File
+                    status: 400
+                    detail: 'file "evidence.pdf" failed validation: DISPUTE_DOESNT_BELONG_TO_MERCHANT'
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                    validated_files:
+                    - name: evidence.pdf
+                      transaction_id: '12332125088527'
+                      institution: stone
+                      errors:
+                      - DISPUTE_DOESNT_BELONG_TO_MERCHANT
+                      is_valid_file: false
+                    transaction_batch_errors: []
+                invalid-multipart:
+                  summary: Body multipart malformado
+                  value:
+                    type: /errors/invalid-request
+                    title: Invalid Request
+                    status: 400
+                    detail: Could not parse multipart form.
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+                missing-files:
+                  summary: Campo `files` ausente ou inválido no multipart
+                  value:
+                    type: /errors/invalid-request
+                    title: Invalid Request
+                    status: 400
+                    detail: Missing or invalid 'files' field in multipart form.
+                    instance: /v1/disputes/12332125088527/evidences
+                    traceId: abc-123-trace
+        '404':
+          description: Disputa não encontrada.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/resource-not-found
+                title: Resource Not Found
+                status: 404
+                detail: Dispute '12332125088527' could not be found.
+                instance: /v1/disputes/12332125088527/evidences
+                traceId: abc-123-trace
+        '413':
+          description: Body da requisição excede o limite máximo (11 MB).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/payload-too-large
+                title: Payload Too Large
+                status: 413
+                detail: Request body exceeds the technical limit of 11 MB.
+                instance: /v1/disputes/12332125088527/evidences
+                traceId: abc-123-trace
+        '422':
+          description: A disputa está em um estado que não permite o envio de evidências.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/unprocessable-entity
+                title: Unprocessable Entity
+                status: 422
+                detail: The dispute is in a state that does not allow evidence submission.
+                instance: /v1/disputes/12332125088527/evidences
+                traceId: abc-123-trace
+        '500':
+          description: Erro inesperado ao processar a requisição.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: /errors/internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: An unexpected error occurred on the server. Please try again later. If the issue persists, contact support with the trace ID.
+                instance: /v1/disputes/12332125088527/evidences
+                traceId: abc-123-trace
+      operationId: postV1DisputesByDisputeIdEvidences
+      x-operation-id-source: derived
+components:
+  schemas:
+    FileValidationProblemDetail:
+      type: object
+      description: 'Extensão do ProblemDetail (RFC 9457) específica para o erro `/errors/invalid-file`
+
+        quando a submissão de evidência é rejeitada por validação. Inclui o
+
+        detalhamento por arquivo (`validated_files`) e a lista de falhas agregadas por
+
+        transação (`transaction_batch_errors`). O `detail` é um sumário legível dos
+
+        códigos de erro retornados.
+
+        '
+      allOf:
+      - $ref: '#/components/schemas/ProblemDetail'
+      - type: object
+        required:
+        - validated_files
+        properties:
+          validated_files:
+            type: array
+            items:
+              $ref: '#/components/schemas/ValidatedFile'
+            description: Resultado da validação individual de cada arquivo da submissão.
+          transaction_batch_errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionBatchError'
+            description: Falhas de validação agregadas por transação.
+    ProblemDetail:
+      type: object
+      description: 'Estrutura de erro padronizada conforme RFC 9457 (Problem Details for HTTP APIs).
+
+        Content-Type da resposta: `application/problem+json`.
+
+        '
+      properties:
+        type:
+          type: string
+          description: 'Identificador relativo do tipo de erro (ex.: `/errors/resource-not-found`).'
+          example: /errors/resource-not-found
+        title:
+          type: string
+          description: Resumo curto e legível do tipo de erro (em inglês).
+          example: Resource Not Found
+        status:
+          type: integer
+          description: Código de status HTTP correspondente.
+          example: 404
+        detail:
+          type: string
+          description: Explicação humana específica desta ocorrência (em inglês).
+          example: Dispute '12332125088527' could not be found.
+        instance:
+          type: string
+          description: Caminho do recurso requisitado.
+          example: /v1/disputes/12332125088527
+        traceId:
+          type: string
+          description: Identificador da requisição (echo de `X-Request-Id`), útil para rastrear a requisição em caso de suporte.
+          example: abc-123-trace
+    Dispute:
+      type: object
+      properties:
+        disputeId:
+          type: string
+          description: ID único da disputa.
+        transactionId:
+          type: string
+          description: ID da transação associada à disputa.
+        chargeId:
+          type: string
+          description: ID da cobrança associada à disputa.
+        createdAt:
+          type: string
+          format: date-time
+          description: Data da criação da disputa.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data da última atualização da disputa.
+        responseDeadline:
+          type: string
+          format: date-time
+          description: Data limite para o envio de evidências por parte do lojista.
+        chargebackAmount:
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+          - description: Valor do chargeback.
+        debitedAmount:
+          allOf:
+          - $ref: '#/components/schemas/Amount'
+          - description: Valor debitado do lojista.
+        status:
+          type: string
+          enum:
+          - WAITING_MERCHANT_EVIDENCES
+          - WAITING_ACQUIRER_ANALYSIS
+          - MERCHANT_EVIDENCE_DEADLINE_EXPIRED
+          - WAITING_ISSUER
+          - LOST
+          - WON
+          - DEADLINE_EXPIRED
+          - REVERSED
+          description: 'Status atual da disputa.
+
+
+            **Valores possíveis:**
+
+
+            | Status | Code | Significado |
+
+            |---|---|---|
+
+            | `REVERSED` | 93 | Chargeback revertido — o valor contestado foi estornado ao lojista. |
+
+            '
+        reason:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Código do motivo do chargeback.
+            description:
+              type: string
+              enum:
+              - FRAUD
+              - PROCESSING_ERROR
+              - COMMERCIAL_DISPUTE
+              - AUTHORIZATION
+              description: Descrição do motivo do chargeback.
+          description: Motivo do pedido de chargeback.
+        stage:
+          type: string
+          description: Estágio do ciclo de chargeback.
+        cycle:
+          type: string
+          enum:
+          - FIRST
+          - SECOND
+          description: 'Ciclo de chargeback em que a disputa está. O campo é **omitido** da resposta para
+
+            disputas coletadas antes de o ciclo passar a ser registrado — não é retornado como
+
+            `null`.
+
+            '
+          example: FIRST
+        cycleStatus:
+          type: string
+          enum:
+          - RECEIVED
+          - GUARANTEE_ANALYZED
+          - EVIDENCE_RECEIVED
+          - REPRESENTED
+          - REVERSED
+          - WON
+          - LOST
+          - EXPIRED
+          description: 'Status da disputa dentro do ciclo atual. É independente de `status`, que acompanha o
+
+            ciclo de vida da disputa como um todo. O campo é **omitido** da resposta para disputas
+
+            coletadas antes de o ciclo passar a ser registrado — não é retornado como `null`.
+
+            '
+          example: RECEIVED
+        network:
+          type: string
+          description: Bandeira do cartão.
+        institution:
+          type: string
+          enum:
+          - STONE
+          - PAGAR.ME
+          description: Instituição onde a transação foi processado.
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          description: Lista de eventos relacionados à disputa.
+        guarantee:
+          type: object
+          description: 'Resultado da análise de garantia da disputa. O campo é **omitido** da resposta
+
+            quando a disputa não possui garantia — não é retornado como `null`.
+
+            '
+          properties:
+            status:
+              type: string
+              description: 'Situação da garantia (ex.: `GUARANTEED`, `NOT_GUARANTEED`).'
+              example: NOT_GUARANTEED
+            reason:
+              type:
+              - string
+              - 'null'
+              description: Motivo pelo qual a garantia foi negada. É `null` quando a disputa está garantida.
+              example: deadline_expired
+            updatedAt:
+              type: string
+              format: date-time
+              description: Data da última atualização da análise de garantia. Omitido quando não informado.
+              example: '2026-04-22T10:00:00Z'
+    Event:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - FIRST_CHARGEBACK
+          - FIRST_CHARGEBACK_REVERSED
+          - DISPUTE_NOTIFIED
+          - MERCHANT_EVIDENCE_RECEIVED
+          - EVIDENCE_ANALYSIS_ACCEPTED
+          - EVIDENCE_ANALYSIS_DENIED
+          - LOST_DISPUTE
+          description: Tipo do evento relacionado à disputa.
+        createdAt:
+          type: string
+          format: date-time
+          description: Data da criação do evento.
+    Amount:
+      type: object
+      properties:
+        amount:
+          type: string
+          example: '150.47'
+        currencyCode:
+          type: string
+          example: BRL
+    TransactionBatchError:
+      type: object
+      description: 'Falha de validação aplicada ao conjunto de arquivos de uma mesma transação
+
+        (independente de cada arquivo ser individualmente válido), ex.: a soma de
+
+        páginas dos arquivos enviados excede o limite de 10 páginas por transação.
+
+        '
+      properties:
+        transaction_id:
+          type: string
+          description: Transação alvo da regra de batch.
+          example: '12332125088527'
+        filenames:
+          type: array
+          items:
+            type: string
+          description: Arquivos considerados no batch desta transação.
+          example:
+          - 12332125088527.pdf
+          - dummy_print.pdf
+        errors:
+          type: array
+          items:
+            type: string
+            description: Código do erro de validação de batch da transação.
+            enum:
+            - MAX_ITEMS_PER_TRANSACTION_QUANTITY_EXCEEDED
+          description: Códigos de erro de validação da transação.
+          example:
+          - MAX_ITEMS_PER_TRANSACTION_QUANTITY_EXCEEDED
+    ValidatedFile:
+      type: object
+      description: 'Resultado da validação de um único arquivo enviado como evidência. Quando
+
+        uma submissão é rejeitada, cada arquivo é reportado neste formato,
+
+        listando todos os códigos de erro que ele violou (vazio quando o arquivo
+
+        em si está OK, mesmo que a transação tenha falhado por outro motivo).
+
+        '
+      properties:
+        name:
+          type: string
+          description: Nome do arquivo conforme enviado no multipart.
+          example: evidence.pdf
+        transaction_id:
+          type:
+          - string
+          - 'null'
+          description: Identificador da transação associada ao arquivo, quando aplicável.
+          example: '12332125088527'
+        institution:
+          type:
+          - string
+          - 'null'
+          description: Instituição associada à transação, quando aplicável.
+          example: stone
+        errors:
+          type: array
+          items:
+            type: string
+            description: Código do erro de validação do arquivo.
+            enum:
+            - FILE_NAME_IS_NOT_VALID
+            - FILE_SIZE_TOO_SMALL
+            - FILE_SIZE_TOO_BIG
+            - FILE_MIME_TYPE_NOT_ALLOWED
+            - FILE_EXTENSION_NOT_ALLOWED
+            - DISPUTE_NOT_FOUND_TO_INFORMED_TRANSACTION_ID
+            - DISPUTE_STATUS_NOT_ALLOWED
+            - DISPUTE_DOESNT_BELONG_TO_MERCHANT
+          description: 'Lista de códigos de erro de validação deste arquivo.
+
+            Estará vazia quando `is_valid_file` for `true`.
+
+
+            **Códigos possíveis:**
+
+
+            | Código | Significado |
+
+            |---|---|
+
+            | `FILE_NAME_IS_NOT_VALID` | Nome do arquivo não contém um ID de transação válido. |
+
+            | `FILE_SIZE_TOO_SMALL` | Tamanho do arquivo abaixo do mínimo permitido (1 byte). |
+
+            | `FILE_SIZE_TOO_BIG` | Tamanho do arquivo acima do máximo permitido (2 MB). |
+
+            | `FILE_MIME_TYPE_NOT_ALLOWED` | MIME real do arquivo não é `application/pdf`. |
+
+            | `FILE_EXTENSION_NOT_ALLOWED` | Extensão não permitida. Permitidas: `.pdf`. |
+
+            | `DISPUTE_NOT_FOUND_TO_INFORMED_TRANSACTION_ID` | Não existe disputa para o `transaction_id` informado. |
+
+            | `DISPUTE_STATUS_NOT_ALLOWED` | Status atual da disputa não permite envio de evidência. |
+
+            | `DISPUTE_DOESNT_BELONG_TO_MERCHANT` | A disputa não pertence ao merchant informado. |
+
+            '
+          example:
+          - FILE_MIME_TYPE_NOT_ALLOWED
+          - FILE_SIZE_TOO_BIG
+        is_valid_file:
+          type: boolean
+          description: Indica se o arquivo passou em todas as regras de validação individuais.
+          example: false
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/get_v1-disputes-dispute-id.md
+  - https://docs.pagar.me/reference/get_v1-disputes.md
+  - https://docs.pagar.me/reference/post_v1-disputes-dispute-id-evidences.md
+  merge:
+    pages: 3
+    deduped: 5
+    conflicts_kept_first: 0

@@ -1,0 +1,192 @@
+openapi: 3.2.0
+info:
+  title: pagarme-api-register-v5 Settlement Obligations API
+  version: '5'
+servers:
+- url: https://api.pagar.me/register/v5
+security:
+- sec0: []
+tags:
+- name: Settlement Obligations
+paths:
+  /settlement-obligations:
+    get:
+      summary: Retornando Efeitos de Contratos
+      description: ''
+      operationId: retornando-efeitos-de-contratos-v5
+      parameters:
+      - name: size
+        in: query
+        description: Quantidade de efeitos retornados
+        schema:
+          type: string
+      - name: expected_settlement_date_since
+        in: query
+        description: Data inicial da consulta
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: expected_settlement_date_until
+        in: query
+        description: Data final da consulta
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: page
+        in: query
+        description: Página desejada da consulta
+        schema:
+          type: string
+      - name: recipient_id
+        in: query
+        description: ID de recebedor desejado
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  data: [\n\t\t{\n\t\t\t\"expected_settlement_date\": \"string\",\n\t\t\t\"original_asset_holder\": \"string\",\n\t\t\t\"settlement_obligations\": [\n\t\t\t\t{\n\t\t\t\t\t\"payment_scheme\": \"string\",\n\t\t\t\t\t\"total_amount\": integer,\n\t\t\t\t\t\"uncommitted_amount\": integer,\n\t\t\t\t\t\"expected_settlement_date\": \"string\",\n\t\t\t\t\t\"contract_Key\": \"string\",\n\t\t\t\t\t\"contract_holder\": \"string\",\n\t\t\t\t\t\"effect_priority\": integer,\n\t\t\t\t\t\"contract_type\": \"string\",\n\t\t\t\t\t\"division_method\": \"string\",\n\t\t\t\t\t\"effect_amount\": integer,\n\t\t\t\t\t\"committed_effect_amount\": integer\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t],\n\t\"paging\": {\n\t\t\"total\": 11,\n\t\t\"previous\": \"https://api.pagar.me/register/v5/settlement-obligations?page=1&size=10\",\n\t\t\"next\": \"https://api.pagar.me/register/v5/settlement-obligations?page=3&size=10\"\n\t}\n}"
+        '204':
+          description: '204'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  message: \"No content\"\n}"
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  message: \"recipient not found\"\n}"
+      deprecated: false
+      tags:
+      - Settlement Obligations
+  /settlement_obligations/contracts:
+    get:
+      summary: Retornando Contratos
+      description: ''
+      operationId: retornando-efeitos-de-contratos-copy
+      parameters:
+      - name: recipient_id
+        in: query
+        description: ID de recebedor desejado
+        schema:
+          type: string
+      - name: expected_settlement_date_since
+        in: query
+        description: Data inicial da consulta
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: expected_settlement_date_until
+        in: query
+        description: Data final da consulta
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "[\n    {\n        \"key\": \"016546874e-9571-9rt7-b789-1161r16r1618\",\n        \"contract_type\": \"OwnershipAssignment\",\n        \"created_at\": \"2023-09-01T18:23:00.867373Z\",\n        \"is_canceled\": false,\n        \"contract_holder\": \"20898464000024\",\n        \"bank_accounts\": [\n            {\n                \"branch\": \"0011\",\n                \"account\": \"018757\",\n                \"account_digit\": \"9\",\n                \"account_type\": \"CC\",\n                \"ispb\": \"012678971\",\n                \"document_type\": \"CNPJ\",\n                \"document_number\": \"20898464000024\"\n            }\n        ],\n        \"trade_repository\": \"310258107000093\"\n    }\n]"
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      example: 016546874e-9571-9rt7-b789-1161r16r1618
+                    contract_type:
+                      type: string
+                      example: OwnershipAssignment
+                    created_at:
+                      type: string
+                      example: '2023-09-01T18:23:00.867373Z'
+                    is_canceled:
+                      type: boolean
+                      example: false
+                      default: true
+                    contract_holder:
+                      type: string
+                      example: '20898464000024'
+                    bank_accounts:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          branch:
+                            type: string
+                            example: '0011'
+                          account:
+                            type: string
+                            example: 018757
+                          account_digit:
+                            type: string
+                            example: '9'
+                          account_type:
+                            type: string
+                            example: CC
+                          ispb:
+                            type: string
+                            example: 012678971
+                          document_type:
+                            type: string
+                            example: CNPJ
+                          document_number:
+                            type: string
+                            example: '20898464000024'
+                    trade_repository:
+                      type: string
+                      example: '310258107000093'
+        '204':
+          description: '204'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  message: \"No content\"\n}"
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  message: \"recipient not found\"\n}"
+      deprecated: false
+      tags:
+      - Settlement Obligations
+components:
+  securitySchemes:
+    sec0:
+      type: http
+      scheme: basic
+x-readme-fauxas: true
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/contestando-um-contrato-v5.md
+  - https://docs.pagar.me/reference/retornando-contestacoes.md
+  - https://docs.pagar.me/reference/retornando-efeitos-de-contratos-copy.md
+  - https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5.md
+  merge:
+    pages: 4
+    deduped: 3
+    conflicts_kept_first: 0

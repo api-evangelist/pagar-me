@@ -1,0 +1,682 @@
+openapi: 3.2.0
+info:
+  title: pagarme-api Customers API
+  version: '5'
+servers:
+- url: https://api.pagar.me/core/v5
+security:
+- sec0: []
+tags:
+- name: Customers
+paths:
+  /customers:
+    post:
+      summary: Criar cliente
+      description: ''
+      operationId: criar-cliente-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Nome do cliente. Max: 64 caracteres.'
+                email:
+                  type: string
+                  description: 'E-mail do cliente. Max: 64 caracteres'
+                code:
+                  type: string
+                  description: 'Código de referência do cliente no sistema da loja. Max: 52 caracteres'
+                document:
+                  type: string
+                  description: 'CPF, CNPJ ou PASSPORT do cliente. Max: 16 caracteres para CPF e CNPJ e Max: 50 caracteres para PASSPORT'
+                document_type:
+                  type: string
+                  description: 'Tipo de documento. Valores possíveis: CPF, CNPJ ou PASSPORT.'
+                type:
+                  type: string
+                  description: 'Tipo de cliente. Valores possíveis: **individual** (pessoa física) ou **company** (pessoa jurídica).<br>**Obrigatório**, caso o `document` seja enviado.'
+                gender:
+                  type: string
+                  description: 'Sexo do cliente . Valores possíveis: **male** ou **female**'
+                address:
+                  type: object
+                  description: Endereço do cliente.
+                  properties:
+                    country:
+                      type: string
+                      description: País (Código do país no formato ISO 3166-1 alpha-2)(2 digitos)
+                    state:
+                      type: string
+                      description: Estado (Código do estado no formato ISO 3166-2).
+                    city:
+                      type: string
+                      description: Cidade.
+                    zip_code:
+                      type: string
+                      description: Código Postal (CEP) (Apenas numérico).
+                    line_1:
+                      type: string
+                      description: Dados principais do endereço. Neste campo deve ser informado Número, Rua, Bairro, nesta ordem e separados por vírgula.
+                    line_2:
+                      type: string
+                      description: Dados complementares do endereço. Neste campo pode ser informado complemento, referências.
+                phones:
+                  type: object
+                  description: Telefones do cliente. [Saiba mais sobre o telefones](https://docs.pagar.me/reference#telefones-1)
+                  properties:
+                    home_phone:
+                      type: object
+                      description: Telefone residencial do cliente.
+                      properties:
+                        country_code:
+                          type: string
+                          description: Código do País (Apenas numérico).
+                        area_code:
+                          type: string
+                          description: Código da área (Apenas numérico).
+                        number:
+                          type: string
+                          description: Número do telefone (Apenas numérico).
+                    mobile_phone:
+                      type: object
+                      description: Telefone celular do cliente.
+                      properties:
+                        country_code:
+                          type: string
+                          description: Código do País (Apenas numérico).
+                        area_code:
+                          type: string
+                          description: Código da área (Apenas numérico).
+                        number:
+                          type: string
+                          description: Número do telefone (Apenas numérico).
+                birthdate:
+                  type: string
+                  description: Data de nascimento do cliente.
+                  default: mm/dd/aaa
+                  format: date
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o cliente. [Saiba mais sobre metadata](https://docs.pagar.me/reference/metadata-1)
+            examples:
+              Request Example:
+                value:
+                  name: Tony Stark
+                  email: tonystarkk@avengers.com
+                  code: MY_CUSTOMER_001
+                  document: '93095135270'
+                  type: individual
+                  document_type: CPF
+                  gender: male
+                  address:
+                    line_1: 375, Av. General Justo, Centro
+                    line_2: 8º andar
+                    zip_code: '20021130'
+                    city: Rio de Janeiro
+                    state: RJ
+                    country: BR
+                  birthdate: 05/03/1984
+                  phones:
+                    home_phone:
+                      country_code: '55'
+                      area_code: '21'
+                      number: '000000000'
+                    mobile_phone:
+                      country_code: '55'
+                      area_code: '21'
+                      number: '000000000'
+                  metadata:
+                    company: Avengers
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"cus_QA5V47r9c0Im3dzN\",\n    \"name\": \"Tony Stark\",\n    \"email\": \"tonystarkk@avengers.com\",\n    \"code\": \"MY_CUSTOMER_001\",\n    \"document\": \"93095135270\",\n    \"document_type\": \"CPF\",  \n    \"type\": \"individual\",\n    \"gender\": \"male\",\n    \"delinquent\": false,\n    \"address\": {\n        \"id\": \"addr_KewjagEfrCbY1doZ\",\n        \"line_1\": \"375, Av. General Justo, Centro\",\n        \"line_2\": \"8º andar\",\n        \"zip_code\": \"20021130\",\n        \"city\": \"Rio de Janeiro\",\n        \"state\": \"RJ\",\n        \"country\": \"BR\",\n        \"status\": \"active\",\n        \"created_at\": \"2017-09-22T15:36:46Z\",\n        \"updated_at\": \"2018-04-03T17:46:20Z\"\n    },\n    \"created_at\": \"2017-09-22T15:36:46Z\",\n    \"updated_at\": \"2018-04-03T17:46:20Z\",\n    \"birthdate\": \"1984-05-03T00:00:00Z\",\n    \"phones\": {\n        \"home_phone\": {\n            \"country_code\": \"55\",\n            \"number\": \"000000000\",\n            \"area_code\": \"21\"\n        },\n        \"mobile_phone\": {\n            \"country_code\": \"55\",\n            \"number\": \"000000000\",\n            \"area_code\": \"21\"\n        }\n    },\n    \"metadata\": {\n        \"id\": \"my_customer_id\",\n        \"company\": \"Avengers\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: cus_QA5V47r9c0Im3dzN
+                  name:
+                    type: string
+                    example: Tony Stark
+                  email:
+                    type: string
+                    example: tonystarkk@avengers.com
+                  code:
+                    type: string
+                    example: MY_CUSTOMER_001
+                  document:
+                    type: string
+                    example: '93095135270'
+                  document_type:
+                    type: string
+                    example: CPF
+                  type:
+                    type: string
+                    example: individual
+                  gender:
+                    type: string
+                    example: male
+                  delinquent:
+                    type: boolean
+                    example: false
+                    default: true
+                  address:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: addr_KewjagEfrCbY1doZ
+                      line_1:
+                        type: string
+                        example: 375, Av. General Justo, Centro
+                      line_2:
+                        type: string
+                        example: 8º andar
+                      zip_code:
+                        type: string
+                        example: '20021130'
+                      city:
+                        type: string
+                        example: Rio de Janeiro
+                      state:
+                        type: string
+                        example: RJ
+                      country:
+                        type: string
+                        example: BR
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2017-09-22T15:36:46Z'
+                      updated_at:
+                        type: string
+                        example: '2018-04-03T17:46:20Z'
+                  created_at:
+                    type: string
+                    example: '2017-09-22T15:36:46Z'
+                  updated_at:
+                    type: string
+                    example: '2018-04-03T17:46:20Z'
+                  birthdate:
+                    type: string
+                    example: '1984-05-03T00:00:00Z'
+                  phones:
+                    type: object
+                    properties:
+                      home_phone:
+                        type: object
+                        properties:
+                          country_code:
+                            type: string
+                            example: '55'
+                          number:
+                            type: string
+                            example: '000000000'
+                          area_code:
+                            type: string
+                            example: '21'
+                      mobile_phone:
+                        type: object
+                        properties:
+                          country_code:
+                            type: string
+                            example: '55'
+                          number:
+                            type: string
+                            example: '000000000'
+                          area_code:
+                            type: string
+                            example: '21'
+                  metadata:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: my_customer_id
+                      company:
+                        type: string
+                        example: Avengers
+        '422':
+          description: '422'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"The request is invalid.\",\n    \"errors\": {\n        \"customer.name\": [\n            \"The name field is required.\"\n        ]\n    },\n    \"request\": {\n        \"email\": \"tonystarkk@avengers.com\",\n        \"code\": \"MY_CUSTOMER_001\",\n        \"document\": \"123456789\",\n        \"type\": \"individual\",\n        \"address\": {\n            \"line_1\": \"375, Av. General Justo, Centro\",\n            \"line_2\": \"8º andar\",\n            \"zip_code\": \"20021130\",\n            \"city\": \"Rio de Janeiro\",\n            \"state\": \"RJ\",\n            \"country\": \"BR\",\n        },\n        \"birthdate\": \"1984-05-03T00:00:00Z\",\n        \"phones\": {\n            \"home_phone\": {\n                \"country_code\": \"55\",\n                \"number\": \"000000000\",\n                \"area_code\": \"21\"\n            },\n            \"mobile_phone\": {\n                \"country_code\": \"55\",\n                \"number\": \"000000000\",\n                \"area_code\": \"21\"\n            }\n        },\n        \"gender\": \"male\",\n        \"metadata\": {\n            \"company\": \"Avengers\"\n        }\n    }\n}"
+      deprecated: false
+      tags:
+      - Customers
+    get:
+      summary: Listar clientes
+      description: Este recurso permite a obtenção da **carteira de clientes** do lojista. Pode ser utilizados alguns parâmetros como filtro da listagem
+      operationId: listar-clientes-1
+      parameters:
+      - name: name
+        in: query
+        description: Nome do cliente
+        schema:
+          type: string
+      - name: document
+        in: query
+        description: 'CPF ou CNPJ do cliente. Max: 16 caracteres'
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: E-mail do cliente
+        schema:
+          type: string
+      - name: gender
+        in: query
+        description: 'Sexo do cliente . Valores possíveis: **male** ou **female**'
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Página atual.
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: Quantidade de itens por página.
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: code
+        in: query
+        description: Código do cliente no sistema do lojista
+        schema:
+          type: string
+          default: '10'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"data\": [\n    {\n      \"id\": \"cus_n2Y17zAt67s2Oplg\",\n      \"name\": \"Monitor\",\n      \"gender\": \"male\",\n      \"email\": \"9bfdfb6b-405f-489e-a4e0-b66101c86743@pagar.me\",\n      \"delinquent\": false,\n      \"created_at\": \"2017-04-19T17:43:10Z\",\n      \"updated_at\": \"2017-04-19T17:43:10Z\"\n    },\n    {\n      \"id\": \"cus_Z7DvZNpUZhYlvndR\",\n      \"name\": \"Monitor\",\n      \"gender\": \"female\",\n      \"email\": \"c17b44be-85a8-4a1c-a9d1-5e0109cb4ece@pagar.me\",\n      \"delinquent\": false,\n      \"created_at\": \"2017-04-19T17:42:51Z\",\n      \"updated_at\": \"2017-04-19T17:42:51Z\"\n    },\n  \"paging\": {\n    \"total\": 545797,\n    \"next\": \"https://api.pagar.me:4443/core/v1/customers?page=2&size=10\"\n  }\n}"
+        '401':
+          description: '401'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Authorization has been denied for this request.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Authorization has been denied for this request.
+      deprecated: false
+      tags:
+      - Customers
+  /customers/{customer_id}:
+    get:
+      summary: Obter cliente
+      description: ''
+      operationId: obter-cliente-1
+      parameters:
+      - name: customer_id
+        in: path
+        description: Código do cliente. Formato `cus_XXXXXXXXXXXXXXXX`.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"cus_6l5dMWZ0hkHZ4XnE\",\n    \"name\": \"Wonderful Woman\",\n    \"email\": \"wonderfulwoman@avengers.com\",\n  \t\"gender\": \"female\",\n    \"delinquent\": false,\n    \"address\": {\n        \"id\": \"addr_ONzp3ZbTvfDJ35k9\",\n        \"line_1\": \"375, Av. General Justo, Centro\",\n        \"line_2\": \"8º andar\",\n        \"zip_code\": \"20021130\",\n        \"city\": \"Rio de Janeiro\",\n        \"state\": \"RJ\",\n        \"country\": \"BR\",\n        \"status\": \"active\",\n        \"created_at\": \"2017-08-22T19:50:44Z\",\n        \"updated_at\": \"2017-08-22T19:50:44Z\"\n    },\n    \"created_at\": \"2017-08-22T19:50:44Z\",\n    \"updated_at\": \"2017-08-22T19:50:51Z\",\n    \"phones\": {},\n    \"metadata\": {\n        \"company\": \"Avengers\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: cus_6l5dMWZ0hkHZ4XnE
+                  name:
+                    type: string
+                    example: Wonderful Woman
+                  email:
+                    type: string
+                    example: wonderfulwoman@avengers.com
+                  gender:
+                    type: string
+                    example: female
+                  delinquent:
+                    type: boolean
+                    example: false
+                    default: true
+                  address:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: addr_ONzp3ZbTvfDJ35k9
+                      line_1:
+                        type: string
+                        example: 375, Av. General Justo, Centro
+                      line_2:
+                        type: string
+                        example: 8º andar
+                      zip_code:
+                        type: string
+                        example: '20021130'
+                      city:
+                        type: string
+                        example: Rio de Janeiro
+                      state:
+                        type: string
+                        example: RJ
+                      country:
+                        type: string
+                        example: BR
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2017-08-22T19:50:44Z'
+                      updated_at:
+                        type: string
+                        example: '2017-08-22T19:50:44Z'
+                  created_at:
+                    type: string
+                    example: '2017-08-22T19:50:44Z'
+                  updated_at:
+                    type: string
+                    example: '2017-08-22T19:50:51Z'
+                  phones:
+                    type: object
+                    properties: {}
+                  metadata:
+                    type: object
+                    properties:
+                      company:
+                        type: string
+                        example: Avengers
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Customer not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Customer not found.
+      deprecated: false
+      tags:
+      - Customers
+    put:
+      summary: Editar cliente
+      description: ''
+      operationId: editar-cliente-1
+      parameters:
+      - name: customer_id
+        in: path
+        description: Código do cliente. Formato `cus_XXXXXXXXXXXXXXXX`.
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Nome do cliente. Max: 64 caracteres.'
+                email:
+                  type: string
+                  description: 'E-mail do cliente. Max: 64 caracteres'
+                code:
+                  type: string
+                  description: 'Código de referência do cliente no sistema da loja. Max: 52 caracteres'
+                document:
+                  type: string
+                  description: 'CPF, CNPJ ou PASSAPORTE do cliente. Max: 16 caracteres para CPF e CNPJ e Max: 50 caracteres para PASSAPORTE'
+                document_type:
+                  type: string
+                  description: 'Tipo de documento. Valores possíveis: CPF, CNPJ ou PASSPORT.'
+                type:
+                  type: string
+                  description: 'Tipo de cliente. Valores possíveis: **individual** (pessoa física) ou **company** (pessoa jurídica).<br>**Obrigatório**, caso o `document` seja enviado.'
+                gender:
+                  type: string
+                  description: 'Sexo do cliente . Valores possíveis: **male** ou **female**'
+                address:
+                  type: object
+                  description: Endereço do cliente. [Saiba mais sobre endereços](https://docs.pagar.me/reference/endere%C3%A7os)
+                  properties:
+                    line_1:
+                      type: string
+                      description: 'Linha 1 do endereço. (Número, Rua, e Bairro - Nesta ordem e separados por vírgula) Max: 256 caracteres.'
+                    line_2:
+                      type: string
+                      description: 'Linha 2 do endereço. (Complemento - Andar, Sala, Apto). Max: 128 caracteres.'
+                    zip_code:
+                      type: string
+                      description: 'CEP. Max: 16 caracteres. (Apenas numérico)'
+                    city:
+                      type: string
+                      description: 'Cidade. Max: 64 caracteres.'
+                    state:
+                      type: string
+                      description: Código do estado no formato ISO 3166-2. <a href="https://pt.wikipedia.org/wiki/ISO_3166-2" target="_blank">Saiba mais sobre ISO 3166-2</a>
+                    country:
+                      type: string
+                      description: Código do país no formato ISO 3166-1 alpha-2. <a href="https://pt.wikipedia.org/wiki/ISO_3166-1_alfa-2" target="_blank">Saiba mais sobre ISO 3166-1 alpha-2</a>
+                    metadata:
+                      type: string
+                      description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o endereço. [Saiba mais sobre metadata](https://docs.mundipagg.com/v1/reference#metadata)
+                phone:
+                  type: object
+                  description: Telefones do cliente. [Saiba mais sobre o telefones](https://docs.pagar.me/reference#telefones-1)
+                  properties: {}
+                birthdate:
+                  type: string
+                  description: Data de nascimento do cliente.
+                  format: date
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o cliente. [Saiba mais sobre metadata](https://docs.pagar.me/reference/metadata-1)
+            examples:
+              Request Example:
+                value:
+                  name: Peter Parker
+                  email: parker@avengers.com
+                  gender: male
+                  address:
+                    line_1: 375, Av. General Justo, Centro
+                    line_2: 8º andar
+                    zip_code: '20021130'
+                    city: Rio de Janeiro
+                    state: RJ
+                    country: BR
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"cus_6l5dMWZ0hkHZ4XnE\",\n  \"name\": \"Peter Parker\",\n  \"email\": \"parker@avengers.com\",\n  \"document\": \"26224451990\",\n  \"gender\": \"male\",\n  \"type\": \"individual\",\n  \"delinquent\": false,\n  \"created_at\": \"2017-05-02T23:26:49Z\",\n  \"updated_at\": \"2017-05-02T23:28:16Z\",\n  \"phones\": {\n    \"home_phone\": {\n      \"country_code\": \"55\",\n      \"number\": \"0000002000\",\n      \"area_code\": \"021\"\n    }\n  },\n  \"metadata\": {\n    \"id\": \"my_customer_id\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: cus_6l5dMWZ0hkHZ4XnE
+                  name:
+                    type: string
+                    example: Peter Parker
+                  email:
+                    type: string
+                    example: parker@avengers.com
+                  document:
+                    type: string
+                    example: '26224451990'
+                  gender:
+                    type: string
+                    example: male
+                  type:
+                    type: string
+                    example: individual
+                  delinquent:
+                    type: boolean
+                    example: false
+                    default: true
+                  created_at:
+                    type: string
+                    example: '2017-05-02T23:26:49Z'
+                  updated_at:
+                    type: string
+                    example: '2017-05-02T23:28:16Z'
+                  phones:
+                    type: object
+                    properties:
+                      home_phone:
+                        type: object
+                        properties:
+                          country_code:
+                            type: string
+                            example: '55'
+                          number:
+                            type: string
+                            example: '0000002000'
+                          area_code:
+                            type: string
+                            example: '021'
+                  metadata:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: my_customer_id
+        '422':
+          description: '422'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"The request is invalid.\",\n    \"errors\": {\n        \"customer.name\": [\n            \"The name field is required.\"\n        ]\n    },\n    \"request\": {\n        \"email\": \"tonystarkk@avengers.com\",\n        \"code\": \"MY_CUSTOMER_001\",\n        \"document\": \"123456789\",\n        \"type\": \"individual\",\n        \"address\": {\n            \"line_1\": \"375, Av. General Justo, Centro\",\n            \"line_2\": \"8º andar\",\n            \"zip_code\": \"20021130\",\n            \"city\": \"Rio de Janeiro\",\n            \"state\": \"RJ\",\n            \"country\": \"BR\",\n        },\n        \"birthdate\": \"1984-05-03T00:00:00Z\",\n        \"phones\": {\n            \"home_phone\": {\n                \"country_code\": \"55\",\n                \"number\": \"000000000\",\n                \"area_code\": \"21\"\n            },\n            \"mobile_phone\": {\n                \"country_code\": \"55\",\n                \"number\": \"000000000\",\n                \"area_code\": \"21\"\n            }\n        },\n        \"gender\": \"male\",\n        \"metadata\": {\n            \"company\": \"Avengers\"\n        }\n    }\n}"
+      tags:
+      - Customers
+components:
+  securitySchemes:
+    sec0:
+      type: http
+      scheme: basic
+x-readme-fauxas: true
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/ativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/atualizar-code-de-recebedor.md
+  - https://docs.pagar.me/reference/cancelar-assinatura-1.md
+  - https://docs.pagar.me/reference/cancelar-fatura-1.md
+  - https://docs.pagar.me/reference/cancelar-um-link-de-pagamento.md
+  - https://docs.pagar.me/reference/create-link.md
+  - https://docs.pagar.me/reference/criar-assinatura-avulsa.md
+  - https://docs.pagar.me/reference/criar-assinatura-de-plano-1.md
+  - https://docs.pagar.me/reference/criar-cliente-1.md
+  - https://docs.pagar.me/reference/criar-fatura-1.md
+  - https://docs.pagar.me/reference/criar-link-recebedor.md
+  - https://docs.pagar.me/reference/criar-link.md
+  - https://docs.pagar.me/reference/criar-pedido-2.md
+  - https://docs.pagar.me/reference/criar-pedido-com-antifraude.md
+  - https://docs.pagar.me/reference/criar-pedido-com-split-1.md
+  - https://docs.pagar.me/reference/criar-pedido-multicompradores.md
+  - https://docs.pagar.me/reference/criar-pedido-multimeios.md
+  - https://docs.pagar.me/reference/criar-plano-1.md
+  - https://docs.pagar.me/reference/criar-recebedor-1.md
+  - https://docs.pagar.me/reference/criar-token-cart%C3%A3o-1.md
+  - https://docs.pagar.me/reference/deletar-item.md
+  - https://docs.pagar.me/reference/desativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/editar-cliente-1.md
+  - https://docs.pagar.me/reference/editar-item-1.md
+  - https://docs.pagar.me/reference/editar-item-do-pedido.md
+  - https://docs.pagar.me/reference/editar-item.md
+  - https://docs.pagar.me/reference/editar-meio-de-pagamento-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-metadados-da-assinatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-da-fatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-do-plano-1.md
+  - https://docs.pagar.me/reference/editar-minimum-price-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-plano-1.md
+  - https://docs.pagar.me/reference/editar-recebedor-1.md
+  - https://docs.pagar.me/reference/enviar-webhook.md
+  - https://docs.pagar.me/reference/excluir-plano-1.md
+  - https://docs.pagar.me/reference/fechar-um-pedido.md
+  - https://docs.pagar.me/reference/incluir-desconto-1.md
+  - https://docs.pagar.me/reference/incluir-incremento-1.md
+  - https://docs.pagar.me/reference/incluir-item-1.md
+  - https://docs.pagar.me/reference/incluir-item-2.md
+  - https://docs.pagar.me/reference/incluir-item.md
+  - https://docs.pagar.me/reference/incluir-uso.md
+  - https://docs.pagar.me/reference/listar-assinaturas-1.md
+  - https://docs.pagar.me/reference/listar-ciclos-1.md
+  - https://docs.pagar.me/reference/listar-clientes-1.md
+  - https://docs.pagar.me/reference/listar-descontos-2.md
+  - https://docs.pagar.me/reference/listar-faturas-1.md
+  - https://docs.pagar.me/reference/listar-incrementos.md
+  - https://docs.pagar.me/reference/listar-pedidos.md
+  - https://docs.pagar.me/reference/listar-planos-1.md
+  - https://docs.pagar.me/reference/listar-recebedores-1.md
+  - https://docs.pagar.me/reference/listar-uso.md
+  - https://docs.pagar.me/reference/listar-webhooks.md
+  - https://docs.pagar.me/reference/obter-assinatura-1.md
+  - https://docs.pagar.me/reference/obter-ciclo-1.md
+  - https://docs.pagar.me/reference/obter-cliente-1.md
+  - https://docs.pagar.me/reference/obter-desconto-1.md
+  - https://docs.pagar.me/reference/obter-fatura-1.md
+  - https://docs.pagar.me/reference/obter-incremento-1.md
+  - https://docs.pagar.me/reference/obter-item-do-pedido.md
+  - https://docs.pagar.me/reference/obter-link.md
+  - https://docs.pagar.me/reference/obter-links.md
+  - https://docs.pagar.me/reference/obter-pedido.md
+  - https://docs.pagar.me/reference/obter-plano-1.md
+  - https://docs.pagar.me/reference/obter-recebedor-1.md
+  - https://docs.pagar.me/reference/obter-saldo.md
+  - https://docs.pagar.me/reference/obter-webhook.md
+  - https://docs.pagar.me/reference/remover-desconto-1.md
+  - https://docs.pagar.me/reference/remover-incremento-1.md
+  - https://docs.pagar.me/reference/remover-item-1.md
+  - https://docs.pagar.me/reference/remover-item.md
+  - https://docs.pagar.me/reference/remover-todos-os-itens.md
+  - https://docs.pagar.me/reference/remover-uso.md
+  - https://docs.pagar.me/reference/renovar-ciclo-1.md
+  - https://docs.pagar.me/reference/retornando-pagamentos-por-recebedor.md
+  - https://docs.pagar.me/reference/retornando-pagamentos.md
+  - https://docs.pagar.me/reference/retornando-um-pagamento.md
+  - https://docs.pagar.me/reference/retornando-urs-de-um-recebedor-v5.md
+  merge:
+    pages: 78
+    deduped: 82
+    conflicts_kept_first: 0

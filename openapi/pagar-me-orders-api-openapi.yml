@@ -1,0 +1,2514 @@
+openapi: 3.2.0
+info:
+  title: pagarme-api Orders API
+  version: '5'
+servers:
+- url: https://api.pagar.me/core/v5
+security:
+- sec0: []
+tags:
+- name: Orders
+paths:
+  /orders:
+    post:
+      summary: Criar pedido (com Antifraude)
+      description: ''
+      operationId: criar-pedido-com-split-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - items
+              - payments
+              properties:
+                code:
+                  type: string
+                  description: 'Código identificador do pedido no sistema da loja. Max: 52 caracteres.'
+                items:
+                  type: array
+                  description: Itens do pedido. [Saiba mais sobre itens do pedido](https://docs.pagar.me/reference/item-do-pedido-1)
+                  items:
+                    properties:
+                      amount:
+                        type: integer
+                        description: Valor unitário. Obrigatoriamente maior que zero.
+                        format: int32
+                      description:
+                        type: string
+                        description: Descrição do item.
+                      quantity:
+                        type: integer
+                        description: Quantidade de itens.
+                        format: int32
+                      code:
+                        type: string
+                        description: Código do item no sistema da loja.
+                    required:
+                    - code
+                    type: object
+                customer_id:
+                  type: string
+                  description: Código do cliente.
+                customer:
+                  type: object
+                  description: Dados do cliente. Obrigatório caso o **customer_id** não seja informado. [Saiba mais sobre clientes](https://docs.pagar.me/reference/clientes-1)
+                  required:
+                  - name
+                  properties:
+                    name:
+                      type: string
+                      description: 'Nome do cliente. Max: 64 caracteres.'
+                    type:
+                      type: string
+                      description: 'Tipo de cliente. Valores possíveis: individual (pessoa física) ou company (pessoa jurídica). Obrigatório, caso o document seja enviado.'
+                    email:
+                      type: string
+                      description: 'E-mail do cliente. Max: 64 caracteres.'
+                    code:
+                      type: string
+                      description: 'Código de referência do cliente no sistema da loja. Max: 52 caracteres.'
+                    document:
+                      type: string
+                      description: 'CPF, CNPJ ou PASSAPORTE do cliente. Max: 16 caracteres para CPF e CNPJ e Max: 50 caracteres para PASSAPORTE.'
+                    document_type:
+                      type: string
+                      description: 'Tipo de documento. Valores possíveis: "CPF", "CNPJ" ou "PASSPORT".'
+                    gender:
+                      type: string
+                      description: 'Sexo do cliente . Valores possíveis: male ou female.'
+                    address:
+                      type: object
+                      description: Endereço do cliente.
+                      properties:
+                        country:
+                          type: string
+                          description: País (Código do país no formato ISO 3166-1 alpha-2)(2 digitos)
+                        state:
+                          type: string
+                          description: Estado (Código do estado no formato ISO 3166-2).
+                        city:
+                          type: string
+                          description: Cidade.
+                        zip_code:
+                          type: string
+                          description: Código Postal (CEP) (Apenas numérico).
+                        line_1:
+                          type: string
+                          description: Dados principais do endereço. Neste campo deve ser informado Número, Rua, Bairro, nesta ordem e separados por vírgula.
+                        line_2:
+                          type: string
+                          description: Dados complementares do endereço. Neste campo pode ser informado complemento, referências.
+                    phones:
+                      type: object
+                      description: Telefone residencial do cliente.
+                      properties:
+                        home_phone:
+                          type: object
+                          description: Telefone residencial do cliente.
+                          properties:
+                            country_code:
+                              type: string
+                              description: Código do País (Apenas numérico).
+                            area_code:
+                              type: string
+                              description: Código da área (Apenas numérico).
+                            number:
+                              type: string
+                              description: Número do telefone (Apenas numérico).
+                        mobile_phone:
+                          type: object
+                          description: Telefone celular do cliente.
+                          properties:
+                            country_code:
+                              type: string
+                              description: Código do País (Apenas numérico).
+                            area_code:
+                              type: string
+                              description: Código da área (Apenas numérico).
+                            number:
+                              type: string
+                              description: Número do telefone (Apenas numérico).
+                    birthdate:
+                      type: string
+                      description: Data de nascimento do cliente.
+                      format: date
+                    metadata:
+                      type: string
+                      description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o cliente.
+                shipping:
+                  type: object
+                  description: Dados para entrega.
+                  properties:
+                    amount:
+                      type: integer
+                      description: Valor da entrega.
+                      format: int32
+                    description:
+                      type: string
+                      description: Descrição da entrega.
+                    recipient_name:
+                      type: string
+                      description: Destinatário da entrega.
+                    recipient_phone:
+                      type: string
+                      description: Telefone do destinatário.
+                    address:
+                      type: object
+                      description: Endereço de entrega
+                      properties:
+                        country:
+                          type: string
+                          description: País (Código do país no formato ISO 3166-1 alpha-2)(2 digitos)
+                        state:
+                          type: string
+                          description: Estado (Código do estado no formato ISO 3166-2).
+                        city:
+                          type: string
+                          description: Cidade.
+                        zip_code:
+                          type: string
+                          description: Código Postal (CEP) (Apenas numérico).
+                        line_1:
+                          type: string
+                          description: Dados principais do endereço. Neste campo deve ser informado Número, Rua, Bairro, nesta ordem e separados por vírgula.
+                        line_2:
+                          type: string
+                          description: Dados complementares do endereço. Neste campo pode ser informado complemento, referências.
+                payments:
+                  type: array
+                  description: Lista de dados de pagamento. [Saiba mais sobre pagamentos.](https://docs.pagar.me/reference/vis%C3%A3o-geral-sobre-pagamento)
+                  items:
+                    properties:
+                      payment_method:
+                        type: string
+                        description: 'Meio de pagamento. Valores possíveis: credit_card, boleto, Pix, Debit Card'
+                      credit_card:
+                        type: object
+                        description: Dados sobre o pagamento com cartão de crédito (obrigatório caso o payment_method seja credit_card).
+                        properties:
+                          operation_type:
+                            type: string
+                            description: Indica se a transação deve ser capturada "auth_and_capture", autorizada "auth_only", ou pré autorizada "pre_auth".
+                          installments:
+                            type: integer
+                            description: Quantidade de parcelas. Se a transação for uma recorrência, o número de parcelas deverá ser 1.
+                            format: int32
+                          statement_descriptor:
+                            type: string
+                            description: 'Texto exibido na fatura do cartão. Max: 22 caracteres para clientes Gateway; 13 para clientes PSP'
+                          card:
+                            type: object
+                            description: Cartão de crédito.
+                            required:
+                            - number
+                            - holder_name
+                            - exp_month
+                            - exp_year
+                            properties:
+                              number:
+                                type: string
+                                description: Número do cartão. Entre 13 e 19 caracteres
+                              holder_name:
+                                type: string
+                                description: Nome do portador como está impresso no cartão. Máximo de 64 caracteres (Caracteres especiais e números não são aceitos)
+                              holder_document:
+                                type: string
+                                description: CPF ou CNPJ do portador do cartão. Obrigatório caso o tipo do cartão seja voucher (bandeiras VR ou Pluxee).
+                              exp_month:
+                                type: integer
+                                description: Mês de validade do cartão. Valor entre 1 e 12 (inclusive)
+                                format: int32
+                              exp_year:
+                                type: integer
+                                description: 'Ano de validade do cartão. Formatos yy ou yyyy. Ex: 23 ou 2023.'
+                                format: int32
+                              cvv:
+                                type: string
+                                description: Código de segurança do cartão. O campo aceita 4 ou 3 caracteres, variando por bandeira.
+                              brand:
+                                type: string
+                                description: '(Opcional) Bandeira do cartão. Para cartões de crédito, temos como valores possíveis: Elo, Mastercard, Visa, Amex, ou Hipercard. Para voucher, temos como valores possíveis: Alelo, Ticket, VR ou Pluxee.'
+                              label:
+                                type: string
+                                description: Indica a label do cartão
+                              billing_address_id:
+                                type: string
+                                description: 'Código do endereço de cobrança. Max: 36 caracteres.<>Opcional, pode ser utilizado no lugar do billing_address.'
+                              billing_address:
+                                type: object
+                                properties:
+                                  line_1:
+                                    type: string
+                                    description: 'Linha 1 do endereço. (Número, Rua, e Bairro - Nesta ordem e separados por vírgula) Max: 256 caracteres.'
+                                  line_2:
+                                    type: string
+                                    description: 'Linha 2 do endereço. (Complemento - Andar, Sala, Apto). Max: 128 caracteres.'
+                                  zip_code:
+                                    type: string
+                                    description: 'CEP. Max: 16 caracteres.'
+                                  city:
+                                    type: string
+                                    description: 'Cidade. Max: 64 caracteres.'
+                                  state:
+                                    type: string
+                                    description: Código do estado no formato ISO 3166-2.
+                                  country:
+                                    type: string
+                                    description: Código do país no formato ISO 3166-1 alpha-2.
+                          network_token:
+                            type: object
+                            description: Token de bandeira.
+                            properties:
+                              number:
+                                type: string
+                                description: 'Número do Network Token. Entre 13 e 19 caracteres. Ex: 4190000000000069'
+                              holder_name:
+                                type: string
+                                description: Nome do portador como está impresso no cartão. Máximo de 64 caracteres (Caracteres especiais e números não são aceitos)
+                              exp_month:
+                                type: integer
+                                description: Mês de validade do Network Token. Valor entre 1 e 12 (inclusive)
+                                format: int32
+                              exp_year:
+                                type: integer
+                                description: 'Ano de validade do Network Token. Formatos yy ou yyyy. Ex: 23 ou 2023.'
+                                format: int32
+                              cryptograms:
+                                type: string
+                                description: 'Criptograma de autenticação para Network Token. Pode enviar mais de um, caso queira em uma lista de strings. Formato em base64. Ex: ANfQt43bddROAAEnSAMhAAADFA===='
+                          card_id:
+                            type: string
+                            description: identificador do cartão de um cliente.
+                          card_token:
+                            type: string
+                            description: token do cartão gerado pelo checkout transparente
+                          recurrence_cycle:
+                            type: string
+                            description: 'Informa se o pedido é referente a uma recorrência externa.  Possíveis valores: `first` ou `subsequent`.'
+                          initiated_type:
+                            type: string
+                            description: 'Identificador do tipo de transação avulsa. Valores possíveis: `partial_shipment` (Remessa Parcial), `related_or_delayed_charge` (Cobrança Atrasada), `no_show` (Multa) ou `retry` (Retentativa). Valores possíveis: `standing_order` (Ordem Permanente), `instalment` (Parcelamento) ou `subscription` (Assinatura convencional com valor e frequência fixa). [Mais detalhes](https://docs.pagar.me/page/mitcit-transa%C3%A7%C3%B5es-card-on-file-mastercard).'
+                          recurrence_model:
+                            type: string
+                            description: 'Identificador do tipo de recorrência. Valores possíveis: `standing_order` (Ordem Permanente), `instalment` (Parcelamento) ou `subscription` (Assinatura convencional com valor e frequência fixa). Valores possíveis: `standing_order` (Ordem Permanente), `instalment` (Parcelamento) ou `subscription` (Assinatura convencional com valor e frequência fixa). [Mais detalhes](https://docs.pagar.me/page/mitcit-transa%C3%A7%C3%B5es-card-on-file-mastercard).'
+                          payment_origin:
+                            type: object
+                            description: Identificador da primeira cobrança de uma recorrência. [Mais detalhes](https://docs.pagar.me/docs/api-v5-identificador-de-recorr%C3%AAncia-para-assinaturas-externas).
+                            properties:
+                              charge_id:
+                                type: string
+                                description: Identificador da cobrança
+                              brand_id:
+                                type: string
+                                description: Identificador da bandeira
+                      boleto:
+                        type: object
+                        description: Dados sobre o pagamento com boleto (obrigatório caso o payment_method seja boleto).
+                        properties:
+                          bank:
+                            type: string
+                            description: Código do banco. 001 (Banco do Brasil); 033 (Santander); 237 (Bradesco); 341 (Itau); 745 (Citibank) e 104 (Caixa Econômica Federal).
+                          instructions:
+                            type: string
+                            description: 'Instruções do boleto. Max: 256 caracteres.'
+                          due_at:
+                            type: string
+                            description: Data de vencimento. (Opcional)
+                          nosso_numero:
+                            type: string
+                            description: Número que identifica unicamente um boleto para uma conta.
+                          type:
+                            type: string
+                            description: Tipo de espécie do boleto.DM (Duplicata Mercantil) e BDP (Boleto de proposta)
+                          document_number:
+                            type: string
+                            description: 'Identificador do boleto. Max: 16 caracteres.'
+                          interest:
+                            type: object
+                            description: Aplicação do juros sobre o boleto.
+                            required:
+                            - days
+                            - type
+                            - amount
+                            properties:
+                              days:
+                                type: integer
+                                description: Dias após a expiração do boleto quando o juros deve ser cobrado.
+                                format: int32
+                              type:
+                                type: string
+                                description: Tipo de divisão. Os valores possíveis são flat ou percentage.
+                              amount:
+                                type: string
+                                description: Valor em porcentagem ou em centavos da taxa de juros que será cobrada ao mês.
+                          fine:
+                            type: object
+                            description: Aplicação da multa sobre o boleto.
+                            required:
+                            - days
+                            - type
+                            - amount
+                            properties:
+                              days:
+                                type: integer
+                                description: Dias após a expiração do boleto quando a multa deve ser cobrada.
+                                format: int32
+                              type:
+                                type: string
+                                description: Tipo de divisão. Os valores possíveis são flat ou percentage.
+                              amount:
+                                type: integer
+                                description: Valor em porcentagem ou em centavos que será cobrada na multa.
+                                format: int32
+                          discount:
+                            type: object
+                            description: Objeto raiz de desconto por antecipação. Exclusivo PSP.
+                            properties:
+                              type:
+                                type: string
+                                description: 'Tipo do desconto: "percentage" (% sobre o total) ou "flat" (centavos). Aplica-se a todas as regras do array.'
+                              rules:
+                                type: array
+                                description: Lista de regras de desconto ordenadas por limit_date crescente.
+                                items:
+                                  properties:
+                                    limit_date:
+                                      type: string
+                                      description: Data limite da regra. Formato YYYY-MM-DD. Deve ser anterior ao due_at do boleto.
+                                    amount:
+                                      type: integer
+                                      description: 'Valor do desconto. Se type: percentage: entre 0.01 e 100 (ex: 15.00 = 15%). Se type: flat: inteiro em centavos, mín. 1 (ex: 500 = R$5,00).'
+                                      format: int32
+                                  type: object
+                      debit_card:
+                        type: object
+                        description: Dados sobre o pagamento com cartão de débito (obrigatório caso o payment_method seja debit_card).
+                        properties:
+                          statement_descriptor:
+                            type: string
+                            description: 'Texto exibido na fatura do cartão. Max: 22 caracteres.'
+                          card:
+                            type: object
+                            required:
+                            - number
+                            - holder_name
+                            - exp_month
+                            - exp_year
+                            properties:
+                              number:
+                                type: string
+                                description: Número do cartão. Entre 13 e 19 caracteres
+                              holder_name:
+                                type: string
+                                description: Nome do portador como está impresso no cartão. Máximo de 64 caracteres (Caracteres especiais e números não são aceitos)
+                              holder_document:
+                                type: string
+                                description: CPF ou CNPJ do portador do cartão. Obrigatório caso o tipo do cartão seja voucher (bandeiras VR ou Pluxee).
+                              exp_month:
+                                type: integer
+                                description: Mês de validade do cartão. Valor entre 1 e 12 (inclusive)
+                                format: int32
+                              exp_year:
+                                type: integer
+                                description: 'Ano de validade do cartão. Formatos yy ou yyyy. Ex: 23 ou 2023.'
+                                format: int32
+                              cvv:
+                                type: string
+                                description: Código de segurança do cartão. O campo aceita 4 ou 3 caracteres, variando por bandeira.
+                              brand:
+                                type: string
+                                description: '(Opcional) Bandeira do cartão. Para cartões de crédito, temos como valores possíveis: Elo, Mastercard, Visa, Amex, ou Hipercard. Para voucher, temos como valores possíveis: Alelo, Ticket, VR ou Pluxee.'
+                              label:
+                                type: string
+                                description: Indica a label do cartão
+                              billing_address_id:
+                                type: string
+                                description: 'Código do endereço de cobrança. Max: 36 caracteres.<>Opcional, pode ser utilizado no lugar do billing_address.'
+                              billing_address:
+                                type: object
+                                properties:
+                                  line_1:
+                                    type: string
+                                    description: 'Linha 1 do endereço. (Número, Rua, e Bairro - Nesta ordem e separados por vírgula) Max: 256 caracteres.'
+                                  line_2:
+                                    type: string
+                                    description: 'Linha 2 do endereço. (Complemento - Andar, Sala, Apto). Max: 128 caracteres.'
+                                  zip_code:
+                                    type: string
+                                    description: 'CEP. Max: 16 caracteres.'
+                                  city:
+                                    type: string
+                                    description: 'Cidade. Max: 64 caracteres.'
+                                  state:
+                                    type: string
+                                    description: Código do estado no formato ISO 3166-2.
+                                  country:
+                                    type: string
+                                    description: Código do país no formato ISO 3166-1 alpha-2.
+                          card_id:
+                            type: string
+                            description: identificador do cartão de um cliente.
+                          card_token:
+                            type: string
+                            description: token do cartão gerado pelo checkout transparente
+                          network_token:
+                            type: object
+                            description: Token de bandeira.
+                            properties:
+                              number:
+                                type: string
+                                description: 'Número do Network Token. Entre 13 e 19 caracteres. Ex: 4190000000000069'
+                              holder_name:
+                                type: string
+                                description: Nome do portador como está impresso no cartão. Máximo de 64 caracteres (Caracteres especiais e números não são aceitos)
+                              exp_month:
+                                type: integer
+                                description: Mês de validade do Network Token. Valor entre 1 e 12 (inclusive)
+                                format: int32
+                              exp_year:
+                                type: integer
+                                description: 'Ano de validade do Network Token. Formatos yy ou yyyy. Ex: 23 ou 2023.'
+                                format: int32
+                              cryptograms:
+                                type: string
+                                description: 'Criptograma de autenticação para Network Token. Pode enviar mais de um, caso queira em uma lista de strings. Formato em base64. Ex: ANfQt43bddROAAEnSAMhAAADFA===='
+                          initiated_type:
+                            type: string
+                            description: 'Identificador do tipo de transação avulsa. Valores possíveis: `partial_shipment` (Remessa Parcial), `related_or_delayed_charge` (Cobrança Atrasada), `no_show` (Multa) ou `retry` (Retentativa).'
+                          recurrence_model:
+                            type: string
+                            description: 'Identificador do tipo de recorrência. Valores possíveis: `standing_order` (Ordem Permanente), `instalment` (Parcelamento) ou `subscription` (Assinatura convencional com valor e frequência fixa).'
+                      split:
+                        type: array
+                        description: Dados para o split de pagamentos.
+                        items:
+                          properties:
+                            amount:
+                              type: integer
+                              description: Valor destinado ao recebedor.
+                              format: int32
+                            recipient_id:
+                              type: string
+                              description: 'Código do recebedor. Formato: rp_XXXXXXXXXXXXXXXX.'
+                            type:
+                              type: string
+                              description: Tipo de divisão. Os valores possíveis são flat ou percentage.
+                            options:
+                              type: object
+                              description: Informações da responsabilidade do recebedor na transação.
+                              properties:
+                                charge_processing_fee:
+                                  type: boolean
+                                  description: Indica se o recebedor vinculado à regra será cobrado pelas taxas da transação
+                                charge_remainder_fee:
+                                  type: boolean
+                                  description: Indica se o recebedor vinculado à regra irá receber o restante dos recebíveis após uma divisão
+                                liable:
+                                  type: boolean
+                                  description: Indica se o recebedor é responsável pela transação em caso de chargeback.
+                          type: object
+                    type: object
+                closed:
+                  type: boolean
+                  description: Informa se o pedido será criado **aberto** ou **fechado**
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre o pedido.
+            examples:
+              Request Example:
+                value:
+                  items:
+                  - amount: 100
+                    description: Chaveiro do Tesseract
+                    quantity: 1
+                    code: '12345'
+                  customer:
+                    name: Tony Stark
+                    email: Tony@Avangers.com
+                  payments:
+                  - payment_method: credit_card
+                    credit_card:
+                      installments: 1
+                      statement_descriptor: AVENGERS
+                      card:
+                        number: '342793631858229'
+                        holder_name: Tony Stark
+                        exp_month: 1
+                        exp_year: 30
+                        cvv: '3531'
+                        billing_address:
+                          line_1: 10880, Malibu Point, Malibu Central
+                          zip_code: '90265'
+                          city: Malibu
+                          state: CA
+                          country: US
+                    split:
+                    - amount: 50
+                      recipient_id: rp_5yGwpMGckBHVYmb6
+                      type: percentage
+                      options:
+                        charge_processing_fee: true
+                        charge_remainder_fee: true
+                        liable: true
+                    - amount: 50
+                      type: percentage
+                      recipient_id: rp_yLnAyVpHbQIqZxwO
+                      options:
+                        charge_processing_fee: false
+                        charge_remainder_fee: false
+                        liable: false
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"ch_NW0ABG5HQikn3Lv4\",\n    \"code\": \"487FO9HYV3\",\n    \"gateway_id\": \"3554818\",\n    \"amount\": 100,\n    \"paid_amount\": 100,\n    \"status\": \"paid\",\n    \"currency\": \"BRL\",\n    \"payment_method\": \"credit_card\",\n    \"paid_at\": \"2018-05-22T18:38:22Z\",\n    \"created_at\": \"2018-05-22T18:38:08Z\",\n    \"updated_at\": \"2018-05-22T18:38:08Z\",\n    \"customer\": {\n        \"id\": \"cus_dgLJ8jmURSe0DQ0N\",\n        \"name\": \"Tony Stark\",\n        \"email\": \"tony0@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2018-05-22T18:38:06Z\",\n        \"updated_at\": \"2018-05-22T18:38:06Z\",\n        \"phones\": {}\n    },\n    \"last_transaction\": {\n        \"id\": \"tran_1lLxVjc3JCXVxnED\",\n        \"transaction_type\": \"credit_card\",\n        \"gateway_id\": \"3554818\",\n        \"amount\": 100,\n        \"status\": \"captured\",\n        \"success\": true,\n        \"installments\": 1,\n        \"statement_descriptor\": \"AVENGERS\",\n        \"acquirer_name\": \"pagarme\",\n        \"acquirer_tid\": \"3554818\",\n        \"acquirer_nsu\": \"3554818\",\n        \"acquirer_return_code\": \"0000\",\n        \"operation_type\": \"auth_and_capture\",\n        \"card\": {\n            \"id\": \"card_nKojDZnNIjh9D5z1\",\n            \"first_six_digits\": \"401118\",\n            \"last_four_digits\": \"5580\",\n            \"brand\": \"Visa\",\n            \"holder_name\": \"Tony Stark\",\n            \"exp_month\": 1,\n            \"exp_year\": 2030,\n            \"status\": \"active\",\n            \"created_at\": \"2018-05-22T18:38:11Z\",\n            \"updated_at\": \"2018-05-22T18:38:11Z\",\n            \"type\": \"credit\"\n        },\n        \"created_at\": \"2018-05-22T18:38:13Z\",\n        \"updated_at\": \"2018-05-22T18:38:13Z\",\n        \"gateway_response\": {\n            \"code\": \"200\"\n        },\n        \"split\": [\n          {\n            \"id\": \"sr_1qeQrB3s1synMW45\",\n            \"type\": \"percentage\",\n            \"gateway_id\": \"sr_ck5gv9dr3005di96euc53hcsc\",\n            \"amount\": 50,\n            \"recipient\": {\n              \"id\": \"rp_5yGwpMGckBHVYmb6\",\n              \"name\": \"First recipient\",\n              \"email\": \"first_recipient@pagar.me\",\n              \"document\": \"12728994706\",\n              \"description\": \"Descrição do recebedor 1\",\n              \"type\": \"individual\",\n              \"status\": \"active\",\n              \"created_at\": \"2020-01-02T20:23:14Z\",\n              \"updated_at\": \"2020-01-02T20:23:14Z\"\n            },\n            \"options\": {\n              \"liable\": true,\n              \"charge_processing_fee\": true,\n              \"charge_remainder_fee\": true\n            }\n          },\n          {\n            \"id\": \"sr_nmywGvbhalUnMVGd\",\n            \"type\": \"percentage\",\n            \"gateway_id\": \"sr_ck5gv9dr4005ei96emuw9z1hc\",\n            \"amount\": 50,\n            \"recipient\": {\n              \"id\": \"rp_yLnAyVpHbQIqZxwO\",\n              \"name\": \"Second recipient\",\n              \"email\": \"second_recipient@pagar.me\",\n              \"document\": \"15313587000166\",\n              \"description\": \"Descrição do recebedor 2\",\n              \"type\": \"company\",\n              \"status\": \"active\",\n              \"created_at\": \"2020-01-02T20:23:17Z\",\n              \"updated_at\": \"2020-01-02T20:23:17Z\"\n            },\n            \"options\": {\n              \"liable\": false,\n              \"charge_processing_fee\": false,\n              \"charge_remainder_fee\": false\n            }\n          }\n        ]\n    },\n    \"metadata\": {\n        \"code\": \"123\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: ch_NW0ABG5HQikn3Lv4
+                  code:
+                    type: string
+                    example: 487FO9HYV3
+                  gateway_id:
+                    type: string
+                    example: '3554818'
+                  amount:
+                    type: integer
+                    example: 100
+                    default: 0
+                  paid_amount:
+                    type: integer
+                    example: 100
+                    default: 0
+                  status:
+                    type: string
+                    example: paid
+                  currency:
+                    type: string
+                    example: BRL
+                  payment_method:
+                    type: string
+                    example: credit_card
+                  paid_at:
+                    type: string
+                    example: '2018-05-22T18:38:22Z'
+                  created_at:
+                    type: string
+                    example: '2018-05-22T18:38:08Z'
+                  updated_at:
+                    type: string
+                    example: '2018-05-22T18:38:08Z'
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cus_dgLJ8jmURSe0DQ0N
+                      name:
+                        type: string
+                        example: Tony Stark
+                      email:
+                        type: string
+                        example: tony0@avengers.com
+                      delinquent:
+                        type: boolean
+                        example: false
+                        default: true
+                      created_at:
+                        type: string
+                        example: '2018-05-22T18:38:06Z'
+                      updated_at:
+                        type: string
+                        example: '2018-05-22T18:38:06Z'
+                      phones:
+                        type: object
+                        properties: {}
+                  last_transaction:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: tran_1lLxVjc3JCXVxnED
+                      transaction_type:
+                        type: string
+                        example: credit_card
+                      gateway_id:
+                        type: string
+                        example: '3554818'
+                      amount:
+                        type: integer
+                        example: 100
+                        default: 0
+                      status:
+                        type: string
+                        example: captured
+                      success:
+                        type: boolean
+                        example: true
+                        default: true
+                      installments:
+                        type: integer
+                        example: 1
+                        default: 0
+                      statement_descriptor:
+                        type: string
+                        example: AVENGERS
+                      acquirer_name:
+                        type: string
+                        example: pagarme
+                      acquirer_tid:
+                        type: string
+                        example: '3554818'
+                      acquirer_nsu:
+                        type: string
+                        example: '3554818'
+                      acquirer_return_code:
+                        type: string
+                        example: '0000'
+                      operation_type:
+                        type: string
+                        example: auth_and_capture
+                      card:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: card_nKojDZnNIjh9D5z1
+                          first_six_digits:
+                            type: string
+                            example: '401118'
+                          last_four_digits:
+                            type: string
+                            example: '5580'
+                          brand:
+                            type: string
+                            example: Visa
+                          holder_name:
+                            type: string
+                            example: Tony Stark
+                          exp_month:
+                            type: integer
+                            example: 1
+                            default: 0
+                          exp_year:
+                            type: integer
+                            example: 2030
+                            default: 0
+                          status:
+                            type: string
+                            example: active
+                          created_at:
+                            type: string
+                            example: '2018-05-22T18:38:11Z'
+                          updated_at:
+                            type: string
+                            example: '2018-05-22T18:38:11Z'
+                          type:
+                            type: string
+                            example: credit
+                      created_at:
+                        type: string
+                        example: '2018-05-22T18:38:13Z'
+                      updated_at:
+                        type: string
+                        example: '2018-05-22T18:38:13Z'
+                      gateway_response:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            example: '200'
+                      split:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: sr_1qeQrB3s1synMW45
+                            type:
+                              type: string
+                              example: percentage
+                            gateway_id:
+                              type: string
+                              example: sr_ck5gv9dr3005di96euc53hcsc
+                            amount:
+                              type: integer
+                              example: 50
+                              default: 0
+                            recipient:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: rp_5yGwpMGckBHVYmb6
+                                name:
+                                  type: string
+                                  example: First recipient
+                                email:
+                                  type: string
+                                  example: first_recipient@pagar.me
+                                document:
+                                  type: string
+                                  example: '12728994706'
+                                description:
+                                  type: string
+                                  example: Descrição do recebedor 1
+                                type:
+                                  type: string
+                                  example: individual
+                                status:
+                                  type: string
+                                  example: active
+                                created_at:
+                                  type: string
+                                  example: '2020-01-02T20:23:14Z'
+                                updated_at:
+                                  type: string
+                                  example: '2020-01-02T20:23:14Z'
+                            options:
+                              type: object
+                              properties:
+                                liable:
+                                  type: boolean
+                                  example: true
+                                  default: true
+                                charge_processing_fee:
+                                  type: boolean
+                                  example: true
+                                  default: true
+                                charge_remainder_fee:
+                                  type: boolean
+                                  example: true
+                                  default: true
+                  metadata:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: '123'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      tags:
+      - Orders
+    get:
+      summary: Listar pedidos
+      description: ''
+      operationId: listar-pedidos
+      parameters:
+      - name: code
+        in: query
+        description: Código de referência do pedido no sistema da loja.
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: 'Status do pedido.  Valores possíveis: **pending**, **paid**, **canceled** ou **failed**'
+        schema:
+          type: string
+      - name: customer_id
+        in: query
+        description: Código do cliente.
+        schema:
+          type: string
+      - name: created_since
+        in: query
+        description: Data de início do período de criação a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: created_until
+        in: query
+        description: Data de final do período de criação a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: page
+        in: query
+        description: Página atual.
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: Quantidade de itens.
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"data\": [\n    {\n      \"id\": \"or_28dN9w7CLU79kDjL\",\n      \"code\": \"62LVFN7I4R\",\n      \"amount\": 2990,\n      \"currency\": \"BRL\",\n      \"closed\": true,\n      \"items\": [\n        {\n          \"id\": \"oi_d478RMAS3bC74PrL\",\n          \"description\": \"Chaveiro do Tesseract\",\n          \"amount\": 2990,\n          \"quantity\": 1,\n          \"status\": \"active\",\n          \"created_at\": \"2017-04-19T16:01:09Z\",\n          \"updated_at\": \"2017-04-19T16:01:09Z\"\n        }\n      ],\n      \"customer\": {\n        \"id\": \"cus_eaEXlZvhBfeGlDOm\",\n        \"name\": \"Tony Stark\",\n        \"email\": \"f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2017-04-19T16:01:09Z\",\n        \"updated_at\": \"2017-04-19T16:01:09Z\"\n      },\n      \"status\": \"paid\",\n      \"created_at\": \"2017-04-19T16:01:09Z\",\n      \"updated_at\": \"2017-04-19T16:01:11Z\",\n      \"closed_at\": \"2017-04-19T16:01:11Z\",\n      \"charges\": [\n        {\n          \"id\": \"ch_gmnW101c9YTvQVLB\",\n          \"code\": \"62LVFN7I4R\",\n          \"gateway_id\": \"ef5e977b-93d2-485a-b15d-36e5eb3d8cf5\",\n          \"amount\": 2990,\n          \"status\": \"paid\",\n          \"currency\": \"BRL\",\n          \"payment_method\": \"credit_card\",\n          \"paid_at\": \"2017-04-19T16:01:11Z\",\n          \"created_at\": \"2017-04-19T16:01:09Z\",\n          \"updated_at\": \"2017-04-19T16:01:09Z\",\n          \"customer\": {\n            \"id\": \"cus_eaEXlZvhBfeGlDOm\",\n            \"name\": \"Tony Stark\",\n            \"email\": \"f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com\",\n            \"delinquent\": false,\n            \"created_at\": \"2017-04-19T16:01:09Z\",\n            \"updated_at\": \"2017-04-19T16:01:09Z\"\n          }\n        }\n      ]\n    },\n    {\n      \"id\": \"or_dW6vZoJfLhw3Rb10\",\n      \"code\": \"65JGU05FX0\",\n      \"amount\": 2990,\n      \"currency\": \"BRL\",\n      \"closed\": true,\n      \"items\": [\n        {\n          \"id\": \"oi_zYGxV8rU36HPWQMg\",\n          \"description\": \"Chaveiro do Tesseract\",\n          \"amount\": 2990,\n          \"quantity\": 1,\n          \"status\": \"active\",\n          \"created_at\": \"2017-04-19T15:58:23Z\",\n          \"updated_at\": \"2017-04-19T15:58:23Z\"\n        }\n      ],\n      \"customer\": {\n        \"id\": \"cus_rG3592i17uQgxK2Q\",\n        \"name\": \"Tony Stark\",\n        \"email\": \"5d76b138-2963-40f7-ba71-c9ae2cc65518@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2017-04-19T15:58:23Z\",\n        \"updated_at\": \"2017-04-19T15:58:23Z\"\n      },\n      \"status\": \"failed\",\n      \"created_at\": \"2017-04-19T15:58:23Z\",\n      \"updated_at\": \"2017-04-19T15:58:24Z\",\n      \"closed_at\": \"2017-04-19T15:58:24Z\",\n      \"charges\": [\n        {\n          \"id\": \"ch_nM5PkjcyLUa6Nr1w\",\n          \"code\": \"65JGU05FX0\",\n          \"amount\": 2990,\n          \"status\": \"failed\",\n          \"currency\": \"BRL\",\n          \"payment_method\": \"credit_card\",\n          \"created_at\": \"2017-04-19T15:58:23Z\",\n          \"updated_at\": \"2017-04-19T15:58:24Z\",\n          \"customer\": {\n            \"id\": \"cus_rG3592i17uQgxK2Q\",\n            \"name\": \"Tony Stark\",\n            \"email\": \"5d76b138-2963-40f7-ba71-c9ae2cc65518@avengers.com\",\n            \"delinquent\": false,\n            \"created_at\": \"2017-04-19T15:58:23Z\",\n            \"updated_at\": \"2017-04-19T15:58:23Z\"\n          }\n        }\n      ]\n    }\n  ],\n  \"paging\": {\n    \"total\": 406,\n    \"next\": \"https://api.pagar.me/core/v1/orders?page=2&size=2\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: or_28dN9w7CLU79kDjL
+                        code:
+                          type: string
+                          example: 62LVFN7I4R
+                        amount:
+                          type: integer
+                          example: 2990
+                          default: 0
+                        currency:
+                          type: string
+                          example: BRL
+                        closed:
+                          type: boolean
+                          example: true
+                          default: true
+                        items:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: oi_d478RMAS3bC74PrL
+                              description:
+                                type: string
+                                example: Chaveiro do Tesseract
+                              amount:
+                                type: integer
+                                example: 2990
+                                default: 0
+                              quantity:
+                                type: integer
+                                example: 1
+                                default: 0
+                              status:
+                                type: string
+                                example: active
+                              created_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                              updated_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                        customer:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: cus_eaEXlZvhBfeGlDOm
+                            name:
+                              type: string
+                              example: Tony Stark
+                            email:
+                              type: string
+                              example: f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com
+                            delinquent:
+                              type: boolean
+                              example: false
+                              default: true
+                            created_at:
+                              type: string
+                              example: '2017-04-19T16:01:09Z'
+                            updated_at:
+                              type: string
+                              example: '2017-04-19T16:01:09Z'
+                        status:
+                          type: string
+                          example: paid
+                        created_at:
+                          type: string
+                          example: '2017-04-19T16:01:09Z'
+                        updated_at:
+                          type: string
+                          example: '2017-04-19T16:01:11Z'
+                        closed_at:
+                          type: string
+                          example: '2017-04-19T16:01:11Z'
+                        charges:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: ch_gmnW101c9YTvQVLB
+                              code:
+                                type: string
+                                example: 62LVFN7I4R
+                              gateway_id:
+                                type: string
+                                example: ef5e977b-93d2-485a-b15d-36e5eb3d8cf5
+                              amount:
+                                type: integer
+                                example: 2990
+                                default: 0
+                              status:
+                                type: string
+                                example: paid
+                              currency:
+                                type: string
+                                example: BRL
+                              payment_method:
+                                type: string
+                                example: credit_card
+                              paid_at:
+                                type: string
+                                example: '2017-04-19T16:01:11Z'
+                              created_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                              updated_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                              customer:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    example: cus_eaEXlZvhBfeGlDOm
+                                  name:
+                                    type: string
+                                    example: Tony Stark
+                                  email:
+                                    type: string
+                                    example: f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com
+                                  delinquent:
+                                    type: boolean
+                                    example: false
+                                    default: true
+                                  created_at:
+                                    type: string
+                                    example: '2017-04-19T16:01:09Z'
+                                  updated_at:
+                                    type: string
+                                    example: '2017-04-19T16:01:09Z'
+                  paging:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 406
+                        default: 0
+                      next:
+                        type: string
+                        example: https://api.pagar.me/core/v1/orders?page=2&size=2
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Orders
+  /orders/{order_id}:
+    get:
+      summary: Obter pedido
+      description: ''
+      operationId: obter-pedido
+      parameters:
+      - name: order_id
+        in: path
+        description: 'Código identificador do pedido no sistema da loja. Max: 52 caracteres.'
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"or_28dN9w7CLU79kDjL\",\n  \"code\": \"62LVFN7I4R\",\n  \"amount\": 2990,\n  \"currency\": \"BRL\",\n  \"closed\": true,\n  \"items\": [\n    {\n      \"id\": \"oi_d478RMAS3bC74PrL\",\n      \"description\": \"Chaveiro do Tesseract\",\n      \"amount\": 2990,\n      \"quantity\": 1,\n      \"status\": \"active\",\n      \"created_at\": \"2017-04-19T16:01:09Z\",\n      \"updated_at\": \"2017-04-19T16:01:09Z\"\n    }\n  ],\n  \"customer\": {\n    \"id\": \"cus_eaEXlZvhBfeGlDOm\",\n    \"name\": \"Tony Stark\",\n    \"email\": \"f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com\",\n    \"delinquent\": false,\n    \"created_at\": \"2017-04-19T16:01:09Z\",\n    \"updated_at\": \"2017-04-19T16:01:09Z\"\n  },\n  \"status\": \"paid\",\n  \"created_at\": \"2017-04-19T16:01:09Z\",\n  \"updated_at\": \"2017-04-19T16:01:11Z\",\n  \"closed_at\": \"2017-04-19T16:01:11Z\",\n  \"charges\": [\n    {\n      \"id\": \"ch_gmnW101c9YTvQVLB\",\n      \"code\": \"62LVFN7I4R\",\n      \"gateway_id\": \"ef5e977b-93d2-485a-b15d-36e5eb3d8cf5\",\n      \"amount\": 2990,\n      \"status\": \"paid\",\n      \"currency\": \"BRL\",\n      \"payment_method\": \"credit_card\",\n      \"paid_at\": \"2017-04-19T16:01:11Z\",\n      \"created_at\": \"2017-04-19T16:01:09Z\",\n      \"updated_at\": \"2017-04-19T16:01:09Z\",\n      \"customer\": {\n        \"id\": \"cus_eaEXlZvhBfeGlDOm\",\n        \"name\": \"Tony Stark\",\n        \"email\": \"f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2017-04-19T16:01:09Z\",\n        \"updated_at\": \"2017-04-19T16:01:09Z\"\n      },\n      \"last_transaction\": {\n        \"id\": \"tran_3RYbBQjcnEcwrGp0\",\n        \"transaction_type\": \"credit_card\",\n        \"funding_source\": \"prepaid\",\n        \"gateway_id\": \"ddab707d-72ba-49f9-b356-f0b9ebfa3039\",\n        \"amount\": 2990,\n        \"status\": \"captured\",\n        \"success\": true,\n        \"installments\": 1,\n        \"statement_descriptor\": \"AVENGERS\",\n        \"acquirer_name\": \"simulator\",\n        \"acquirer_affiliation_code\": \"12345\",\n        \"acquirer_tid\": \"431837\",\n        \"acquirer_nsu\": \"512784\",\n        \"acquirer_auth_code\": \"233215\",\n        \"acquirer_message\": \"Simulator|Transação de simulação autorizada com sucesso\",\n        \"acquirer_return_code\": \"0\",\n        \"operation_type\": \"auth_and_capture\",\n        \"card\": {\n          \"id\": \"card_6xk9deAu2I2MdPzJ\",\n          \"first_six_digits\": \"402400\",\n          \"last_four_digits\": \"8229\",\n          \"brand\": \"Amex\",\n          \"holder_name\": \"Tony Stark\",\n          \"exp_month\": 1,\n          \"exp_year\": 2018,\n          \"status\": \"active\",\n          \"created_at\": \"2017-04-19T16:01:09Z\",\n          \"updated_at\": \"2017-04-19T16:01:09Z\",\n          \"billing_address\": {\n            \"zip_code\": \"90265\",\n            \"city\": \"Malibu\",\n            \"state\": \"CA\",\n            \"country\": \"US\",\n            \"line_1\": \"10880, Malibu Point, Malibu Central\"\n          },\n          \"type\": \"credit\"\n        },\n        \"created_at\": \"2017-04-19T16:01:09Z\",\n        \"updated_at\": \"2017-04-19T16:01:09Z\",\n        \"gateway_response\": {\n          \"code\": \"201\"\n        }\n      }\n    }\n  ]\n}"
+                OK - Network Token:
+                  value: "{\n    \"id\": \"or_5aEYRKmIwvTqpgoQ\",\n    \"code\": \"Y387TKKF3L\",\n    \"amount\": 2990,\n    \"currency\": \"BRL\",\n    \"closed\": true,\n    \"items\": [\n        {\n            \"id\": \"oi_gBLrzX1u3pHQMoEM\",\n            \"type\": \"product\",\n            \"description\": \"Chaveiro do Tesseract\",\n            \"amount\": 2990,\n            \"quantity\": 1,\n            \"status\": \"active\",\n            \"created_at\": \"2023-03-17T14:20:27Z\",\n            \"updated_at\": \"2023-03-17T14:20:27Z\"\n        }\n    ],\n    \"customer\": {\n        \"id\": \"cus_K1oa3LKTZSlW6O7d\",\n        \"name\": \"Tony Stark\",\n        \"email\": \"avengerstark@ligadajustica.com.br\",\n        \"delinquent\": false,\n        \"created_at\": \"2023-03-17T14:19:22Z\",\n        \"updated_at\": \"2023-03-17T14:19:22Z\",\n        \"phones\": {}\n    },\n    \"status\": \"paid\",\n    \"created_at\": \"2023-03-17T14:20:27Z\",\n    \"updated_at\": \"2023-03-17T14:20:28Z\",\n    \"closed_at\": \"2023-03-17T14:20:27Z\",\n    \"charges\": [\n        {\n            \"id\": \"ch_Ljvke06fdSErl62x\",\n            \"code\": \"Y387TKKF3L\",\n            \"amount\": 2990,\n            \"paid_amount\": 2990,\n            \"status\": \"paid\",\n            \"currency\": \"BRL\",\n            \"payment_method\": \"credit_card\",\n            \"paid_at\": \"2023-03-17T14:20:28Z\",\n            \"created_at\": \"2023-03-17T14:20:28Z\",\n            \"updated_at\": \"2023-03-17T14:20:28Z\",\n            \"customer\": {\n                \"id\": \"cus_K1oa3LKTZSlW6O7d\",\n                \"name\": \"Tony Stark\",\n                \"email\": \"avengerstark@ligadajustica.com.br\",\n                \"delinquent\": false,\n                \"created_at\": \"2023-03-17T14:19:22Z\",\n                \"updated_at\": \"2023-03-17T14:19:22Z\",\n                \"phones\": {}\n            },\n            \"last_transaction\": {\n                \"operation_key\": \"409945098\",\n                \"id\": \"tran_xbEM0pRmUASgBYAq\",\n                \"transaction_type\": \"credit_card\",\n                \"gateway_id\": \"95e3e8f1-c5fc-4d62-8f0b-80bdc66d3e42\",\n                \"amount\": 2990,\n                \"status\": \"captured\",\n                \"success\": true,\n                \"installments\": 1,\n                \"installment_type\": \"merchant\",\n                \"statement_descriptor\": \"AVENGERS\",\n                \"acquirer_name\": \"simulator\",\n                \"acquirer_tid\": \"894247649\",\n                \"acquirer_nsu\": \"49640\",\n                \"acquirer_auth_code\": \"169\",\n                \"acquirer_message\": \"Transação capturada com sucesso\",\n                \"acquirer_return_code\": \"00\",\n                \"entry_mode\": \"ecommerce\",\n                \"operation_type\": \"auth_and_capture\",\n                \"card\": {\n                    \"id\": \"card_DwER6M8Cl9hPKAOb\",\n                    \"first_six_digits\": \"400000\",\n                    \"last_four_digits\": \"0010\",\n                    \"brand\": \"Visa\",\n                    \"holder_name\": \"Homelander\",\n                    \"exp_month\": 12,\n                    \"exp_year\": 2025,\n                    \"status\": \"active\",\n                    \"type\": \"credit\",\n                    \"created_at\": \"2023-03-17T14:19:43Z\",\n                    \"updated_at\": \"2023-03-17T14:19:43Z\",\n                    \"billing_address\": {\n                        \"zip_code\": \"90265\",\n                        \"city\": \"Malibu\",\n                        \"state\": \"CA\",\n                        \"country\": \"US\",\n                        \"line_1\": \"10880, Malibu Point, Malibu Central\"\n                    },\n                    \"network_token\": {\n                        \"token_unique_reference\": \"9cb80642-e3b6-4b30-b233-c54a4857cbf0\",\n                        \"status\": \"active\"\n                    }\n                },\n                \"payment_type\": \"Token\",\n                \"created_at\": \"2023-03-17T14:20:28Z\",\n                \"updated_at\": \"2023-03-17T14:20:28Z\",\n                \"gateway_response\": {\n                    \"code\": \"200\",\n                    \"errors\": []\n                },\n                \"antifraud_response\": {},\n                \"metadata\": {}\n            }\n        }\n    ],\n    \"checkouts\": []\n}"
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    id:
+                      type: string
+                      example: or_28dN9w7CLU79kDjL
+                    code:
+                      type: string
+                      example: 62LVFN7I4R
+                    amount:
+                      type: integer
+                      example: 2990
+                      default: 0
+                    currency:
+                      type: string
+                      example: BRL
+                    closed:
+                      type: boolean
+                      example: true
+                      default: true
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: oi_d478RMAS3bC74PrL
+                          description:
+                            type: string
+                            example: Chaveiro do Tesseract
+                          amount:
+                            type: integer
+                            example: 2990
+                            default: 0
+                          quantity:
+                            type: integer
+                            example: 1
+                            default: 0
+                          status:
+                            type: string
+                            example: active
+                          created_at:
+                            type: string
+                            example: '2017-04-19T16:01:09Z'
+                          updated_at:
+                            type: string
+                            example: '2017-04-19T16:01:09Z'
+                    customer:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: cus_eaEXlZvhBfeGlDOm
+                        name:
+                          type: string
+                          example: Tony Stark
+                        email:
+                          type: string
+                          example: f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com
+                        delinquent:
+                          type: boolean
+                          example: false
+                          default: true
+                        created_at:
+                          type: string
+                          example: '2017-04-19T16:01:09Z'
+                        updated_at:
+                          type: string
+                          example: '2017-04-19T16:01:09Z'
+                    status:
+                      type: string
+                      example: paid
+                    created_at:
+                      type: string
+                      example: '2017-04-19T16:01:09Z'
+                    updated_at:
+                      type: string
+                      example: '2017-04-19T16:01:11Z'
+                    closed_at:
+                      type: string
+                      example: '2017-04-19T16:01:11Z'
+                    charges:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: ch_gmnW101c9YTvQVLB
+                          code:
+                            type: string
+                            example: 62LVFN7I4R
+                          gateway_id:
+                            type: string
+                            example: ef5e977b-93d2-485a-b15d-36e5eb3d8cf5
+                          amount:
+                            type: integer
+                            example: 2990
+                            default: 0
+                          status:
+                            type: string
+                            example: paid
+                          currency:
+                            type: string
+                            example: BRL
+                          payment_method:
+                            type: string
+                            example: credit_card
+                          paid_at:
+                            type: string
+                            example: '2017-04-19T16:01:11Z'
+                          created_at:
+                            type: string
+                            example: '2017-04-19T16:01:09Z'
+                          updated_at:
+                            type: string
+                            example: '2017-04-19T16:01:09Z'
+                          customer:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: cus_eaEXlZvhBfeGlDOm
+                              name:
+                                type: string
+                                example: Tony Stark
+                              email:
+                                type: string
+                                example: f1492621-4f39-45f7-adfb-82a373a0a85c@avengers.com
+                              delinquent:
+                                type: boolean
+                                example: false
+                                default: true
+                              created_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                              updated_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                          last_transaction:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: tran_3RYbBQjcnEcwrGp0
+                              transaction_type:
+                                type: string
+                                example: credit_card
+                              funding_source:
+                                type: string
+                                example: prepaid
+                              gateway_id:
+                                type: string
+                                example: ddab707d-72ba-49f9-b356-f0b9ebfa3039
+                              amount:
+                                type: integer
+                                example: 2990
+                                default: 0
+                              status:
+                                type: string
+                                example: captured
+                              success:
+                                type: boolean
+                                example: true
+                                default: true
+                              installments:
+                                type: integer
+                                example: 1
+                                default: 0
+                              statement_descriptor:
+                                type: string
+                                example: AVENGERS
+                              acquirer_name:
+                                type: string
+                                example: simulator
+                              acquirer_affiliation_code:
+                                type: string
+                                example: '12345'
+                              acquirer_tid:
+                                type: string
+                                example: '431837'
+                              acquirer_nsu:
+                                type: string
+                                example: '512784'
+                              acquirer_auth_code:
+                                type: string
+                                example: '233215'
+                              acquirer_message:
+                                type: string
+                                example: Simulator|Transação de simulação autorizada com sucesso
+                              acquirer_return_code:
+                                type: string
+                                example: '0'
+                              operation_type:
+                                type: string
+                                example: auth_and_capture
+                              card:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    example: card_6xk9deAu2I2MdPzJ
+                                  first_six_digits:
+                                    type: string
+                                    example: '402400'
+                                  last_four_digits:
+                                    type: string
+                                    example: '8229'
+                                  brand:
+                                    type: string
+                                    example: Amex
+                                  holder_name:
+                                    type: string
+                                    example: Tony Stark
+                                  exp_month:
+                                    type: integer
+                                    example: 1
+                                    default: 0
+                                  exp_year:
+                                    type: integer
+                                    example: 2018
+                                    default: 0
+                                  status:
+                                    type: string
+                                    example: active
+                                  created_at:
+                                    type: string
+                                    example: '2017-04-19T16:01:09Z'
+                                  updated_at:
+                                    type: string
+                                    example: '2017-04-19T16:01:09Z'
+                                  billing_address:
+                                    type: object
+                                    properties:
+                                      zip_code:
+                                        type: string
+                                        example: '90265'
+                                      city:
+                                        type: string
+                                        example: Malibu
+                                      state:
+                                        type: string
+                                        example: CA
+                                      country:
+                                        type: string
+                                        example: US
+                                      line_1:
+                                        type: string
+                                        example: 10880, Malibu Point, Malibu Central
+                                  type:
+                                    type: string
+                                    example: credit
+                              created_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                              updated_at:
+                                type: string
+                                example: '2017-04-19T16:01:09Z'
+                              gateway_response:
+                                type: object
+                                properties:
+                                  code:
+                                    type: string
+                                    example: '201'
+                - title: OK - Network Token
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: or_5aEYRKmIwvTqpgoQ
+                    code:
+                      type: string
+                      example: Y387TKKF3L
+                    amount:
+                      type: integer
+                      example: 2990
+                      default: 0
+                    currency:
+                      type: string
+                      example: BRL
+                    closed:
+                      type: boolean
+                      example: true
+                      default: true
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: oi_gBLrzX1u3pHQMoEM
+                          type:
+                            type: string
+                            example: product
+                          description:
+                            type: string
+                            example: Chaveiro do Tesseract
+                          amount:
+                            type: integer
+                            example: 2990
+                            default: 0
+                          quantity:
+                            type: integer
+                            example: 1
+                            default: 0
+                          status:
+                            type: string
+                            example: active
+                          created_at:
+                            type: string
+                            example: '2023-03-17T14:20:27Z'
+                          updated_at:
+                            type: string
+                            example: '2023-03-17T14:20:27Z'
+                    customer:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: cus_K1oa3LKTZSlW6O7d
+                        name:
+                          type: string
+                          example: Tony Stark
+                        email:
+                          type: string
+                          example: avengerstark@ligadajustica.com.br
+                        delinquent:
+                          type: boolean
+                          example: false
+                          default: true
+                        created_at:
+                          type: string
+                          example: '2023-03-17T14:19:22Z'
+                        updated_at:
+                          type: string
+                          example: '2023-03-17T14:19:22Z'
+                        phones:
+                          type: object
+                          properties: {}
+                    status:
+                      type: string
+                      example: paid
+                    created_at:
+                      type: string
+                      example: '2023-03-17T14:20:27Z'
+                    updated_at:
+                      type: string
+                      example: '2023-03-17T14:20:28Z'
+                    closed_at:
+                      type: string
+                      example: '2023-03-17T14:20:27Z'
+                    charges:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: ch_Ljvke06fdSErl62x
+                          code:
+                            type: string
+                            example: Y387TKKF3L
+                          amount:
+                            type: integer
+                            example: 2990
+                            default: 0
+                          paid_amount:
+                            type: integer
+                            example: 2990
+                            default: 0
+                          status:
+                            type: string
+                            example: paid
+                          currency:
+                            type: string
+                            example: BRL
+                          payment_method:
+                            type: string
+                            example: credit_card
+                          paid_at:
+                            type: string
+                            example: '2023-03-17T14:20:28Z'
+                          created_at:
+                            type: string
+                            example: '2023-03-17T14:20:28Z'
+                          updated_at:
+                            type: string
+                            example: '2023-03-17T14:20:28Z'
+                          customer:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: cus_K1oa3LKTZSlW6O7d
+                              name:
+                                type: string
+                                example: Tony Stark
+                              email:
+                                type: string
+                                example: avengerstark@ligadajustica.com.br
+                              delinquent:
+                                type: boolean
+                                example: false
+                                default: true
+                              created_at:
+                                type: string
+                                example: '2023-03-17T14:19:22Z'
+                              updated_at:
+                                type: string
+                                example: '2023-03-17T14:19:22Z'
+                              phones:
+                                type: object
+                                properties: {}
+                          last_transaction:
+                            type: object
+                            properties:
+                              operation_key:
+                                type: string
+                                example: '409945098'
+                              id:
+                                type: string
+                                example: tran_xbEM0pRmUASgBYAq
+                              transaction_type:
+                                type: string
+                                example: credit_card
+                              gateway_id:
+                                type: string
+                                example: 95e3e8f1-c5fc-4d62-8f0b-80bdc66d3e42
+                              amount:
+                                type: integer
+                                example: 2990
+                                default: 0
+                              status:
+                                type: string
+                                example: captured
+                              success:
+                                type: boolean
+                                example: true
+                                default: true
+                              installments:
+                                type: integer
+                                example: 1
+                                default: 0
+                              installment_type:
+                                type: string
+                                example: merchant
+                              statement_descriptor:
+                                type: string
+                                example: AVENGERS
+                              acquirer_name:
+                                type: string
+                                example: simulator
+                              acquirer_tid:
+                                type: string
+                                example: '894247649'
+                              acquirer_nsu:
+                                type: string
+                                example: '49640'
+                              acquirer_auth_code:
+                                type: string
+                                example: '169'
+                              acquirer_message:
+                                type: string
+                                example: Transação capturada com sucesso
+                              acquirer_return_code:
+                                type: string
+                                example: '00'
+                              entry_mode:
+                                type: string
+                                example: ecommerce
+                              operation_type:
+                                type: string
+                                example: auth_and_capture
+                              card:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    example: card_DwER6M8Cl9hPKAOb
+                                  first_six_digits:
+                                    type: string
+                                    example: '400000'
+                                  last_four_digits:
+                                    type: string
+                                    example: '0010'
+                                  brand:
+                                    type: string
+                                    example: Visa
+                                  holder_name:
+                                    type: string
+                                    example: Homelander
+                                  exp_month:
+                                    type: integer
+                                    example: 12
+                                    default: 0
+                                  exp_year:
+                                    type: integer
+                                    example: 2025
+                                    default: 0
+                                  status:
+                                    type: string
+                                    example: active
+                                  type:
+                                    type: string
+                                    example: credit
+                                  created_at:
+                                    type: string
+                                    example: '2023-03-17T14:19:43Z'
+                                  updated_at:
+                                    type: string
+                                    example: '2023-03-17T14:19:43Z'
+                                  billing_address:
+                                    type: object
+                                    properties:
+                                      zip_code:
+                                        type: string
+                                        example: '90265'
+                                      city:
+                                        type: string
+                                        example: Malibu
+                                      state:
+                                        type: string
+                                        example: CA
+                                      country:
+                                        type: string
+                                        example: US
+                                      line_1:
+                                        type: string
+                                        example: 10880, Malibu Point, Malibu Central
+                                  network_token:
+                                    type: object
+                                    properties:
+                                      token_unique_reference:
+                                        type: string
+                                        example: 9cb80642-e3b6-4b30-b233-c54a4857cbf0
+                                      status:
+                                        type: string
+                                        example: active
+                              payment_type:
+                                type: string
+                                example: Token
+                              created_at:
+                                type: string
+                                example: '2023-03-17T14:20:28Z'
+                              updated_at:
+                                type: string
+                                example: '2023-03-17T14:20:28Z'
+                              gateway_response:
+                                type: object
+                                properties:
+                                  code:
+                                    type: string
+                                    example: '200'
+                                  errors:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties: {}
+                              antifraud_response:
+                                type: object
+                                properties: {}
+                              metadata:
+                                type: object
+                                properties: {}
+                    checkouts:
+                      type: array
+                      items:
+                        type: object
+                        properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Order not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Order not found.
+      deprecated: false
+      tags:
+      - Orders
+  /orders/{order_id}/closed:
+    patch:
+      summary: Fechar um pedido
+      description: Utilizado para fechar um pedido para que não seja mais possível adicionar cobranças.
+      operationId: fechar-um-pedido
+      parameters:
+      - name: order_id
+        in: path
+        description: Código do pedido.
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  description: 'Status final do pedido. Valores possíveis: **paid**, **canceled** ou **failed**. Caso não enviado, valor default será **paid**.'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"or_koMvlQOTMCb9dpPO\",\n  \"code\": \"O8YDFPZUM3\",\n  \"amount\": 2990,\n  \"currency\": \"BRL\",\n  \"closed\": true,\n  \"items\": [\n    {\n      \"id\": \"oi_jkW1MBc9MtKdzK20\",\n      \"description\": \"Bolinho de feijoada\",\n      \"amount\": 2990,\n      \"quantity\": 1,\n      \"status\": \"active\",\n      \"created_at\": \"2017-06-06T16:03:41Z\",\n      \"updated_at\": \"2017-06-06T16:03:41Z\"\n    }\n  ],\n  \"customer\": {\n    \"id\": \"cus_mBloKMLnswtD4O3a\",\n    \"name\": \"Tony Stark\",\n    \"email\": \"avengerstark@ligadajustica.com.br\",\n    \"delinquent\": false,\n    \"created_at\": \"2016-10-07T19:50:39Z\",\n    \"updated_at\": \"2017-06-06T16:03:40Z\",\n    \"phones\": {},\n    \"metadata\": {\n      \"company\": \"Pagar.me\",\n      \"nome_da_mae\": \"Maria\"\n    }\n  },\n  \"status\": \"paid\",\n  \"created_at\": \"2017-06-06T16:03:40Z\",\n  \"updated_at\": \"2017-06-06T16:03:40Z\",\n  \"closed_at\": \"2017-06-06T16:03:47Z\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: or_koMvlQOTMCb9dpPO
+                  code:
+                    type: string
+                    example: O8YDFPZUM3
+                  amount:
+                    type: integer
+                    example: 2990
+                    default: 0
+                  currency:
+                    type: string
+                    example: BRL
+                  closed:
+                    type: boolean
+                    example: true
+                    default: true
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: oi_jkW1MBc9MtKdzK20
+                        description:
+                          type: string
+                          example: Bolinho de feijoada
+                        amount:
+                          type: integer
+                          example: 2990
+                          default: 0
+                        quantity:
+                          type: integer
+                          example: 1
+                          default: 0
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          example: '2017-06-06T16:03:41Z'
+                        updated_at:
+                          type: string
+                          example: '2017-06-06T16:03:41Z'
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cus_mBloKMLnswtD4O3a
+                      name:
+                        type: string
+                        example: Tony Stark
+                      email:
+                        type: string
+                        example: avengerstark@ligadajustica.com.br
+                      delinquent:
+                        type: boolean
+                        example: false
+                        default: true
+                      created_at:
+                        type: string
+                        example: '2016-10-07T19:50:39Z'
+                      updated_at:
+                        type: string
+                        example: '2017-06-06T16:03:40Z'
+                      phones:
+                        type: object
+                        properties: {}
+                      metadata:
+                        type: object
+                        properties:
+                          company:
+                            type: string
+                            example: Pagar.me
+                          nome_da_mae:
+                            type: string
+                            example: Maria
+                  status:
+                    type: string
+                    example: paid
+                  created_at:
+                    type: string
+                    example: '2017-06-06T16:03:40Z'
+                  updated_at:
+                    type: string
+                    example: '2017-06-06T16:03:40Z'
+                  closed_at:
+                    type: string
+                    example: '2017-06-06T16:03:47Z'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Orders
+  /orders/{order_id}/items:
+    post:
+      summary: Incluir item
+      description: Quando um pedido está **aberto**, você pode incluir itens nele.
+      operationId: incluir-item
+      parameters:
+      - name: order_id
+        in: path
+        description: Código do pedido.
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - amount
+              - description
+              - quantity
+              properties:
+                amount:
+                  type: integer
+                  description: Valor do item.
+                  format: int32
+                code:
+                  type: string
+                  description: 'Código do item no sistema da loja. Max: 52 caracteres. Obrigatório para transações de split'
+                description:
+                  type: string
+                  description: 'Descrição do item. Max: 256 caracteres.'
+                quantity:
+                  type: string
+                  description: Quantidade de itens.
+                category:
+                  type: string
+                  description: 'Categoria do item. Max: 64 caracteres.'
+            examples:
+              Request Example:
+                value:
+                  amount: 1090
+                  description: Caneca Zero Grau
+                  quantity: 1
+                  seller:
+                    document: '26224451990'
+                    name: Stark Industries
+                    code: STRK_01
+                    description: Changing the world for a better future.
+                    address:
+                      line_1: 10880, Malibu Point, Malibu Central
+                      zip_code: '90265'
+                      city: Malibu
+                      state: CA
+                      country: US
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"oi_ZD2lNDKcORty1pzw\",\n  \"description\": \"Caneca Zero Grau\",\n  \"amount\": 1090,\n  \"quantity\": 1,\n  \"status\": \"active\",\n  \"created_at\": \"2017-10-05T20:24:38Z\",\n  \"updated_at\": \"2017-10-05T20:24:38Z\",\n  \"order\": {\n    \"id\": \"or_oO7vgpeh1rF4DX3A\",\n    \"code\": \"7W86TKXIO1\",\n    \"amount\": 5170,\n    \"currency\": \"BRL\",\n    \"closed\": false,\n    \"status\": \"pending\",\n    \"created_at\": \"2017-10-05T19:41:29Z\",\n    \"updated_at\": \"2017-10-05T19:41:29Z\"\n  },\n  \"seller\": {\n    \"id\": \"sl_jY3D2MziacQnR01W\",\n    \"name\": \"Stark Industries\",\n    \"code\": \"STRK_01\",\n    \"document\": \"26224451990\",\n    \"description\": \"Changing the world for a better future.\",\n    \"status\": \"active\",\n    \"created_at\": \"2017-10-05T20:24:38Z\",\n    \"updated_at\": \"2017-10-05T20:24:38Z\",\n    \"address\": {\n      \"line_1\": \"10880, Malibu Point, Malibu Central\",\n      \"zip_code\": \"90265\",\n      \"city\": \"Malibu\",\n      \"state\": \"CA\",\n      \"country\": \"US\"\n    },\n    \"metadata\": {}\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: oi_ZD2lNDKcORty1pzw
+                  description:
+                    type: string
+                    example: Caneca Zero Grau
+                  amount:
+                    type: integer
+                    example: 1090
+                    default: 0
+                  quantity:
+                    type: integer
+                    example: 1
+                    default: 0
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2017-10-05T20:24:38Z'
+                  updated_at:
+                    type: string
+                    example: '2017-10-05T20:24:38Z'
+                  order:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: or_oO7vgpeh1rF4DX3A
+                      code:
+                        type: string
+                        example: 7W86TKXIO1
+                      amount:
+                        type: integer
+                        example: 5170
+                        default: 0
+                      currency:
+                        type: string
+                        example: BRL
+                      closed:
+                        type: boolean
+                        example: false
+                        default: true
+                      status:
+                        type: string
+                        example: pending
+                      created_at:
+                        type: string
+                        example: '2017-10-05T19:41:29Z'
+                      updated_at:
+                        type: string
+                        example: '2017-10-05T19:41:29Z'
+                  seller:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: sl_jY3D2MziacQnR01W
+                      name:
+                        type: string
+                        example: Stark Industries
+                      code:
+                        type: string
+                        example: STRK_01
+                      document:
+                        type: string
+                        example: '26224451990'
+                      description:
+                        type: string
+                        example: Changing the world for a better future.
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2017-10-05T20:24:38Z'
+                      updated_at:
+                        type: string
+                        example: '2017-10-05T20:24:38Z'
+                      address:
+                        type: object
+                        properties:
+                          line_1:
+                            type: string
+                            example: 10880, Malibu Point, Malibu Central
+                          zip_code:
+                            type: string
+                            example: '90265'
+                          city:
+                            type: string
+                            example: Malibu
+                          state:
+                            type: string
+                            example: CA
+                          country:
+                            type: string
+                            example: US
+                      metadata:
+                        type: object
+                        properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Orders
+    delete:
+      summary: Remover todos os itens
+      description: Quando um pedido está **aberto**, você pode remover todos os itens dele.
+      operationId: remover-todos-os-itens
+      parameters:
+      - name: order_id
+        in: path
+        description: Código do pedido.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"or_5OKyl9fNwIKDzjWJ\",\n  \"code\": \"7P03S0FOQN\",\n  \"currency\": \"BRL\",\n  \"closed\": false,\n  \"customer\": {\n    \"id\": \"cus_oWQOPg5tJF8ml0ny\",\n    \"name\": \"Tony Stark\",\n    \"email\": \"9fb571fc-79c3-4293-aafd-61fd8afa6c38@avengers.com\",\n    \"delinquent\": false,\n    \"created_at\": \"2017-04-05T03:54:42\",\n    \"updated_at\": \"2017-04-05T03:54:42\"\n  },\n  \"status\": \"pending\",\n  \"created_at\": \"2017-04-05T03:54:42\",\n  \"updated_at\": \"2017-04-05T03:54:42\"\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: or_5OKyl9fNwIKDzjWJ
+                  code:
+                    type: string
+                    example: 7P03S0FOQN
+                  currency:
+                    type: string
+                    example: BRL
+                  closed:
+                    type: boolean
+                    example: false
+                    default: true
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cus_oWQOPg5tJF8ml0ny
+                      name:
+                        type: string
+                        example: Tony Stark
+                      email:
+                        type: string
+                        example: 9fb571fc-79c3-4293-aafd-61fd8afa6c38@avengers.com
+                      delinquent:
+                        type: boolean
+                        example: false
+                        default: true
+                      created_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+                      updated_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+                  status:
+                    type: string
+                    example: pending
+                  created_at:
+                    type: string
+                    example: '2017-04-05T03:54:42'
+                  updated_at:
+                    type: string
+                    example: '2017-04-05T03:54:42'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Order not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Order not found.
+      deprecated: false
+      tags:
+      - Orders
+  /orders/{order_id}/items/{item_id}:
+    put:
+      summary: Editar item do pedido
+      description: Quando um pedido está **aberto**, você pode editar os itens dele.
+      operationId: editar-item-do-pedido
+      parameters:
+      - name: order_id
+        in: path
+        description: Código do pedido
+        schema:
+          type: string
+        required: true
+      - name: item_id
+        in: path
+        description: Código do item do pedido
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - amount
+              - description
+              - quantity
+              properties:
+                amount:
+                  type: integer
+                  description: Valor do item.
+                  format: int32
+                description:
+                  type: string
+                  description: 'Descrição do item. Max: 256 caracteres.'
+                quantity:
+                  type: integer
+                  description: Quantidade de itens.
+                  format: int32
+                category:
+                  type: string
+                  description: 'Categoria do item. Max: 64 caracteres.'
+            examples:
+              Request Example:
+                value:
+                  amount: 1090
+                  description: Água com gás
+                  quantity: 2
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"oi_AQKqAnGhQGsYd1b6\",\n  \"description\": \"Água com gás\",\n  \"amount\": 1090,\n  \"quantity\": 2,\n  \"status\": \"active\",\n  \"created_at\": \"2017-04-05T03:55:48\",\n  \"updated_at\": \"2017-04-05T05:05:14\",\n  \"order\": {\n    \"id\": \"or_5OKyl9fNwIKDzjWJ\",\n    \"code\": \"7P03S0FOQN\",\n    \"amount\": 6260,\n    \"currency\": \"BRL\",\n    \"closed\": false,\n    \"status\": \"pending\",\n    \"created_at\": \"2017-04-05T03:54:42\",\n    \"updated_at\": \"2017-04-05T03:54:42\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: oi_AQKqAnGhQGsYd1b6
+                  description:
+                    type: string
+                    example: Água com gás
+                  amount:
+                    type: integer
+                    example: 1090
+                    default: 0
+                  quantity:
+                    type: integer
+                    example: 2
+                    default: 0
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2017-04-05T03:55:48'
+                  updated_at:
+                    type: string
+                    example: '2017-04-05T05:05:14'
+                  order:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: or_5OKyl9fNwIKDzjWJ
+                      code:
+                        type: string
+                        example: 7P03S0FOQN
+                      amount:
+                        type: integer
+                        example: 6260
+                        default: 0
+                      currency:
+                        type: string
+                        example: BRL
+                      closed:
+                        type: boolean
+                        example: false
+                        default: true
+                      status:
+                        type: string
+                        example: pending
+                      created_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+                      updated_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+      deprecated: false
+      tags:
+      - Orders
+    delete:
+      summary: Deletar item
+      description: Quando um pedido está **aberto**, você pode excluir itens dele.
+      operationId: deletar-item
+      parameters:
+      - name: order_id
+        in: path
+        description: Códido do pedido.
+        schema:
+          type: string
+        required: true
+      - name: item_id
+        in: path
+        description: Código do item do pedido.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"oi_AQKqAnGhQGsYd1b6\",\n  \"description\": \"Caneca Zero Grau\",\n  \"amount\": 1090,\n  \"quantity\": 2,\n  \"status\": \"deleted\",\n  \"created_at\": \"2017-04-05T03:55:48\",\n  \"updated_at\": \"2017-04-05T05:05:14\",\n  \"deleted_at\": \"2017-04-05T05:30:34\",\n  \"order\": {\n    \"id\": \"or_5OKyl9fNwIKDzjWJ\",\n    \"code\": \"7P03S0FOQN\",\n    \"amount\": 4080,\n    \"currency\": \"BRL\",\n    \"closed\": false,\n    \"status\": \"pending\",\n    \"created_at\": \"2017-04-05T03:54:42\",\n    \"updated_at\": \"2017-04-05T03:54:42\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: oi_AQKqAnGhQGsYd1b6
+                  description:
+                    type: string
+                    example: Caneca Zero Grau
+                  amount:
+                    type: integer
+                    example: 1090
+                    default: 0
+                  quantity:
+                    type: integer
+                    example: 2
+                    default: 0
+                  status:
+                    type: string
+                    example: deleted
+                  created_at:
+                    type: string
+                    example: '2017-04-05T03:55:48'
+                  updated_at:
+                    type: string
+                    example: '2017-04-05T05:05:14'
+                  deleted_at:
+                    type: string
+                    example: '2017-04-05T05:30:34'
+                  order:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: or_5OKyl9fNwIKDzjWJ
+                      code:
+                        type: string
+                        example: 7P03S0FOQN
+                      amount:
+                        type: integer
+                        example: 4080
+                        default: 0
+                      currency:
+                        type: string
+                        example: BRL
+                      closed:
+                        type: boolean
+                        example: false
+                        default: true
+                      status:
+                        type: string
+                        example: pending
+                      created_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+                      updated_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"id\": \"oi_ZR3AjrjFwsg2A7bz\",\n  \"description\": \"Caneca Zero Grau\",\n  \"amount\": 1090,\n  \"quantity\": 1,\n  \"status\": \"deleted\",\n  \"created_at\": \"2017-04-05T05:33:29\",\n  \"updated_at\": \"2017-04-05T05:33:29\",\n  \"deleted_at\": \"2017-04-05T05:33:38\",\n  \"order\": {\n    \"id\": \"or_5OKyl9fNwIKDzjWJ\",\n    \"code\": \"7P03S0FOQN\",\n    \"amount\": 4080,\n    \"currency\": \"BRL\",\n    \"closed\": false,\n    \"status\": \"pending\",\n    \"created_at\": \"2017-04-05T03:54:42\",\n    \"updated_at\": \"2017-04-05T03:54:42\"\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: oi_ZR3AjrjFwsg2A7bz
+                  description:
+                    type: string
+                    example: Caneca Zero Grau
+                  amount:
+                    type: integer
+                    example: 1090
+                    default: 0
+                  quantity:
+                    type: integer
+                    example: 1
+                    default: 0
+                  status:
+                    type: string
+                    example: deleted
+                  created_at:
+                    type: string
+                    example: '2017-04-05T05:33:29'
+                  updated_at:
+                    type: string
+                    example: '2017-04-05T05:33:29'
+                  deleted_at:
+                    type: string
+                    example: '2017-04-05T05:33:38'
+                  order:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: or_5OKyl9fNwIKDzjWJ
+                      code:
+                        type: string
+                        example: 7P03S0FOQN
+                      amount:
+                        type: integer
+                        example: 4080
+                        default: 0
+                      currency:
+                        type: string
+                        example: BRL
+                      closed:
+                        type: boolean
+                        example: false
+                        default: true
+                      status:
+                        type: string
+                        example: pending
+                      created_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+                      updated_at:
+                        type: string
+                        example: '2017-04-05T03:54:42'
+      deprecated: false
+      tags:
+      - Orders
+    get:
+      summary: Obter item do pedido
+      description: Obter um item especifico dentro de um pedido especifico.
+      operationId: obter-item-do-pedido
+      parameters:
+      - name: order_id
+        in: path
+        description: Código do pedido.
+        schema:
+          type: string
+        required: true
+      - name: item_id
+        in: path
+        description: Código do item do pedido.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"oi_gJ4RZVujNFDVRwpn\",\n    \"description\": \"Chaveiro do Tesseract\",\n    \"amount\": 2990,\n    \"quantity\": 1,\n    \"status\": \"active\",\n    \"created_at\": \"2017-12-18T16:49:43Z\",\n    \"updated_at\": \"2017-12-18T16:49:43Z\",\n    \"order\": {\n        \"id\": \"or_WpJzPeCwQtlYrEGO\",\n        \"code\": \"ELVRSL8S7Z\",\n        \"amount\": 2990,\n        \"currency\": \"BRL\",\n        \"closed\": true,\n        \"status\": \"paid\",\n        \"created_at\": \"2017-12-18T16:49:43Z\",\n        \"updated_at\": \"2017-12-18T16:49:44Z\",\n        \"closed_at\": \"2017-12-18T16:49:44Z\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: oi_gJ4RZVujNFDVRwpn
+                  description:
+                    type: string
+                    example: Chaveiro do Tesseract
+                  amount:
+                    type: integer
+                    example: 2990
+                    default: 0
+                  quantity:
+                    type: integer
+                    example: 1
+                    default: 0
+                  status:
+                    type: string
+                    example: active
+                  created_at:
+                    type: string
+                    example: '2017-12-18T16:49:43Z'
+                  updated_at:
+                    type: string
+                    example: '2017-12-18T16:49:43Z'
+                  order:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: or_WpJzPeCwQtlYrEGO
+                      code:
+                        type: string
+                        example: ELVRSL8S7Z
+                      amount:
+                        type: integer
+                        example: 2990
+                        default: 0
+                      currency:
+                        type: string
+                        example: BRL
+                      closed:
+                        type: boolean
+                        example: true
+                        default: true
+                      status:
+                        type: string
+                        example: paid
+                      created_at:
+                        type: string
+                        example: '2017-12-18T16:49:43Z'
+                      updated_at:
+                        type: string
+                        example: '2017-12-18T16:49:44Z'
+                      closed_at:
+                        type: string
+                        example: '2017-12-18T16:49:44Z'
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Order not found.\"\n}"
+              schema:
+                oneOf:
+                - type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Item not found.
+                - type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Order not found.
+      deprecated: false
+      tags:
+      - Orders
+components:
+  securitySchemes:
+    sec0:
+      type: http
+      scheme: basic
+x-readme-fauxas: true
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/ativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/atualizar-code-de-recebedor.md
+  - https://docs.pagar.me/reference/cancelar-assinatura-1.md
+  - https://docs.pagar.me/reference/cancelar-fatura-1.md
+  - https://docs.pagar.me/reference/cancelar-um-link-de-pagamento.md
+  - https://docs.pagar.me/reference/create-link.md
+  - https://docs.pagar.me/reference/criar-assinatura-avulsa.md
+  - https://docs.pagar.me/reference/criar-assinatura-de-plano-1.md
+  - https://docs.pagar.me/reference/criar-cliente-1.md
+  - https://docs.pagar.me/reference/criar-fatura-1.md
+  - https://docs.pagar.me/reference/criar-link-recebedor.md
+  - https://docs.pagar.me/reference/criar-link.md
+  - https://docs.pagar.me/reference/criar-pedido-2.md
+  - https://docs.pagar.me/reference/criar-pedido-com-antifraude.md
+  - https://docs.pagar.me/reference/criar-pedido-com-split-1.md
+  - https://docs.pagar.me/reference/criar-pedido-multicompradores.md
+  - https://docs.pagar.me/reference/criar-pedido-multimeios.md
+  - https://docs.pagar.me/reference/criar-plano-1.md
+  - https://docs.pagar.me/reference/criar-recebedor-1.md
+  - https://docs.pagar.me/reference/criar-token-cart%C3%A3o-1.md
+  - https://docs.pagar.me/reference/deletar-item.md
+  - https://docs.pagar.me/reference/desativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/editar-cliente-1.md
+  - https://docs.pagar.me/reference/editar-item-1.md
+  - https://docs.pagar.me/reference/editar-item-do-pedido.md
+  - https://docs.pagar.me/reference/editar-item.md
+  - https://docs.pagar.me/reference/editar-meio-de-pagamento-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-metadados-da-assinatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-da-fatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-do-plano-1.md
+  - https://docs.pagar.me/reference/editar-minimum-price-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-plano-1.md
+  - https://docs.pagar.me/reference/editar-recebedor-1.md
+  - https://docs.pagar.me/reference/enviar-webhook.md
+  - https://docs.pagar.me/reference/excluir-plano-1.md
+  - https://docs.pagar.me/reference/fechar-um-pedido.md
+  - https://docs.pagar.me/reference/incluir-desconto-1.md
+  - https://docs.pagar.me/reference/incluir-incremento-1.md
+  - https://docs.pagar.me/reference/incluir-item-1.md
+  - https://docs.pagar.me/reference/incluir-item-2.md
+  - https://docs.pagar.me/reference/incluir-item.md
+  - https://docs.pagar.me/reference/incluir-uso.md
+  - https://docs.pagar.me/reference/listar-assinaturas-1.md
+  - https://docs.pagar.me/reference/listar-ciclos-1.md
+  - https://docs.pagar.me/reference/listar-clientes-1.md
+  - https://docs.pagar.me/reference/listar-descontos-2.md
+  - https://docs.pagar.me/reference/listar-faturas-1.md
+  - https://docs.pagar.me/reference/listar-incrementos.md
+  - https://docs.pagar.me/reference/listar-pedidos.md
+  - https://docs.pagar.me/reference/listar-planos-1.md
+  - https://docs.pagar.me/reference/listar-recebedores-1.md
+  - https://docs.pagar.me/reference/listar-uso.md
+  - https://docs.pagar.me/reference/listar-webhooks.md
+  - https://docs.pagar.me/reference/obter-assinatura-1.md
+  - https://docs.pagar.me/reference/obter-ciclo-1.md
+  - https://docs.pagar.me/reference/obter-cliente-1.md
+  - https://docs.pagar.me/reference/obter-desconto-1.md
+  - https://docs.pagar.me/reference/obter-fatura-1.md
+  - https://docs.pagar.me/reference/obter-incremento-1.md
+  - https://docs.pagar.me/reference/obter-item-do-pedido.md
+  - https://docs.pagar.me/reference/obter-link.md
+  - https://docs.pagar.me/reference/obter-links.md
+  - https://docs.pagar.me/reference/obter-pedido.md
+  - https://docs.pagar.me/reference/obter-plano-1.md
+  - https://docs.pagar.me/reference/obter-recebedor-1.md
+  - https://docs.pagar.me/reference/obter-saldo.md
+  - https://docs.pagar.me/reference/obter-webhook.md
+  - https://docs.pagar.me/reference/remover-desconto-1.md
+  - https://docs.pagar.me/reference/remover-incremento-1.md
+  - https://docs.pagar.me/reference/remover-item-1.md
+  - https://docs.pagar.me/reference/remover-item.md
+  - https://docs.pagar.me/reference/remover-todos-os-itens.md
+  - https://docs.pagar.me/reference/remover-uso.md
+  - https://docs.pagar.me/reference/renovar-ciclo-1.md
+  - https://docs.pagar.me/reference/retornando-pagamentos-por-recebedor.md
+  - https://docs.pagar.me/reference/retornando-pagamentos.md
+  - https://docs.pagar.me/reference/retornando-um-pagamento.md
+  - https://docs.pagar.me/reference/retornando-urs-de-um-recebedor-v5.md
+  merge:
+    pages: 78
+    deduped: 82
+    conflicts_kept_first: 0

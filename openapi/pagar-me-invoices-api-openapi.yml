@@ -1,0 +1,1376 @@
+openapi: 3.2.0
+info:
+  title: pagarme-api Invoices API
+  version: '5'
+servers:
+- url: https://api.pagar.me/core/v5
+security:
+- sec0: []
+tags:
+- name: Invoices
+paths:
+  /invoices:
+    get:
+      summary: Listar faturas
+      description: Este recurso permite listar os descontos associados a uma assinatura. Pode ser utilizados alguns parâmetros como filtro da listagem.
+      operationId: listar-faturas-1
+      parameters:
+      - name: status
+        in: query
+        description: 'Status das faturas. Valores possíveis: **pending**, **paid**, **canceled**, **scheduled** ou **failed**'
+        schema:
+          type: string
+      - name: customer_id
+        in: query
+        description: Código do cliente.
+        schema:
+          type: string
+      - name: subscription_id
+        in: query
+        description: Código da fatura.
+        schema:
+          type: string
+      - name: due_since
+        in: query
+        description: Data de início do período de vencimento a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: due_until
+        in: query
+        description: Data final do período de vencimento a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: created_since
+        in: query
+        description: Data de início do período de criação a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: created_until
+        in: query
+        description: Data final do período de criação a ser listado.
+        schema:
+          type: string
+          format: date
+      - name: page
+        in: query
+        description: Página atual.
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: Quantidade de itens por página.
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"data\": [\n    {\n      \"id\": \"in_DnQj6J8iWhEg0MrK\",\n      \"code\": \"0E6RC91AE1\",\n      \"url\": \"/invoices/in_DnQj6J8iWhEg0MrK\",\n      \"amount\": 1490,\n      \"status\": \"paid\",\n      \"payment_method\": \"credit_card\",\n      \"due_at\": \"2017-04-04T00:00:00Z\",\n      \"created_at\": \"2017-04-04T15:54:46Z\",\n      \"items\": [\n        {\n          \"name\":\"Nome - teste\",\n          \"amount\": 1490,\n          \"quantity\": 1,\n          \"description\": \"Bola\"\n        }\n      ],\n      \"customer\": {\n        \"id\": \"cus_J4wRXJ0U6ytZrpAx\",\n        \"name\": \"Tony Star8k\",\n        \"email\": \"tstark@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2016-09-28T21:04:37Z\",\n        \"updated_at\": \"2017-04-04T15:08:20Z\"\n      },\n      \"subscription\": {\n        \"id\": \"sub_49O5RwPh5sl0wyqM\",\n        \"code\": \"G2X5F99FXX\",\n        \"start_at\": \"2017-04-04T00:00:00Z\",\n        \"interval\": \"month\",\n        \"interval_count\": 1,\n        \"billing_type\": \"postpaid\",\n        \"next_billing_at\": \"2017-05-04T00:00:00Z\",\n        \"payment_method\": \"credit_card\",\n        \"currency\": \"BRL\",\n        \"statement_descriptor\": \"Spotify\",\n        \"installments\": 1,\n        \"status\": \"active\",\n        \"created_at\": \"2017-04-04T15:54:19Z\",\n        \"updated_at\": \"2017-04-04T15:54:19Z\"\n      },\n      \"cycle\": {\n        \"id\": \"cycle_O6vXjrvUbecMjpgq\",\n        \"start_at\": \"2017-04-04T00:00:00Z\",\n        \"end_at\": \"2017-05-03T23:59:59Z\",\n        \"billing_at\": \"2017-05-04T00:00:00Z\"\n      },\n      \"charge\": {\n        \"id\": \"ch_1DaVYVQCds28rOm3\",\n        \"code\": \"G2X5F99FXX-01\",\n        \"gateway_id\": \"1e3a21f7-ad65-4ad0-a68c-3eb37e8115c9\",\n        \"amount\": 1490,\n        \"status\": \"paid\",\n        \"currency\": \"BRL\",\n        \"payment_method\": \"credit_card\",\n        \"due_at\": \"2017-04-04T00:00:00Z\",\n        \"paid_at\": \"2017-04-04T15:54:49Z\",\n        \"created_at\": \"2017-04-04T15:54:46Z\",\n        \"updated_at\": \"2017-04-04T15:54:46Z\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"total\": 1\n  }\n}"
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: in_DnQj6J8iWhEg0MrK
+                        code:
+                          type: string
+                          example: 0E6RC91AE1
+                        url:
+                          type: string
+                          example: /invoices/in_DnQj6J8iWhEg0MrK
+                        amount:
+                          type: integer
+                          example: 1490
+                          default: 0
+                        status:
+                          type: string
+                          example: paid
+                        payment_method:
+                          type: string
+                          example: credit_card
+                        due_at:
+                          type: string
+                          example: '2017-04-04T00:00:00Z'
+                        created_at:
+                          type: string
+                          example: '2017-04-04T15:54:46Z'
+                        items:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Nome - teste
+                              amount:
+                                type: integer
+                                example: 1490
+                                default: 0
+                              quantity:
+                                type: integer
+                                example: 1
+                                default: 0
+                              description:
+                                type: string
+                                example: Bola
+                        customer:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: cus_J4wRXJ0U6ytZrpAx
+                            name:
+                              type: string
+                              example: Tony Star8k
+                            email:
+                              type: string
+                              example: tstark@avengers.com
+                            delinquent:
+                              type: boolean
+                              example: false
+                              default: true
+                            created_at:
+                              type: string
+                              example: '2016-09-28T21:04:37Z'
+                            updated_at:
+                              type: string
+                              example: '2017-04-04T15:08:20Z'
+                        subscription:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: sub_49O5RwPh5sl0wyqM
+                            code:
+                              type: string
+                              example: G2X5F99FXX
+                            start_at:
+                              type: string
+                              example: '2017-04-04T00:00:00Z'
+                            interval:
+                              type: string
+                              example: month
+                            interval_count:
+                              type: integer
+                              example: 1
+                              default: 0
+                            billing_type:
+                              type: string
+                              example: postpaid
+                            next_billing_at:
+                              type: string
+                              example: '2017-05-04T00:00:00Z'
+                            payment_method:
+                              type: string
+                              example: credit_card
+                            currency:
+                              type: string
+                              example: BRL
+                            statement_descriptor:
+                              type: string
+                              example: Spotify
+                            installments:
+                              type: integer
+                              example: 1
+                              default: 0
+                            status:
+                              type: string
+                              example: active
+                            created_at:
+                              type: string
+                              example: '2017-04-04T15:54:19Z'
+                            updated_at:
+                              type: string
+                              example: '2017-04-04T15:54:19Z'
+                        cycle:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: cycle_O6vXjrvUbecMjpgq
+                            start_at:
+                              type: string
+                              example: '2017-04-04T00:00:00Z'
+                            end_at:
+                              type: string
+                              example: '2017-05-03T23:59:59Z'
+                            billing_at:
+                              type: string
+                              example: '2017-05-04T00:00:00Z'
+                        charge:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: ch_1DaVYVQCds28rOm3
+                            code:
+                              type: string
+                              example: G2X5F99FXX-01
+                            gateway_id:
+                              type: string
+                              example: 1e3a21f7-ad65-4ad0-a68c-3eb37e8115c9
+                            amount:
+                              type: integer
+                              example: 1490
+                              default: 0
+                            status:
+                              type: string
+                              example: paid
+                            currency:
+                              type: string
+                              example: BRL
+                            payment_method:
+                              type: string
+                              example: credit_card
+                            due_at:
+                              type: string
+                              example: '2017-04-04T00:00:00Z'
+                            paid_at:
+                              type: string
+                              example: '2017-04-04T15:54:49Z'
+                            created_at:
+                              type: string
+                              example: '2017-04-04T15:54:46Z'
+                            updated_at:
+                              type: string
+                              example: '2017-04-04T15:54:46Z'
+                  paging:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 1
+                        default: 0
+        '401':
+          description: '401'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Authorization has been denied for this request.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Authorization has been denied for this request.
+      deprecated: false
+      tags:
+      - Invoices
+  /invoices/{invoice_id}:
+    get:
+      summary: Obter fatura
+      description: Através do identificador da fatura (`invoice_id`) é possível recuperar as informação da fatura.
+      operationId: obter-fatura-1
+      parameters:
+      - name: invoice_id
+        in: path
+        description: 'Código da fatura.<br>Formato: `in_XXXXXXXXXXXXXXXX`.'
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"in_qBY5VvpuEACaw5bg\",\n    \"code\": \"O5D5FRSQ9O\",\n    \"url\": \"/invoices/in_qBY5VvpuEACaw5bg\",\n    \"amount\": 1490,\n    \"total_discounts\" :1000,\n    \"total_increments\" :1000,\n    \"status\": \"paid\",\n    \"payment_method\": \"credit_card\",\n    \"due_at\": \"2017-04-19T00:00:00Z\",\n    \"created_at\": \"2017-04-19T17:35:15Z\",\n    \"items\": [\n        {\n            \"name\": \"Nome - teste\",\n            \"amount\": 1490,\n            \"quantity\": 1,\n            \"description\": \"Premium\"\n        }\n    ],\n    \"customer\": {\n        \"id\": \"cus_mnG9AbHZmSYQRWM7\",\n        \"name\": \"Tony Stark\",\n        \"email\": \"38acb30a-99d9-4b12-a0aa-7305c7dd81f2@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2017-04-19T17:35:05Z\",\n        \"updated_at\": \"2017-04-19T17:35:05Z\"\n    },\n    \"subscription\": {\n        \"id\": \"sub_OGE4Q1Miy1fd4B3z\",\n        \"code\": \"R7P3FNU489\",\n        \"start_at\": \"2017-04-19T00:00:00Z\",\n        \"interval\": \"month\",\n        \"interval_count\": 1,\n        \"billing_type\": \"postpaid\",\n        \"next_billing_at\": \"2017-05-19T00:00:00Z\",\n        \"payment_method\": \"credit_card\",\n        \"currency\": \"BRL\",\n        \"statement_descriptor\": \"Spotify\",\n        \"installments\": 1,\n        \"status\": \"active\",\n        \"created_at\": \"2017-04-19T17:35:06Z\",\n        \"updated_at\": \"2017-04-19T17:35:06Z\"\n    },\n    \"cycle\": {\n        \"id\": \"cycle_5JB1vZBZimCXvaRp\",\n        \"start_at\": \"2017-04-19T00:00:00Z\",\n        \"end_at\": \"2017-05-18T23:59:59Z\",\n        \"billing_at\": \"2017-05-19T00:00:00Z\"\n    },\n    \"charge\": {\n        \"id\": \"ch_OGWebzPtDCOQex2r\",\n        \"code\": \"R7P3FNU489-01\",\n        \"gateway_id\": \"729154b2-1a94-45e0-bce8-1f6966725ee5\",\n        \"amount\": 1490,\n        \"status\": \"paid\",\n        \"currency\": \"BRL\",\n        \"payment_method\": \"credit_card\",\n        \"due_at\": \"2017-04-19T00:00:00Z\",\n        \"paid_at\": \"2017-04-19T17:35:16Z\",\n        \"created_at\": \"2017-04-19T17:35:15Z\",\n        \"updated_at\": \"2017-04-19T17:35:15Z\",\n        \"last_transaction\": {\n            \"id\": \"tran_EBlMxnTRmfrg0joK\",\n            \"transaction_type\": \"credit_card\",\n            \"funding_source\": \"prepaid\",\n            \"gateway_id\": \"02bf6173-0e19-4060-836e-626c81f02749\",\n            \"amount\": 1490,\n            \"status\": \"captured\",\n            \"success\": true,\n            \"installments\": 1,\n            \"statement_descriptor\": \"Spotify\",\n            \"acquirer_name\": \"simulator\",\n            \"acquirer_affiliation_code\": \"12345\",\n            \"acquirer_tid\": \"12869\",\n            \"acquirer_nsu\": \"680036\",\n            \"acquirer_auth_code\": \"637781\",\n            \"acquirer_message\": \"Simulator|Transação de simulação autorizada com sucesso\",\n            \"acquirer_return_code\": \"0\",\n            \"operation_type\": \"auth_and_capture\",\n            \"card\": {\n                \"id\": \"card_x8PBA3TppSDWjrgd\",\n                \"first_six_digits\": \"542501\",\n                \"last_four_digits\": \"8229\",\n                \"brand\": \"Amex\",\n                \"holder_name\": \"Tony Stark\",\n                \"exp_month\": 1,\n                \"exp_year\": 2018,\n                \"status\": \"active\",\n                \"created_at\": \"2017-04-19T17:35:05Z\",\n                \"updated_at\": \"2017-04-19T17:35:05Z\",\n                \"billing_address\": {\n                    \"line_1\": \"10880, Malibu Point, Malibu Central\",\n                    \"zip_code\": \"90265\",\n                    \"city\": \"Malibu\",\n                    \"state\": \"CA\",\n                    \"country\": \"US\"\n                },\n                \"type\": \"credit\"\n            },\n            \"created_at\": \"2017-04-19T17:35:15Z\",\n            \"updated_at\": \"2017-04-19T17:35:15Z\",\n            \"gateway_response\": {\n                \"code\": \"201\"\n            }\n        }\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: in_qBY5VvpuEACaw5bg
+                  code:
+                    type: string
+                    example: O5D5FRSQ9O
+                  url:
+                    type: string
+                    example: /invoices/in_qBY5VvpuEACaw5bg
+                  amount:
+                    type: integer
+                    example: 1490
+                    default: 0
+                  total_discounts:
+                    type: integer
+                    example: 1000
+                    default: 0
+                  total_increments:
+                    type: integer
+                    example: 1000
+                    default: 0
+                  status:
+                    type: string
+                    example: paid
+                  payment_method:
+                    type: string
+                    example: credit_card
+                  due_at:
+                    type: string
+                    example: '2017-04-19T00:00:00Z'
+                  created_at:
+                    type: string
+                    example: '2017-04-19T17:35:15Z'
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Nome - teste
+                        amount:
+                          type: integer
+                          example: 1490
+                          default: 0
+                        quantity:
+                          type: integer
+                          example: 1
+                          default: 0
+                        description:
+                          type: string
+                          example: Premium
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cus_mnG9AbHZmSYQRWM7
+                      name:
+                        type: string
+                        example: Tony Stark
+                      email:
+                        type: string
+                        example: 38acb30a-99d9-4b12-a0aa-7305c7dd81f2@avengers.com
+                      delinquent:
+                        type: boolean
+                        example: false
+                        default: true
+                      created_at:
+                        type: string
+                        example: '2017-04-19T17:35:05Z'
+                      updated_at:
+                        type: string
+                        example: '2017-04-19T17:35:05Z'
+                  subscription:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: sub_OGE4Q1Miy1fd4B3z
+                      code:
+                        type: string
+                        example: R7P3FNU489
+                      start_at:
+                        type: string
+                        example: '2017-04-19T00:00:00Z'
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 1
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: postpaid
+                      next_billing_at:
+                        type: string
+                        example: '2017-05-19T00:00:00Z'
+                      payment_method:
+                        type: string
+                        example: credit_card
+                      currency:
+                        type: string
+                        example: BRL
+                      statement_descriptor:
+                        type: string
+                        example: Spotify
+                      installments:
+                        type: integer
+                        example: 1
+                        default: 0
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2017-04-19T17:35:06Z'
+                      updated_at:
+                        type: string
+                        example: '2017-04-19T17:35:06Z'
+                  cycle:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cycle_5JB1vZBZimCXvaRp
+                      start_at:
+                        type: string
+                        example: '2017-04-19T00:00:00Z'
+                      end_at:
+                        type: string
+                        example: '2017-05-18T23:59:59Z'
+                      billing_at:
+                        type: string
+                        example: '2017-05-19T00:00:00Z'
+                  charge:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: ch_OGWebzPtDCOQex2r
+                      code:
+                        type: string
+                        example: R7P3FNU489-01
+                      gateway_id:
+                        type: string
+                        example: 729154b2-1a94-45e0-bce8-1f6966725ee5
+                      amount:
+                        type: integer
+                        example: 1490
+                        default: 0
+                      status:
+                        type: string
+                        example: paid
+                      currency:
+                        type: string
+                        example: BRL
+                      payment_method:
+                        type: string
+                        example: credit_card
+                      due_at:
+                        type: string
+                        example: '2017-04-19T00:00:00Z'
+                      paid_at:
+                        type: string
+                        example: '2017-04-19T17:35:16Z'
+                      created_at:
+                        type: string
+                        example: '2017-04-19T17:35:15Z'
+                      updated_at:
+                        type: string
+                        example: '2017-04-19T17:35:15Z'
+                      last_transaction:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: tran_EBlMxnTRmfrg0joK
+                          transaction_type:
+                            type: string
+                            example: credit_card
+                          funding_source:
+                            type: string
+                            example: prepaid
+                          gateway_id:
+                            type: string
+                            example: 02bf6173-0e19-4060-836e-626c81f02749
+                          amount:
+                            type: integer
+                            example: 1490
+                            default: 0
+                          status:
+                            type: string
+                            example: captured
+                          success:
+                            type: boolean
+                            example: true
+                            default: true
+                          installments:
+                            type: integer
+                            example: 1
+                            default: 0
+                          statement_descriptor:
+                            type: string
+                            example: Spotify
+                          acquirer_name:
+                            type: string
+                            example: simulator
+                          acquirer_affiliation_code:
+                            type: string
+                            example: '12345'
+                          acquirer_tid:
+                            type: string
+                            example: '12869'
+                          acquirer_nsu:
+                            type: string
+                            example: '680036'
+                          acquirer_auth_code:
+                            type: string
+                            example: '637781'
+                          acquirer_message:
+                            type: string
+                            example: Simulator|Transação de simulação autorizada com sucesso
+                          acquirer_return_code:
+                            type: string
+                            example: '0'
+                          operation_type:
+                            type: string
+                            example: auth_and_capture
+                          card:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: card_x8PBA3TppSDWjrgd
+                              first_six_digits:
+                                type: string
+                                example: '542501'
+                              last_four_digits:
+                                type: string
+                                example: '8229'
+                              brand:
+                                type: string
+                                example: Amex
+                              holder_name:
+                                type: string
+                                example: Tony Stark
+                              exp_month:
+                                type: integer
+                                example: 1
+                                default: 0
+                              exp_year:
+                                type: integer
+                                example: 2018
+                                default: 0
+                              status:
+                                type: string
+                                example: active
+                              created_at:
+                                type: string
+                                example: '2017-04-19T17:35:05Z'
+                              updated_at:
+                                type: string
+                                example: '2017-04-19T17:35:05Z'
+                              billing_address:
+                                type: object
+                                properties:
+                                  line_1:
+                                    type: string
+                                    example: 10880, Malibu Point, Malibu Central
+                                  zip_code:
+                                    type: string
+                                    example: '90265'
+                                  city:
+                                    type: string
+                                    example: Malibu
+                                  state:
+                                    type: string
+                                    example: CA
+                                  country:
+                                    type: string
+                                    example: US
+                              type:
+                                type: string
+                                example: credit
+                          created_at:
+                            type: string
+                            example: '2017-04-19T17:35:15Z'
+                          updated_at:
+                            type: string
+                            example: '2017-04-19T17:35:15Z'
+                          gateway_response:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                                example: '201'
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Invoice not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invoice not found.
+      deprecated: false
+      tags:
+      - Invoices
+    delete:
+      summary: Cancelar fatura
+      description: Com o verbo _HTTP DELETE_, através do identificador da fatura (`invoice_id`), este recurso possibilita realizar o cancelamento da fatura.
+      operationId: cancelar-fatura-1
+      parameters:
+      - name: invoice_id
+        in: path
+        description: 'Código da fatura.<br>Formato: `in_XXXXXXXXXXXXXXXX`.'
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"in_n87qwY1FA2SzwXDb\",\n    \"code\": \"P47FWGIEZP\",\n    \"url\": \"/invoices/in_n87qwY1FA2SzwXDb\",\n    \"amount\": 1490,\n    \"status\": \"canceled\",\n    \"payment_method\": \"credit_card\",\n    \"due_at\": \"2017-04-04T00:00:00Z\",\n    \"canceled_at\": \"2017-04-04T15:48:48Z\",\n    \"created_at\": \"2017-04-04T15:40:28Z\",\n    \"items\": [\n        {\n            \"name\": \"Nome - teste\",\n            \"amount\": 1490,\n            \"quantity\": 1,\n            \"description\": \"Bola\"\n        }\n    ],\n    \"customer\": {\n        \"id\": \"cus_J4wRXJ0U6ytZrpAx\",\n        \"name\": \"Tony Star8k\",\n        \"email\": \"tstark@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2016-09-28T21:04:37Z\",\n        \"updated_at\": \"2017-04-04T15:08:20Z\"\n    },\n    \"subscription\": {\n        \"id\": \"sub_KrmEXBxHVIRAJxDG\",\n        \"code\": \"KERZFJ6TQZ\",\n        \"start_at\": \"2017-04-04T00:00:00Z\",\n        \"interval\": \"month\",\n        \"interval_count\": 1,\n        \"billing_type\": \"postpaid\",\n        \"next_billing_at\": \"2017-05-04T00:00:00Z\",\n        \"payment_method\": \"credit_card\",\n        \"currency\": \"BRL\",\n        \"statement_descriptor\": \"Spotify\",\n        \"installments\": 1,\n        \"status\": \"active\",\n        \"created_at\": \"2017-04-04T15:10:01Z\",\n        \"updated_at\": \"2017-04-04T15:10:01Z\"\n    },\n    \"cycle\": {\n        \"id\": \"cycle_WE1ZYoX7uEfbRar4\",\n        \"start_at\": \"2017-04-04T00:00:00Z\",\n        \"end_at\": \"2017-05-03T23:59:59Z\",\n        \"billing_at\": \"2017-05-04T00:00:00Z\"\n    },\n    \"charge\": {\n        \"id\": \"ch_NnLXBY2sXxs0Z3Oy\",\n        \"code\": \"KERZFJ6TQZ-01\",\n        \"gateway_id\": \"453b685d-33aa-4fd9-a926-afd78dce2832\",\n        \"status\": \"canceled\",\n        \"currency\": \"BRL\",\n        \"payment_method\": \"credit_card\",\n        \"funding_source\": \"prepaid\",\n        \"due_at\": \"2017-04-04T00:00:00Z\",\n        \"paid_at\": \"2017-04-04T15:40:30Z\",\n        \"canceled_at\": \"2017-04-04T15:48:48Z\",\n        \"created_at\": \"2017-04-04T15:40:28Z\",\n        \"updated_at\": \"2017-04-04T15:48:48Z\",\n        \"last_transaction\": {\n            \"id\": \"tran_jJ0n4JJsbKu88mL1\",\n            \"transaction_type\": \"credit_card\",\n            \"gateway_id\": \"ab76139e-2c3b-40a0-89ed-98d451821c0c\",\n            \"amount\": 1490,\n            \"status\": \"voided\",\n            \"success\": true,\n            \"acquirer_name\": \"simulator\",\n            \"acquirer_affiliation_code\": \"12345\",\n            \"acquirer_tid\": \"532840\",\n            \"acquirer_nsu\": \"805131\",\n            \"acquirer_auth_code\": \"557586\",\n            \"operation_type\": \"cancel\",\n            \"credit_card\": {\n                \"id\": \"card_pEYq7rDbFeiW8V6k\",\n                \"first_six_digits\": \"542501\",\n                \"last_four_digits\": \"8229\",\n                \"brand\": \"Amex\",\n                \"holder_name\": \"Tony Stark\",\n                \"exp_month\": 1,\n                \"exp_year\": 2018,\n                \"status\": \"active\",\n                \"created_at\": \"2016-11-16T17:02:39Z\",\n                \"updated_at\": \"2016-12-29T12:03:24Z\",\n                \"billing_address\": {\n                    \"line_1\": \"10880, Malibu Point, Malibu Central\",\n                    \"zip_code\": \"90265\",\n                    \"city\": \"Malibu\",\n                    \"state\": \"CA\",\n                    \"country\": \"US\"            \n                }\n            },\n            \"created_at\": \"2017-04-04T15:48:48Z\",\n            \"updated_at\": \"2017-04-04T15:48:48Z\"\n        }\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: in_n87qwY1FA2SzwXDb
+                  code:
+                    type: string
+                    example: P47FWGIEZP
+                  url:
+                    type: string
+                    example: /invoices/in_n87qwY1FA2SzwXDb
+                  amount:
+                    type: integer
+                    example: 1490
+                    default: 0
+                  status:
+                    type: string
+                    example: canceled
+                  payment_method:
+                    type: string
+                    example: credit_card
+                  due_at:
+                    type: string
+                    example: '2017-04-04T00:00:00Z'
+                  canceled_at:
+                    type: string
+                    example: '2017-04-04T15:48:48Z'
+                  created_at:
+                    type: string
+                    example: '2017-04-04T15:40:28Z'
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Nome - teste
+                        amount:
+                          type: integer
+                          example: 1490
+                          default: 0
+                        quantity:
+                          type: integer
+                          example: 1
+                          default: 0
+                        description:
+                          type: string
+                          example: Bola
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cus_J4wRXJ0U6ytZrpAx
+                      name:
+                        type: string
+                        example: Tony Star8k
+                      email:
+                        type: string
+                        example: tstark@avengers.com
+                      delinquent:
+                        type: boolean
+                        example: false
+                        default: true
+                      created_at:
+                        type: string
+                        example: '2016-09-28T21:04:37Z'
+                      updated_at:
+                        type: string
+                        example: '2017-04-04T15:08:20Z'
+                  subscription:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: sub_KrmEXBxHVIRAJxDG
+                      code:
+                        type: string
+                        example: KERZFJ6TQZ
+                      start_at:
+                        type: string
+                        example: '2017-04-04T00:00:00Z'
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 1
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: postpaid
+                      next_billing_at:
+                        type: string
+                        example: '2017-05-04T00:00:00Z'
+                      payment_method:
+                        type: string
+                        example: credit_card
+                      currency:
+                        type: string
+                        example: BRL
+                      statement_descriptor:
+                        type: string
+                        example: Spotify
+                      installments:
+                        type: integer
+                        example: 1
+                        default: 0
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2017-04-04T15:10:01Z'
+                      updated_at:
+                        type: string
+                        example: '2017-04-04T15:10:01Z'
+                  cycle:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cycle_WE1ZYoX7uEfbRar4
+                      start_at:
+                        type: string
+                        example: '2017-04-04T00:00:00Z'
+                      end_at:
+                        type: string
+                        example: '2017-05-03T23:59:59Z'
+                      billing_at:
+                        type: string
+                        example: '2017-05-04T00:00:00Z'
+                  charge:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: ch_NnLXBY2sXxs0Z3Oy
+                      code:
+                        type: string
+                        example: KERZFJ6TQZ-01
+                      gateway_id:
+                        type: string
+                        example: 453b685d-33aa-4fd9-a926-afd78dce2832
+                      status:
+                        type: string
+                        example: canceled
+                      currency:
+                        type: string
+                        example: BRL
+                      payment_method:
+                        type: string
+                        example: credit_card
+                      funding_source:
+                        type: string
+                        example: prepaid
+                      due_at:
+                        type: string
+                        example: '2017-04-04T00:00:00Z'
+                      paid_at:
+                        type: string
+                        example: '2017-04-04T15:40:30Z'
+                      canceled_at:
+                        type: string
+                        example: '2017-04-04T15:48:48Z'
+                      created_at:
+                        type: string
+                        example: '2017-04-04T15:40:28Z'
+                      updated_at:
+                        type: string
+                        example: '2017-04-04T15:48:48Z'
+                      last_transaction:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: tran_jJ0n4JJsbKu88mL1
+                          transaction_type:
+                            type: string
+                            example: credit_card
+                          gateway_id:
+                            type: string
+                            example: ab76139e-2c3b-40a0-89ed-98d451821c0c
+                          amount:
+                            type: integer
+                            example: 1490
+                            default: 0
+                          status:
+                            type: string
+                            example: voided
+                          success:
+                            type: boolean
+                            example: true
+                            default: true
+                          acquirer_name:
+                            type: string
+                            example: simulator
+                          acquirer_affiliation_code:
+                            type: string
+                            example: '12345'
+                          acquirer_tid:
+                            type: string
+                            example: '532840'
+                          acquirer_nsu:
+                            type: string
+                            example: '805131'
+                          acquirer_auth_code:
+                            type: string
+                            example: '557586'
+                          operation_type:
+                            type: string
+                            example: cancel
+                          credit_card:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: card_pEYq7rDbFeiW8V6k
+                              first_six_digits:
+                                type: string
+                                example: '542501'
+                              last_four_digits:
+                                type: string
+                                example: '8229'
+                              brand:
+                                type: string
+                                example: Amex
+                              holder_name:
+                                type: string
+                                example: Tony Stark
+                              exp_month:
+                                type: integer
+                                example: 1
+                                default: 0
+                              exp_year:
+                                type: integer
+                                example: 2018
+                                default: 0
+                              status:
+                                type: string
+                                example: active
+                              created_at:
+                                type: string
+                                example: '2016-11-16T17:02:39Z'
+                              updated_at:
+                                type: string
+                                example: '2016-12-29T12:03:24Z'
+                              billing_address:
+                                type: object
+                                properties:
+                                  line_1:
+                                    type: string
+                                    example: 10880, Malibu Point, Malibu Central
+                                  zip_code:
+                                    type: string
+                                    example: '90265'
+                                  city:
+                                    type: string
+                                    example: Malibu
+                                  state:
+                                    type: string
+                                    example: CA
+                                  country:
+                                    type: string
+                                    example: US
+                          created_at:
+                            type: string
+                            example: '2017-04-04T15:48:48Z'
+                          updated_at:
+                            type: string
+                            example: '2017-04-04T15:48:48Z'
+        '412':
+          description: '412'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"message\": \"This invoice cannot be canceled.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: This invoice cannot be canceled.
+      deprecated: false
+      tags:
+      - Invoices
+  /invoices/{invoice_id}/metadata:
+    patch:
+      summary: Editar metadados da fatura
+      description: Com o verbo _HTTP PATCH_, através do identificador da fatura (`invoice_id`) é possível atualizar o objeto `metadata` da fatura.
+      operationId: editar-metadados-da-fatura-1
+      parameters:
+      - name: invoice_id
+        in: path
+        description: 'Código da fatura.<br>Formato: `in_XXXXXXXXXXXXXXXX`.'
+        schema:
+          type: string
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - metadata
+              properties:
+                metadata:
+                  type: string
+                  description: Objeto chave/valor utilizado para armazenar informações adicionais sobre a fatura.<br>[Saiba mais sobre metadata](https://docs.pagar.me/reference/metadata-1)
+            examples:
+              Request Example:
+                value:
+                  metadata:
+                    code: '1234'
+                    company: Avengers
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"id\": \"in_l9JGwX1MsNS3g614\",\n    \"code\": \"X8J8HG6HR3\",\n    \"url\": \"/invoices/in_l9JGwX1MsNS3g614\",\n    \"amount\": 1490,\n    \"status\": \"paid\",\n    \"payment_method\": \"credit_card\",\n    \"due_at\": \"2017-08-10T00:00:00Z\",\n    \"created_at\": \"2017-08-10T16:02:40Z\",\n    \"items\": [\n        {\n            \"name\": \"Nome - teste\",\n            \"amount\": 1490,\n            \"quantity\": 1,\n            \"description\": \"Premium\"\n        }\n    ],\n    \"customer\": {\n        \"id\": \"cus_2j4vnqJseriZOM0G\",\n        \"name\": \"Tony Stark\",\n        \"email\": \"ce7bd9d7-a959-4f64-8070-896c2d968c9a@avengers.com\",\n        \"delinquent\": false,\n        \"created_at\": \"2017-08-10T16:02:28Z\",\n        \"updated_at\": \"2017-08-10T16:02:28Z\",\n        \"phones\": {}\n    },\n    \"subscription\": {\n        \"id\": \"sub_Rg80VjCmxt4N0Oma\",\n        \"code\": \"R66DU1I4PR\",\n        \"start_at\": \"2017-08-10T00:00:00Z\",\n        \"interval\": \"month\",\n        \"interval_count\": 1,\n        \"billing_type\": \"postpaid\",\n        \"next_billing_at\": \"2017-09-10T00:00:00Z\",\n        \"payment_method\": \"credit_card\",\n        \"currency\": \"BRL\",\n        \"statement_descriptor\": \"Spotify\",\n        \"installments\": 1,\n        \"status\": \"active\",\n        \"created_at\": \"2017-08-10T16:02:30Z\",\n        \"updated_at\": \"2017-08-10T16:02:30Z\"\n    },\n    \"cycle\": {\n        \"id\": \"cycle_zObQAYfOqUnMQMkB\",\n        \"start_at\": \"2017-08-10T00:00:00Z\",\n        \"end_at\": \"2017-09-09T23:59:59Z\",\n        \"billing_at\": \"2017-09-10T00:00:00Z\"\n    },\n    \"charge\": {\n        \"id\": \"ch_Wl2YRDrSOFq1Ax4r\",\n        \"code\": \"R66DU1I4PR-01\",\n        \"gateway_id\": \"798d388b-3e92-4ad1-a0be-893a2391c7fa\",\n        \"amount\": 1490,\n        \"paid_amount\": 1490,\n        \"status\": \"paid\",\n        \"currency\": \"BRL\",\n        \"payment_method\": \"credit_card\",\n        \"due_at\": \"2017-08-10T00:00:00Z\",\n        \"paid_at\": \"2017-08-10T16:02:41Z\",\n        \"created_at\": \"2017-08-10T16:02:40Z\",\n        \"updated_at\": \"2017-08-10T16:02:40Z\",\n        \"last_transaction\": {\n            \"id\": \"tran_x7lNYXuPLS1np4n1\",\n            \"transaction_type\": \"credit_card\",\n            \"funding_source\": \"prepaid\",\n            \"gateway_id\": \"a4f98f29-c720-4682-985e-f18234160be1\",\n            \"amount\": 1490,\n            \"status\": \"captured\",\n            \"success\": true,\n            \"installments\": 1,\n            \"statement_descriptor\": \"Spotify\",\n            \"acquirer_name\": \"simulator\",\n            \"acquirer_affiliation_code\": \"TesteMaroto\",\n            \"acquirer_tid\": \"21407\",\n            \"acquirer_nsu\": \"743230\",\n            \"acquirer_auth_code\": \"214846\",\n            \"acquirer_message\": \"Simulator|Transação de simulação autorizada com sucesso\",\n            \"acquirer_return_code\": \"0\",\n            \"operation_type\": \"auth_and_capture\",\n            \"card\": {\n                \"id\": \"card_brVjYG5uZSrNARPg\",\n                \"first_six_digits\": \"342793\",\n                \"last_four_digits\": \"8229\",\n                \"brand\": \"Amex\",\n                \"holder_name\": \"Tony Stark\",\n                \"exp_month\": 1,\n                \"exp_year\": 2018,\n                \"status\": \"active\",\n                \"created_at\": \"2017-08-10T16:02:28Z\",\n                \"updated_at\": \"2017-08-10T16:02:28Z\",\n                \"billing_address\": {\n                    \"line_1\": \"10880, Malibu Point, Malibu Central\",\n                    \"zip_code\": \"90265\",\n                    \"city\": \"Malibu\",\n                    \"state\": \"CA\",\n                    \"country\": \"US\"\n                },\n                \"type\": \"credit\"\n            },\n            \"created_at\": \"2017-08-10T16:02:40Z\",\n            \"updated_at\": \"2017-08-10T16:02:40Z\",\n            \"gateway_response\": {\n                \"code\": \"201\"\n            }\n        }\n    },\n    \"metadata\": {\n        \"code\": \"1234\",\n        \"company\": \"Avengers\"\n    }\n}"
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: in_l9JGwX1MsNS3g614
+                  code:
+                    type: string
+                    example: X8J8HG6HR3
+                  url:
+                    type: string
+                    example: /invoices/in_l9JGwX1MsNS3g614
+                  amount:
+                    type: integer
+                    example: 1490
+                    default: 0
+                  status:
+                    type: string
+                    example: paid
+                  payment_method:
+                    type: string
+                    example: credit_card
+                  due_at:
+                    type: string
+                    example: '2017-08-10T00:00:00Z'
+                  created_at:
+                    type: string
+                    example: '2017-08-10T16:02:40Z'
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Nome - teste
+                        amount:
+                          type: integer
+                          example: 1490
+                          default: 0
+                        quantity:
+                          type: integer
+                          example: 1
+                          default: 0
+                        description:
+                          type: string
+                          example: Premium
+                  customer:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cus_2j4vnqJseriZOM0G
+                      name:
+                        type: string
+                        example: Tony Stark
+                      email:
+                        type: string
+                        example: ce7bd9d7-a959-4f64-8070-896c2d968c9a@avengers.com
+                      delinquent:
+                        type: boolean
+                        example: false
+                        default: true
+                      created_at:
+                        type: string
+                        example: '2017-08-10T16:02:28Z'
+                      updated_at:
+                        type: string
+                        example: '2017-08-10T16:02:28Z'
+                      phones:
+                        type: object
+                        properties: {}
+                  subscription:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: sub_Rg80VjCmxt4N0Oma
+                      code:
+                        type: string
+                        example: R66DU1I4PR
+                      start_at:
+                        type: string
+                        example: '2017-08-10T00:00:00Z'
+                      interval:
+                        type: string
+                        example: month
+                      interval_count:
+                        type: integer
+                        example: 1
+                        default: 0
+                      billing_type:
+                        type: string
+                        example: postpaid
+                      next_billing_at:
+                        type: string
+                        example: '2017-09-10T00:00:00Z'
+                      payment_method:
+                        type: string
+                        example: credit_card
+                      currency:
+                        type: string
+                        example: BRL
+                      statement_descriptor:
+                        type: string
+                        example: Spotify
+                      installments:
+                        type: integer
+                        example: 1
+                        default: 0
+                      status:
+                        type: string
+                        example: active
+                      created_at:
+                        type: string
+                        example: '2017-08-10T16:02:30Z'
+                      updated_at:
+                        type: string
+                        example: '2017-08-10T16:02:30Z'
+                  cycle:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: cycle_zObQAYfOqUnMQMkB
+                      start_at:
+                        type: string
+                        example: '2017-08-10T00:00:00Z'
+                      end_at:
+                        type: string
+                        example: '2017-09-09T23:59:59Z'
+                      billing_at:
+                        type: string
+                        example: '2017-09-10T00:00:00Z'
+                  charge:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: ch_Wl2YRDrSOFq1Ax4r
+                      code:
+                        type: string
+                        example: R66DU1I4PR-01
+                      gateway_id:
+                        type: string
+                        example: 798d388b-3e92-4ad1-a0be-893a2391c7fa
+                      amount:
+                        type: integer
+                        example: 1490
+                        default: 0
+                      paid_amount:
+                        type: integer
+                        example: 1490
+                        default: 0
+                      status:
+                        type: string
+                        example: paid
+                      currency:
+                        type: string
+                        example: BRL
+                      payment_method:
+                        type: string
+                        example: credit_card
+                      due_at:
+                        type: string
+                        example: '2017-08-10T00:00:00Z'
+                      paid_at:
+                        type: string
+                        example: '2017-08-10T16:02:41Z'
+                      created_at:
+                        type: string
+                        example: '2017-08-10T16:02:40Z'
+                      updated_at:
+                        type: string
+                        example: '2017-08-10T16:02:40Z'
+                      last_transaction:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: tran_x7lNYXuPLS1np4n1
+                          transaction_type:
+                            type: string
+                            example: credit_card
+                          funding_source:
+                            type: string
+                            example: prepaid
+                          gateway_id:
+                            type: string
+                            example: a4f98f29-c720-4682-985e-f18234160be1
+                          amount:
+                            type: integer
+                            example: 1490
+                            default: 0
+                          status:
+                            type: string
+                            example: captured
+                          success:
+                            type: boolean
+                            example: true
+                            default: true
+                          installments:
+                            type: integer
+                            example: 1
+                            default: 0
+                          statement_descriptor:
+                            type: string
+                            example: Spotify
+                          acquirer_name:
+                            type: string
+                            example: simulator
+                          acquirer_affiliation_code:
+                            type: string
+                            example: TesteMaroto
+                          acquirer_tid:
+                            type: string
+                            example: '21407'
+                          acquirer_nsu:
+                            type: string
+                            example: '743230'
+                          acquirer_auth_code:
+                            type: string
+                            example: '214846'
+                          acquirer_message:
+                            type: string
+                            example: Simulator|Transação de simulação autorizada com sucesso
+                          acquirer_return_code:
+                            type: string
+                            example: '0'
+                          operation_type:
+                            type: string
+                            example: auth_and_capture
+                          card:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: card_brVjYG5uZSrNARPg
+                              first_six_digits:
+                                type: string
+                                example: '342793'
+                              last_four_digits:
+                                type: string
+                                example: '8229'
+                              brand:
+                                type: string
+                                example: Amex
+                              holder_name:
+                                type: string
+                                example: Tony Stark
+                              exp_month:
+                                type: integer
+                                example: 1
+                                default: 0
+                              exp_year:
+                                type: integer
+                                example: 2018
+                                default: 0
+                              status:
+                                type: string
+                                example: active
+                              created_at:
+                                type: string
+                                example: '2017-08-10T16:02:28Z'
+                              updated_at:
+                                type: string
+                                example: '2017-08-10T16:02:28Z'
+                              billing_address:
+                                type: object
+                                properties:
+                                  line_1:
+                                    type: string
+                                    example: 10880, Malibu Point, Malibu Central
+                                  zip_code:
+                                    type: string
+                                    example: '90265'
+                                  city:
+                                    type: string
+                                    example: Malibu
+                                  state:
+                                    type: string
+                                    example: CA
+                                  country:
+                                    type: string
+                                    example: US
+                              type:
+                                type: string
+                                example: credit
+                          created_at:
+                            type: string
+                            example: '2017-08-10T16:02:40Z'
+                          updated_at:
+                            type: string
+                            example: '2017-08-10T16:02:40Z'
+                          gateway_response:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                                example: '201'
+                  metadata:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: '1234'
+                      company:
+                        type: string
+                        example: Avengers
+        '404':
+          description: '404'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"message\": \"Invoice not found.\"\n}"
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invoice not found.
+      deprecated: false
+      tags:
+      - Invoices
+components:
+  securitySchemes:
+    sec0:
+      type: http
+      scheme: basic
+x-readme-fauxas: true
+x-provenance:
+  method: searched
+  source: https://docs.pagar.me/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://docs.pagar.me/reference/ativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/atualizar-code-de-recebedor.md
+  - https://docs.pagar.me/reference/cancelar-assinatura-1.md
+  - https://docs.pagar.me/reference/cancelar-fatura-1.md
+  - https://docs.pagar.me/reference/cancelar-um-link-de-pagamento.md
+  - https://docs.pagar.me/reference/create-link.md
+  - https://docs.pagar.me/reference/criar-assinatura-avulsa.md
+  - https://docs.pagar.me/reference/criar-assinatura-de-plano-1.md
+  - https://docs.pagar.me/reference/criar-cliente-1.md
+  - https://docs.pagar.me/reference/criar-fatura-1.md
+  - https://docs.pagar.me/reference/criar-link-recebedor.md
+  - https://docs.pagar.me/reference/criar-link.md
+  - https://docs.pagar.me/reference/criar-pedido-2.md
+  - https://docs.pagar.me/reference/criar-pedido-com-antifraude.md
+  - https://docs.pagar.me/reference/criar-pedido-com-split-1.md
+  - https://docs.pagar.me/reference/criar-pedido-multicompradores.md
+  - https://docs.pagar.me/reference/criar-pedido-multimeios.md
+  - https://docs.pagar.me/reference/criar-plano-1.md
+  - https://docs.pagar.me/reference/criar-recebedor-1.md
+  - https://docs.pagar.me/reference/criar-token-cart%C3%A3o-1.md
+  - https://docs.pagar.me/reference/deletar-item.md
+  - https://docs.pagar.me/reference/desativar-faturamento-manual-1.md
+  - https://docs.pagar.me/reference/editar-cliente-1.md
+  - https://docs.pagar.me/reference/editar-item-1.md
+  - https://docs.pagar.me/reference/editar-item-do-pedido.md
+  - https://docs.pagar.me/reference/editar-item.md
+  - https://docs.pagar.me/reference/editar-meio-de-pagamento-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-metadados-da-assinatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-da-fatura-1.md
+  - https://docs.pagar.me/reference/editar-metadados-do-plano-1.md
+  - https://docs.pagar.me/reference/editar-minimum-price-da-assinatura.md
+  - https://docs.pagar.me/reference/editar-plano-1.md
+  - https://docs.pagar.me/reference/editar-recebedor-1.md
+  - https://docs.pagar.me/reference/enviar-webhook.md
+  - https://docs.pagar.me/reference/excluir-plano-1.md
+  - https://docs.pagar.me/reference/fechar-um-pedido.md
+  - https://docs.pagar.me/reference/incluir-desconto-1.md
+  - https://docs.pagar.me/reference/incluir-incremento-1.md
+  - https://docs.pagar.me/reference/incluir-item-1.md
+  - https://docs.pagar.me/reference/incluir-item-2.md
+  - https://docs.pagar.me/reference/incluir-item.md
+  - https://docs.pagar.me/reference/incluir-uso.md
+  - https://docs.pagar.me/reference/listar-assinaturas-1.md
+  - https://docs.pagar.me/reference/listar-ciclos-1.md
+  - https://docs.pagar.me/reference/listar-clientes-1.md
+  - https://docs.pagar.me/reference/listar-descontos-2.md
+  - https://docs.pagar.me/reference/listar-faturas-1.md
+  - https://docs.pagar.me/reference/listar-incrementos.md
+  - https://docs.pagar.me/reference/listar-pedidos.md
+  - https://docs.pagar.me/reference/listar-planos-1.md
+  - https://docs.pagar.me/reference/listar-recebedores-1.md
+  - https://docs.pagar.me/reference/listar-uso.md
+  - https://docs.pagar.me/reference/listar-webhooks.md
+  - https://docs.pagar.me/reference/obter-assinatura-1.md
+  - https://docs.pagar.me/reference/obter-ciclo-1.md
+  - https://docs.pagar.me/reference/obter-cliente-1.md
+  - https://docs.pagar.me/reference/obter-desconto-1.md
+  - https://docs.pagar.me/reference/obter-fatura-1.md
+  - https://docs.pagar.me/reference/obter-incremento-1.md
+  - https://docs.pagar.me/reference/obter-item-do-pedido.md
+  - https://docs.pagar.me/reference/obter-link.md
+  - https://docs.pagar.me/reference/obter-links.md
+  - https://docs.pagar.me/reference/obter-pedido.md
+  - https://docs.pagar.me/reference/obter-plano-1.md
+  - https://docs.pagar.me/reference/obter-recebedor-1.md
+  - https://docs.pagar.me/reference/obter-saldo.md
+  - https://docs.pagar.me/reference/obter-webhook.md
+  - https://docs.pagar.me/reference/remover-desconto-1.md
+  - https://docs.pagar.me/reference/remover-incremento-1.md
+  - https://docs.pagar.me/reference/remover-item-1.md
+  - https://docs.pagar.me/reference/remover-item.md
+  - https://docs.pagar.me/reference/remover-todos-os-itens.md
+  - https://docs.pagar.me/reference/remover-uso.md
+  - https://docs.pagar.me/reference/renovar-ciclo-1.md
+  - https://docs.pagar.me/reference/retornando-pagamentos-por-recebedor.md
+  - https://docs.pagar.me/reference/retornando-pagamentos.md
+  - https://docs.pagar.me/reference/retornando-um-pagamento.md
+  - https://docs.pagar.me/reference/retornando-urs-de-um-recebedor-v5.md
+  merge:
+    pages: 78
+    deduped: 82
+    conflicts_kept_first: 0
