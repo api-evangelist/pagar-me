@@ -778,6 +778,8 @@ apis:
   humanURL: https://docs.pagar.me/reference
   baseURL: https://api.pagar.me/core/v5
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
@@ -790,6 +792,8 @@ apis:
   humanURL: https://docs.pagar.me/reference
   baseURL: https://api.pagar.me/core/v5
   tags:
+  - Payment Links
+  tags_raw:
   - Paymentlinks
   properties:
   - type: OpenAPI
@@ -839,6 +843,8 @@ apis:
   humanURL: https://docs.pagar.me/reference
   baseURL: https://api.pagar.me/core/v5
   tags:
+  - Settlement
+  tags_raw:
   - Settlements
   properties:
   - type: OpenAPI
@@ -851,6 +857,8 @@ apis:
   humanURL: https://docs.pagar.me/reference
   baseURL: https://api.pagar.me/core/v5
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
