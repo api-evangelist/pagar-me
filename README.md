@@ -1,4 +1,4 @@
-# Pagar.me (pagar-me)
+# Pagar.me
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,184 +64,165 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Pagar.me is the API-first online payments platform from **Stone Co.**, one of Brazil's largest financial technology companies — often referred to as "the Stripe of Brazil." A single Core API v5 surface (and a fleet of official SDKs) lets Brazilian e-commerce merchants, marketplaces, SaaS companies, and subscription businesses accept credit and debit cards, **Pix** instant payments, **boletos**, vouchers, and digital wallets, with built-in 3DS 2.0 anti-fraud, payment splitting and recipient management for marketplaces, recurring billing through plans and subscriptions, anticipation of receivables, payment links, an embedded Checkout, and signed webhooks. Pagar.me is PCI DSS Level 1 certified and powers payments for Brazilian brands including Leroy Merlin, Casa & Vídeo, Polishop, Usaflex, and Catarse.
+Pagar.me is the API-first online payments platform from Stone Co., one of Brazil's largest financial technology companies. Often called "the Stripe of Brazil," Pagar.me provides Brazilian e-commerce merchants, marketplaces, SaaS companies, and subscription businesses with a single REST API and a set of official SDKs to accept credit and debit cards, Pix instant payments, boletos, vouchers, and digital wallets, with built-in 3DS 2.0 anti-fraud, payment splitting and recipient management for marketplaces, recurring billing through plans and subscriptions, anticipation of receivables, payment links, an embedded Checkout, and signed webhooks. The Pagar.me Core API v5 (2021-09-01) is the current stable surface, exposed at https://api.pagar.me/core/v5 with HTTP Basic authentication, and is backed by SDKs in Node.js, Python, PHP, Ruby, Java, .NET, and Go. Pagar.me is PCI DSS Level 1 certified and powers payments for Brazilian brands including Leroy Merlin, Casa & Vídeo, Polishop, Usaflex, and Catarse.
 
-**URL:** [Visit APIs.json](https://raw.githubusercontent.com/api-evangelist/pagar-me/refs/heads/main/apis.yml)
+**Areas:** Payments · Financial Services · Fintech · Brazil · Latin America · Stone Co · Pix · Boleto · Credit Cards · Marketplace · Split Payments · Subscription
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Pagar.me on APIs.io
 
-## Tags
+Everything profiled for Pagar.me is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/pagar-me/](https://apis.io/providers/pagar-me/)** — or go straight to one of the APIs or properties below.
 
-- Payments, Financial Services, Fintech, Brazil, Latin America, Stone Co, Pix, Boleto, Credit Card, Marketplace, Split Payments, Subscriptions, Recurring Billing, Anti-Fraud, 3DS, Checkout, Payment Links, Webhooks, E-commerce, Anticipation
+### APIs (30)
 
-## Timestamps
+- [Pagar.me Orders API](https://apis.io/apis/pagar-me/pagarme-orders-api/) — Create, list, retrieve, and manage orders — the top-level payment object in the Pagar.me Core API v5. Each order can contain one or more charges paid via…
+- [Pagar.me Charges API](https://apis.io/apis/pagar-me/pagarme-charges-api/) — Manage individual charges (cobranças) — the unit of capture inside an order. Get a charge, edit its payment method or saved card, capture a pre-authorized…
+- [Pagar.me Customers API](https://apis.io/apis/pagar-me/pagarme-customers-api/) — Create and manage end-customer (buyer) records — personal data, CPF/CNPJ, contact info, and addresses — so that orders, subscriptions, and saved cards can…
+- [Pagar.me Cards API](https://apis.io/apis/pagar-me/pagarme-cards-api/) — Tokenize, save, and edit credit/debit cards inside a Pagar.me customer wallet, off-load PCI scope, and reuse cards for one-click buy and recurring charges.…
+- [Pagar.me Plans API](https://apis.io/apis/pagar-me/pagarme-plans-api/) — Define reusable recurring billing plans — pricing, billing cycle (days/weeks/months), trial period, installment count, accepted payment methods, and items —…
+- [Pagar.me Subscriptions API](https://apis.io/apis/pagar-me/pagarme-subscriptions-api/) — Create customer subscriptions either from a saved plan or as standalone (avulsa) subscriptions, renew billing cycles, edit payment method / card / discount…
+- [Pagar.me Recipients API](https://apis.io/apis/pagar-me/pagarme-recipients-api/) — Onboard and manage recipients (recebedores) — the sub-merchants that receive split payments in a marketplace. Create the recipient, run the KYC / prova de…
+- [Pagar.me Transfers API](https://apis.io/apis/pagar-me/pagarme-transfers-api/) — Create, cancel, list, and retrieve transfers from a recipient's Pagar.me balance to their registered bank account, plus pull the official transfer receipt…
+- [Pagar.me Balance Operations API](https://apis.io/apis/pagar-me/pagarme-balance-operations-api/) — Inspect the per-recipient balance ledger — every credit, debit, fee, refund, chargeback, anticipation, transfer, and adjustment that moves money in or out…
+- [Pagar.me Receivables API](https://apis.io/apis/pagar-me/pagarme-receivables-api/) — List the merchant's future receivables — the installments of credit-card sales that will settle over the coming weeks and months. The basis for cash-flow…
+- [Pagar.me Anticipation API](https://apis.io/apis/pagar-me/pagarme-anticipation-api/) — Anticipate receivables (antecipação) — Pagar.me's working-capital product that lets a merchant or marketplace recipient pull future credit-card installments…
+- [Pagar.me Settlements API](https://apis.io/apis/pagar-me/pagarme-settlements-api/) — Retrieve settlements (pagamentos) — the actual money movements out of Pagar.me to recipients — individually, in bulk, or scoped to a specific recipient.…
+- [Pagar.me Disputes & Chargebacks API](https://apis.io/apis/pagar-me/pagarme-disputes-api/) — List and retrieve disputes (disputas) and chargebacks raised against the merchant's transactions, including the new chargeback-specific charge status. Lets…
+- [Pagar.me Payment Links API](https://apis.io/apis/pagar-me/pagarme-payment-links-api/) — Generate, list, retrieve, activate, and cancel payment links — short URLs that wrap a Pagar.me Checkout for sale-by-link, WhatsApp commerce, Instagram bio…
+- [Pagar.me Contracts & URs API](https://apis.io/apis/pagar-me/pagarme-contracts-api/) — Manage contract effects and Unidades de Recebíveis (URs) under the Brazilian Central Bank's Resoluções BCB 264 and 349 receivables-registry regime. List…
+- [Pagar.me Webhooks API](https://apis.io/apis/pagar-me/pagarme-webhooks-api/) — Subscribe to and receive signed webhook events for every meaningful state change on Pagar.me — order.paid, charge.captured, charge.refunded,…
+- [Pagar.me Hosted Checkout](https://apis.io/apis/pagar-me/pagarme-checkout-pagarme/) — Pagar.me's drop-in hosted Checkout. Embed Pagar.me's PCI-compliant payment form to take credit card, Pix, and boleto for one-off orders and subscriptions,…
+- [Pagar.me Contestations API](https://apis.io/apis/pagar-me/pagar-me-contestations-api/) — The Contestations API from Pagar.me — 1 operation(s) for contestations.
+- [Pagar.me Customers API](https://apis.io/apis/pagar-me/pagar-me-customers-api/) — The Customers API from Pagar.me — 2 operation(s) for customers.
+- [Pagar.me Disputas API](https://apis.io/apis/pagar-me/pagar-me-disputas-api/) — Operações relacionadas à busca de disputas de chargeback. Aqui é possível ver o estado atual da disputa, histórico de eventos daquela disputa, dentre outras…
+- [Pagar.me Hooks API](https://apis.io/apis/pagar-me/pagar-me-hooks-api/) — The Hooks API from Pagar.me — 3 operation(s) for hooks.
+- [Pagar.me Invoices API](https://apis.io/apis/pagar-me/pagar-me-invoices-api/) — The Invoices API from Pagar.me — 3 operation(s) for invoices.
+- [Pagar.me Orders API](https://apis.io/apis/pagar-me/pagar-me-orders-api/) — The Orders API from Pagar.me — 5 operation(s) for orders.
+- [Pagar.me Paymentlinks API](https://apis.io/apis/pagar-me/pagar-me-paymentlinks-api/) — The Paymentlinks API from Pagar.me — 4 operation(s) for paymentlinks.
+- [Pagar.me Plans API](https://apis.io/apis/pagar-me/pagar-me-plans-api/) — The Plans API from Pagar.me — 5 operation(s) for plans.
+- [Pagar.me Recipients API](https://apis.io/apis/pagar-me/pagar-me-recipients-api/) — The Recipients API from Pagar.me — 7 operation(s) for recipients.
+- [Pagar.me Settlement Obligations API](https://apis.io/apis/pagar-me/pagar-me-settlement-obligations-api/) — The Settlement Obligations API from Pagar.me — 2 operation(s) for settlement obligations.
+- [Pagar.me Settlements API](https://apis.io/apis/pagar-me/pagar-me-settlements-api/) — The Settlements API from Pagar.me — 2 operation(s) for settlements.
+- [Pagar.me Subscriptions API](https://apis.io/apis/pagar-me/pagar-me-subscriptions-api/) — The Subscriptions API from Pagar.me — 17 operation(s) for subscriptions.
+- [Pagar.me Tokens API](https://apis.io/apis/pagar-me/pagar-me-tokens-api/) — The Tokens API from Pagar.me — 1 operation(s) for tokens.
 
-- **Created:** 2026-05-25
-- **Modified:** 2026-05-25
+### Published properties
 
-## Platform at a glance
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-| Surface | What it is |
-|---|---|
-| Base URL | `https://api.pagar.me/core/v5` |
-| Current version | Core API **v5** (2021-09-01) — legacy v1–v4 still accessible |
-| Auth | HTTP **Basic** with a Pagar.me API key (Access Keys) |
-| Docs | [docs.pagar.me](https://docs.pagar.me) (guides) + [docs.pagar.me/reference](https://docs.pagar.me/reference) (reference) |
-| Agent index | [`docs.pagar.me/llms.txt`](https://docs.pagar.me/llms.txt) — Markdown index of every doc page and OpenAPI endpoint |
-| SDKs | Node.js / TypeScript, Python, PHP, Ruby, Java, .NET Standard, Go |
-| Modules | Magento 2 / Adobe Commerce, WooCommerce, VTEX, Nuvemshop, Shopify |
-| Compliance | PCI DSS Level 1; Res. BCB 264 / 349 receivables registry |
-| Parent | **Stone Co.** (NASDAQ: STNE) |
+#### MCP servers (1)
 
-## APIs
+Model Context Protocol servers that expose the API to agents.
 
-### Pagar.me Orders API
-Top-level payment object in Core API v5. Create orders containing one or more charges paid via credit/debit card, Pix, boleto, voucher, Google Pay, or private label card; manage cancellation, capture, refund, items, customers, and split rules for marketplaces.
+- [pagar-me-mcp.yml](https://apis.io/servers/pagar-me/pagar-me-mcp-yml/)
 
-- [Reference — Create order](https://docs.pagar.me/reference/criar-pedido-2)
-- Payment methods: [credit card](https://docs.pagar.me/reference/cartão-de-crédito-1), [debit card](https://docs.pagar.me/reference/cartão-de-débito-2), [Pix](https://docs.pagar.me/reference/pix-2), [boleto](https://docs.pagar.me/reference/boleto-1), [voucher](https://docs.pagar.me/reference/voucher-1), [Google Pay](https://docs.pagar.me/reference/google-paytm-api)
+#### Agentic access (1)
 
-### Pagar.me Charges API
-Manage individual charges (cobranças) — the unit of capture inside an order. Get, edit payment method or saved card, capture pre-authorized amounts, refund all or part of a charge, and track the chargeback lifecycle.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Reference — Charges](https://docs.pagar.me/reference/obter-cobrança)
+- [Pagar Me Agentic Access](https://apis.io/agentic-access/pagar-me/pagar-me-agentic-access/)
 
-### Pagar.me Customers API
-Create and manage end-customer (buyer) records — personal data, CPF/CNPJ, contact info, and addresses — and tie them to orders, subscriptions, and saved cards. Underpins the customer wallet / one-click-buy experience.
+#### JSON Schema (1)
 
-- [Reference — Create customer](https://docs.pagar.me/reference/criar-cliente-1)
+The data models the API reads and writes.
 
-### Pagar.me Cards API
-Tokenize, save, and edit credit/debit cards inside a Pagar.me customer wallet, off-load PCI scope, and reuse cards for one-click buy and recurring charges. Supports network tokens (token de bandeira) and the Card Updater service.
+- [Dispute](https://apis.io/schemas/pagar-me/pagar-me-dispute/)
 
-- [Reference — Cards object](https://docs.pagar.me/reference/cartões-1)
-- [Card Updater](https://docs.pagar.me/docs/card-updater)
+#### JSON-LD (1)
 
-### Pagar.me Plans API
-Define reusable recurring billing plans — pricing, billing cycle, trial period, installment count, accepted payment methods, items — to back subscription products.
+Linked-data contexts for the provider's vocabulary.
 
-- [Reference — Plans object](https://docs.pagar.me/reference/planos-1)
+- [Pagar Me Context](https://apis.io/jsonld/pagar-me/pagar-me-context/)
 
-### Pagar.me Subscriptions API
-Create customer subscriptions from a plan or standalone (avulsa), renew cycles, edit payment method / card / discount / minimum price, change items, and inspect each cycle's invoice and charges. Powers SaaS, streaming, education, and club-of-the-month businesses on Pagar.me.
+#### Governance rules (1)
 
-- [Reference — Subscriptions object](https://docs.pagar.me/reference/assinaturas-1)
-- [Reference — Create subscription from plan](https://docs.pagar.me/reference/criar-assinatura-de-plano-1)
+Spectral rulesets for the provider's contracts.
 
-### Pagar.me Recipients API
-Onboard and manage recipients (recebedores) — the sub-merchants that receive split payments in a marketplace. Run the KYC / prova de vida flow, attach bank accounts, configure transfer settings, and create KYC links.
+- [Pagar.me API Rules](https://apis.io/rules/pagar-me/pagar-me-rules/)
 
-- [Reference — Recipients object](https://docs.pagar.me/reference/recebedores-1)
-- [Recipients guide](https://docs.pagar.me/docs/recebedores-2)
+#### Security (2)
 
-### Pagar.me Transfers API
-Create, cancel, list, and retrieve transfers from a recipient's Pagar.me balance to their registered bank account, plus pull the official transfer receipt (comprovante).
+Authentication, trust centre, and vulnerability disclosure.
 
-- [Reference — Transfer object](https://docs.pagar.me/reference/objeto-transferência)
+- [Pagar Me Authentication](https://apis.io/security/pagar-me/pagar-me-authentication/)
+- [Pagar Me Domain Security](https://apis.io/security/pagar-me/pagar-me-domain-security/)
 
-### Pagar.me Balance Operations API
-The per-recipient balance ledger — every credit, debit, fee, refund, chargeback, anticipation, transfer, and adjustment that moves money in or out of a Pagar.me account. Canonical source of truth for finance reconciliation.
+#### Plans and pricing (1)
 
-- [Reference — Balance operations](https://docs.pagar.me/reference/operação-de-saldo)
+Published plans, tiers and prices.
 
-### Pagar.me Receivables API
-List future receivables — installments of credit-card sales that will settle over the coming weeks and months. Basis for cash-flow forecasting and anticipation simulation.
+- [Pagar Me Plans Pricing](https://apis.io/plans/pagar-me/pagar-me-plans-pricing/)
 
-- [Reference — Receivables](https://docs.pagar.me/reference/retornando-recebíveis)
+#### FinOps (1)
 
-### Pagar.me Anticipation API
-Pagar.me's working-capital product — pull future credit-card installments to today's balance for a fee. Spot simulation, limits inspection, create, list, and cancel pending anticipations.
+What the API costs to run, by operation.
 
-- [Reference — Anticipation object](https://docs.pagar.me/reference/objeto-antecipação)
-- [Anticipation quick guide](https://docs.pagar.me/guia-rápido-sobre-antecipações)
+- [Pagar Me Finops](https://apis.io/finops/pagar-me/pagar-me-finops/)
 
-### Pagar.me Settlements API
-Retrieve settlements (pagamentos) — the actual money movements out of Pagar.me to recipients — individually, in bulk, or by recipient.
+## Where to find this API
 
-- [Reference — Settlements object](https://docs.pagar.me/reference/objeto-settlements)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Pagar.me Disputes & Chargebacks API
-List and retrieve disputes (disputas) and chargebacks raised against the merchant's transactions, including the new chargeback-specific charge status.
-
-- [Reference — Disputes](https://docs.pagar.me/reference/disputas)
-
-### Pagar.me Payment Links API
-Generate, list, retrieve, activate, and cancel payment links — short URLs that wrap a Pagar.me Checkout for sale-by-link, WhatsApp commerce, Instagram bio links, and lightweight invoicing.
-
-- [Reference — Payment link object](https://docs.pagar.me/reference/checkout-link)
-- [Reference — Create link](https://docs.pagar.me/reference/criar-link)
-
-### Pagar.me Contracts & URs API
-Contract effects and Unidades de Recebíveis (URs) under the Brazilian Central Bank's Resoluções BCB 264 and 349 receivables-registry regime — list contract effects, contest a contract, list contests, pull URs by recipient.
-
-- [Reference — Contract effects v5](https://docs.pagar.me/reference/retornando-efeitos-de-contratos-v5)
-- [Reference — Res. 264/349 manual](https://docs.pagar.me/reference/res264346-manual-de-integração)
-
-### Pagar.me Webhooks API
-Subscribe to and receive signed webhook events — `order.paid`, `charge.captured`, `charge.refunded`, `subscription.created`, `recipient.kyc_updated`, `dispute.opened`, and the rest of the catalog.
-
-- [Webhooks overview](https://docs.pagar.me/reference/visão-geral-sobre-webhooks)
-- [Webhook events](https://docs.pagar.me/reference/eventos-de-webhook-1)
-- [Webhooks guide](https://docs.pagar.me/docs/webhooks)
-
-### Pagar.me Hosted Checkout
-Pagar.me's drop-in PCI-compliant payment form for one-off orders and subscriptions, with first-class AI/agent integration patterns (Claude Code, Codex, Cursor, Copilot) documented as **Checkout Skills**.
-
-- [Checkout overview](https://docs.pagar.me/docs/checkout-use)
-- [Connect Checkout using AI](https://docs.pagar.me/docs/conecte-o-checkout-pagarme-usando-ia)
-- [Checkout Skill — Orders](https://docs.pagar.me/docs/checkout_pagarme_skill_order)
-- [Checkout Skill — Subscriptions](https://docs.pagar.me/docs/checkout_pagarme_skill_subscription)
-
-## Brazilian payment methods
-
-| Method | Reference |
-|---|---|
-| Credit card | [docs.pagar.me/reference/cartão-de-crédito-1](https://docs.pagar.me/reference/cartão-de-crédito-1) |
-| Debit card | [docs.pagar.me/reference/cartão-de-débito-2](https://docs.pagar.me/reference/cartão-de-débito-2) |
-| Pix | [docs.pagar.me/reference/pix-2](https://docs.pagar.me/reference/pix-2) · [Pix guide](https://docs.pagar.me/docs/pix-1) · [Pix simulator](https://docs.pagar.me/docs/simulador-pix) |
-| Boleto | [docs.pagar.me/reference/boleto-1](https://docs.pagar.me/reference/boleto-1) |
-| Voucher | [docs.pagar.me/reference/voucher-1](https://docs.pagar.me/reference/voucher-1) |
-| Google Pay | [docs.pagar.me/reference/google-paytm-api](https://docs.pagar.me/reference/google-paytm-api) · [Google Pay guide](https://docs.pagar.me/docs/google-pay-tm-guide) |
-| Private label card | [docs.pagar.me/reference/cartão-private-label-2](https://docs.pagar.me/reference/cartão-private-label-2) |
-
-## SDKs
-
-| Language | Repo |
-|---|---|
-| Node.js / TypeScript | [pagarme/pagarme-nodejs-sdk](https://github.com/pagarme/pagarme-nodejs-sdk) |
-| Python | [pagarme/pagarme-python-sdk](https://github.com/pagarme/pagarme-python-sdk) |
-| PHP | [pagarme/pagarme-php-sdk](https://github.com/pagarme/pagarme-php-sdk) |
-| Ruby | [pagarme/pagarme-ruby-sdk](https://github.com/pagarme/pagarme-ruby-sdk) |
-| Java | [pagarme/pagarme-java-sdk](https://github.com/pagarme/pagarme-java-sdk) |
-| .NET Standard | [pagarme/pagarme-net-standard-sdk](https://github.com/pagarme/pagarme-net-standard-sdk) |
-| Go | [pagarme/pagarme-core-api-go](https://github.com/pagarme/pagarme-core-api-go) |
-
-## E-commerce platform modules
-
-- [Magento 2 / Adobe Commerce](https://github.com/pagarme/magento2) — [guide](https://docs.pagar.me/docs/magento-2-overview)
-- [WooCommerce](https://github.com/pagarme/woocommerce) — [guide](https://docs.pagar.me/docs/woocommerce-introdução)
-- [VTEX](https://docs.pagar.me/docs/ativação-de-funcionalidades-vtex) — [marketplace sellers](https://docs.pagar.me/docs/vtex-sellers-marketplace)
-- [Nuvemshop](https://docs.pagar.me/docs/instalando-o-aplicativo-ns)
-- [Shopify](https://docs.pagar.me/docs/shopify)
-- [E-commerce Module Core (PHP)](https://github.com/pagarme/ecommerce-module-core)
-
-## Common links
-
-- [Pagar.me Portal](https://pagar.me)
+- [Website](https://pagar.me)
 - [Documentation](https://docs.pagar.me)
-- [API Reference](https://docs.pagar.me/reference)
-- [Getting Started with the API](https://docs.pagar.me/reference/getting-started-with-your-api)
-- [Access Keys (Auth)](https://docs.pagar.me/docs/chaves-de-acesso)
-- [Rate Limits](https://docs.pagar.me/reference/rate-limit)
-- [Security & PCI](https://docs.pagar.me/reference/segurança-1)
-- [IP Allowlist](https://docs.pagar.me/docs/ip-allowlist)
-- [3DS 2.0 Authentication](https://docs.pagar.me/docs/autenticação-via-3ds)
-- [Help Center](https://pagarme.helpjuice.com/)
-- [Sign In](https://id.pagar.me/signin)
-- [Pricing / Offers](https://www.pagar.me/ofertas)
-- [llms.txt (AI agent index)](https://docs.pagar.me/llms.txt)
-- [GitHub — pagarme](https://github.com/pagarme)
+- [Getting started](https://docs.pagar.me/reference/getting-started-with-your-api)
+- [API reference](https://docs.pagar.me/reference)
+- [Pricing](https://www.pagar.me/ofertas)
+- [Support](https://pagarme.helpjuice.com/)
+- [Blog](https://pagar.me/blog)
+- [GitHub](https://github.com/pagarme)
+- [Status](https://status.pagar.me/)
 
-## Reference profiles
+## API Evangelist rating
 
-- [api-evangelist/anthropic](https://github.com/api-evangelist/anthropic) — Claude is one of the AI coding assistants Pagar.me explicitly targets in its Checkout Skills and llms.txt-driven integration patterns for AI-assisted payment integration.
+**Kin Score 49.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 60.7 |
+| Contract governance | 22.0 |
+| Operational transparency | 21.1 |
+| Developer ergonomics | 81.0 |
+| Access clarity | 31.6 |
+
+**Agent readiness 33.3** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | mostly |
+
+**Regulatory alignment 15.2** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/pagar-me/](https://apis.io/providers/pagar-me/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Pagar.me: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/pagar-me/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
